@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    border-style: border-box;
+    font-size: 16px;
+}
+
+header {
+    top: 20px;
+    background-color: #15256d;
+    display: flex;
+    justify-content: center;
+    border-bottom: silver 5px solid;
+}
+
+.nav-bar {
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 1rem;
+    border: red solid 1px;
+}
+
+.nav-bar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid green;
+}
+
+.nav-bar li {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 0rem 1rem;
+    color: white;
+}
+
+.nav-bar a {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content h1 {
+    padding: 1rem;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.intro p {
+    padding: 0rem 8rem;
+}
+
+.about-container {
+    display: flex;
+    padding: 2rem 10rem;
+    margin-bottom: 3rem;
+}
+
+.headshot-image-container {
+    display: flex;
+}
+
+.headshot-image-container img {
+    border-radius: 25px;
+    height: auto;
+    min-width: 20rem;
+}
+
+.about-blurb {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+}
+
