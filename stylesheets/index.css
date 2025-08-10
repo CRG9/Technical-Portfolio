@@ -69,24 +69,38 @@ header {
 }
 
 .about-container {
-    display: flex;
-    padding: 2rem 10rem;
-    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 2rem;
+    border: red solid 1px;
+    margin: 0 2rem 2rem 2rem;
 }
 
 .headshot-image-container {
     display: flex;
+    justify-content: center;
+    padding: 1rem; /* Adds some space around the image */
+    border: blue solid 1px;
 }
 
 .headshot-image-container img {
     border-radius: 25px;
+    width: 100;
     height: auto;
-    min-width: 20rem;
+    margin: 0 auto;
 }
 
 .about-blurb {
     display: flex;
-    padding: 1rem;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border: green 1px solid;
+}
+
+.about-blurb p {
+    padding: 0.5rem 0;
 }
 
