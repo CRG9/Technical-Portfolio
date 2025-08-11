@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+header {
+    top: 20px;
+    background-color: #15256d;
+    display: flex;
+    justify-content: center;
+    border-bottom: silver 5px solid;
+}
+
+.nav-bar {
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 1rem;
+    border: red solid 1px;
+}
+
+.nav-bar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid green;
+}
+
+.nav-bar li {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 0rem 1rem;
+    color: white;
+}
+
+.nav-bar a {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem 2rem 2rem;
+}
+
+.page-header h1, .page-header h2, .page-header h3 {
+    padding-bottom: 1rem;
+}
+
+.project-page-link h3 {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.scrum-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1rem;
+}
+
+.scrum-embed-container {
+    display: flex;
+    justify-content: center;
+    border: red 1px solid;
+    padding: 2rem;
+}
+
+.scrum-blurb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: blue solid 1px;
+    text-align: center;
+}
+
+.scrum-blurb p {
+    padding: 0.25rem;
+}
