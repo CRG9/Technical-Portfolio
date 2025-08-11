@@ -80,6 +80,7 @@ header {
 
 .tournament-config-header h3, .tournament-chart-header h3 {
     padding-bottom: 0.5rem;
+    text-align: center;
 }
 
 .tournament-config-embed, .tournament-chart {
