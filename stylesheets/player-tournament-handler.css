@@ -4,7 +4,7 @@
 }
 
 html {
-    border-style: border-box;
+    box-sizing: border-box;
     font-size: 16px;
 }
 
@@ -53,10 +53,9 @@ header {
 
 .page-header {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
     padding: 2rem;
+    text-align: center;
 }
 
 .page-header h1, .page-header h2, .page-header h3 {
@@ -83,9 +82,6 @@ header {
     padding-bottom: 0.5rem;
 }
 
-
-
-
 .tournament-config-embed, .tournament-chart {
     font-size: 0.75rem;
     height: 30rem; /* Set a fixed height for the container */
@@ -97,6 +93,12 @@ header {
 
 .tournament-chart img {
     width: 100%;
+}
+
+.project-page-link h3 {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
 }
 
 

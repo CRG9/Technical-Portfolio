@@ -4,7 +4,7 @@
 }
 
 html {
-    border-style: border-box;
+    box-sizing: border-box;
     font-size: 16px;
 }
 
@@ -56,7 +56,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem 2rem 2rem 2rem;
 }
 
 .page-header h1, .page-header h2, .page-header h3 {
@@ -88,6 +88,12 @@ header {
     border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
     padding: 1rem; /* Optional: Add padding inside the container */
     background-color: #f8f8f8; /* Optional: Light background for readability */
+}
+
+.project-page-link h3 {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
 }
 
 
