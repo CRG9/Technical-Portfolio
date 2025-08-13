@@ -56,7 +56,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem 2rem 2rem 2rem;
+    padding: 1rem;
 }
 
 .page-header h1, .page-header h2, .page-header h3 {
@@ -71,15 +71,22 @@ header {
 
 .scrum-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-template-columns: repeat(1, minmax(20rem, 1fr));
     gap: 1rem;
+    margin: 0 2rem 2rem 2rem;
 }
 
-.scrum-embed-container {
+.scrum-image-container {
     display: flex;
     justify-content: center;
     border: red 1px solid;
     padding: 2rem;
+}
+
+.scrum-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 25px;
 }
 
 .scrum-blurb {
