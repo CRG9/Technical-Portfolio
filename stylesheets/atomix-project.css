@@ -61,7 +61,7 @@ header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     gap: 2rem;
-    padding: 2rem;
+    padding: 0 2rem 2rem 2rem;
     margin-bottom: 2rem;
 }
 
