@@ -3,6 +3,18 @@
     padding: 0;
 }
 
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+}
+
+body, p, li {
+  font-family: 'Lato', sans-serif;
+}
+
+code, pre {
+  font-family: 'Fira Code', monospace;
+}
+
 html {
     box-sizing: border-box;
     font-size: 16px;
