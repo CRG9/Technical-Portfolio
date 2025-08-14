@@ -26,7 +26,7 @@
       <h1>Player Tournament Handler</h1>
     </div>
     <div class="main-content"> 
-        <div class="config-and-image-container">
+        <div class="config-and-code-container">
             <div class="tourament-config-wrapper">
                 <div class="tournament-config-header">
                     <h3>xTournament Summary</h3>
@@ -472,11 +472,845 @@ messages:
                        </ul>
                     </p>
                 </div>
-                <div class="tournament-chart">
-                    <img src="/assets/atomix-assets/brackets.png">
+                <div class="tournament-config-embed">
+<pre><code>
+import com.atomix.xtournament.files.ConfigManager;
+import com.atomix.xtournament.files.TournamentLog;
+import com.atomix.xtournament.util.*;
+import com.atomix.xtournament.xTournament;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Tournament {
+    public static final Map&lt;TournamentType, List&lt;Integer&gt;&gt; VALID_TOURNAMENT_POOL_SIZES = new HashMap&lt;&gt;();
+
+    static {
+        // Generate the valid tournament pools for each tournament type
+        for (TournamentType tournamentType : TournamentType.values()) {
+            int doubledPartySized = tournamentType.getPartySize() * 2;
+            List&lt;Integer&gt; validTournamentPoolSizes = new ArrayList&lt;&gt;();
+            for (int tournamentPoolSize = doubledPartySized; tournamentPoolSize &lt; 128; tournamentPoolSize *= 2) {
+                validTournamentPoolSizes.add(tournamentPoolSize);
+            }
+            VALID_TOURNAMENT_POOL_SIZES.put(tournamentType, validTournamentPoolSizes);
+        }
+    }
+
+    private final Map&lt;Party, Integer&gt; partyScores = new LinkedHashMap&lt;&gt;();
+    /**
+     * This list will contain all the parties that are eliminated from the tournament, the item of index 0 being the
+     * first eliminated party, and hence, the party with the lowest score.
+     */
+    private final List&lt;Party&gt; tournamentLeaderboard = new ArrayList&lt;&gt;();
+    private final List&lt;TournamentMatch&gt; pendingMatches = new ArrayList&lt;&gt;();
+    private final List&lt;TournamentMatch&gt; currentMatches = new ArrayList&lt;&gt;();
+    private final List&lt;TournamentMatch&gt; finishedMatches = new ArrayList&lt;&gt;();
+
+    private final TournamentType tournamentType;
+    private final int maximumParticipants;
+    private final int minimumParticipants;
+    private int startTimerSeconds;
+    private final int gracePeriodSeconds;
+    private final String kitName;
+    private final List&lt;Arena&gt; arenas;
+    private final Set&lt;BukkitTask&gt; preStartMatchTasks = new HashSet&lt;&gt;();
+    private final TournamentLog tournamentLog;
+
+    private int currentRound = 0;
+    private BukkitTask preStartTask;
+    private int tournamentPool;
+    private Scoreboard startingScoreboard;
+
+    public Tournament(TournamentType tournamentType, int maximumParticipants, int minimumParticipants,
+                      int startTimerSeconds, int gracePeriodSeconds, String kitName, List&lt;Arena&gt; arenas) {
+        this.tournamentType = tournamentType;
+        this.maximumParticipants = maximumParticipants;
+        this.minimumParticipants = minimumParticipants;
+        this.startTimerSeconds = startTimerSeconds;
+        this.gracePeriodSeconds = gracePeriodSeconds;
+        this.kitName = kitName;
+        this.arenas = arenas;
+        this.tournamentLog = new TournamentLog(xTournament.getInstance());
+    }
+
+    /**
+     * Starts the countdown before the tournament starts.
+     */
+    public void preStart() {
+        xTournament.getInstance().setCurrentTournament(this);
+        this.preStartTask = new BukkitRunnable() {
+            private String announcementPath = "tournament-countdown-announcements";
+
+            @Override
+            public void run() {
+                if (startTimerSeconds &lt;= 0) {
+                    if (gracePeriodSeconds &gt; 0 && countParticipants() &lt; minimumParticipants
+                            && !announcementPath.equals("grace-period-countdown-announcements")) {
+                        // A grace period was specified, start grace period
+                        startTimerSeconds = gracePeriodSeconds;
+                        announcementPath = "grace-period-countdown-announcements";
+                        return;
+                    }
+                    cancel();
+                    setupInitialBracket();
+                    if (countParticipants() &lt; minimumParticipants) {
+                        cancelTournament("Not enough participants.");
+                        return;
+                    }
+                    startInitialRound();
+                    BungeeUtil.sendTournamentStatus(TournamentStatus.IN_PROGRESS);
+                    return;
+                }
+                String announcement = ConfigManager.getTimerAnnouncement(announcementPath, startTimerSeconds);
+                if (announcement == null) {
+                    updateStartingScoreboard();
+                    startTimerSeconds--;
+                    return;
+                }
+                announcement = announcement.replace("%tournament_type%", tournamentType.getConfigName());
+                announcement = announcement.replace("%timer%", startTimerSeconds + "");
+                announcement = announcement.replace("%missing_players%", (minimumParticipants - countParticipants()) + "");
+
+                TextComponent clickableAnnouncement = StringUtil.insertClickableText(announcement,
+                        ConfigManager.getClickableJoinTournamentText(), "%clickable_join_tournament%");
+                Messager.sendGlobalMessage(clickableAnnouncement, true);
+                SFXManager.playGlobalSound(Sound.BLOCK_NOTE_BLOCK_BELL, 0.6F, 1.3F);
+                updateStartingScoreboard();
+                startTimerSeconds--;
+            }
+        }.runTaskTimer(xTournament.getInstance(), 0L, 20L);
+        BungeeUtil.sendTournamentStatus(TournamentStatus.STARTING);
+    }
+
+    /**
+     * Updates the pre starting global scoreboard.
+     */
+    private void updateStartingScoreboard() {
+        // Get or create starting scoreboard
+        if (startingScoreboard == null) {
+            startingScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        }
+        // Register sidebar objective
+        Objective sidebarObjective;
+        if (startingScoreboard.getObjective("tournamentPreStart") == null) {
+            sidebarObjective = startingScoreboard.registerNewObjective("tournamentPreStart", "dummy", "");
+            sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        } else {
+            sidebarObjective = startingScoreboard.getObjective("tournamentPreStart");
+        }
+        sidebarObjective.setDisplayName(ConfigManager.getMessage("starting-lobby-scoreboard-title"));
+        // Get and format the lines of the scoreboard
+        List&lt;String&gt; scoreboardContent = formatLines(ConfigManager.getScoreboardContent("starting-lobby-scoreboard" +
+                "-content"));
+        ScoreboardUtil.setScoreboardLines(sidebarObjective, scoreboardContent);
+    }
+
+    /**
+     * Formats the passed list of lines with the tournament's data.
+     *
+     * @param lines Lines that will be formatted.
+     * @return List of lines with the tournament's data.
+     */
+    private List&lt;String&gt; formatLines(List&lt;String&gt; lines) {
+        ListIterator&lt;String&gt; listIterator = lines.listIterator();
+        while (listIterator.hasNext()) {
+            String line = StringUtil.formatColor(listIterator.next());
+            line = line.replace("%tournament_type%", tournamentType.getConfigName());
+            line = line.replace("%required_participants%", minimumParticipants + "");
+            line = line.replace("%current_participants%", countParticipants() + "");
+            line = line.replace("%timer%", (startTimerSeconds &gt; 0 ? startTimerSeconds : gracePeriodSeconds) + "");
+            line = line.replace("%round%", currentRound + "");
+            line = line.replace("%current_match%", getCurrentRoundFinishedMatchCount() + "");
+            line = line.replace("%total_matches%", getCurrentRoundTotalMatchCount() + "");
+            listIterator.set(line);
+        }
+        return lines;
+    }
+
+    /**
+     * Starts the tournament on its first round.
+     */
+    public void startInitialRound() {
+        clearInventories();
+        computeInitialMatches();
+        preStartMatches();
+    }
+
+    /**
+     * Sets the initial bracket, filling incomplete parties if necessary.
+     */
+    private void setupInitialBracket() {
+        // Determine the amount of players the tournament can hold in order to have perfect tournament brackets
+        List&lt;Integer&gt; validTournamentPoolSizes = VALID_TOURNAMENT_POOL_SIZES.get(tournamentType);
+        int currentParticipants = countParticipants();
+        for (Integer validTournamentPoolSize : validTournamentPoolSizes) {
+            if (validTournamentPoolSize &gt; currentParticipants) break;
+
+            this.tournamentPool = validTournamentPoolSize;
+        }
+        // Get the needed parties
+        int maxPartySize = tournamentType.getPartySize();
+        int neededParties = this.tournamentPool / maxPartySize;
+        if (maxPartySize &gt; 1) {
+            fillIncompleteParties();
+        }
+        // Remove parties that generate an imperfect bracket
+        while (partyScores.size() &gt; neededParties) {
+            Party lastJoinedParty = new ArrayList&lt;&gt;(partyScores.keySet()).get(partyScores.size() - 1);
+            lastJoinedParty.unregister();
+            lastJoinedParty.broadcastMessage(ConfigManager.getMessage("imperfect-bracket-kick"));
+        }
+    }
+
+    /**
+     * Fills the incomplete parties and removes the participants that are left on an incomplete party.
+     */
+    private void fillIncompleteParties() {
+        // Find the parties that have more than one member, and the ones that have only one member
+        int maxPartySize = tournamentType.getPartySize();
+        List&lt;Party&gt; squadParties = new ArrayList&lt;&gt;();
+        List&lt;Party&gt; soloParties = new ArrayList&lt;&gt;();
+        for (Party party : partyScores.keySet()) {
+            int partySize = party.getSize();
+            if (partySize == maxPartySize) continue;
+            if (partySize == 1) {
+                soloParties.add(party);
+            } else {
+                squadParties.add(party);
+            }
+        }
+        if (!squadParties.isEmpty()) {
+            // Complete squad parties with solo party members
+            Iterator&lt;Party&gt; soloPartyIterator = soloParties.iterator();
+            while (soloPartyIterator.hasNext()) {
+                Party soloParty = soloPartyIterator.next();
+                if (squadParties.isEmpty()) break;
+
+                soloPartyIterator.remove();
+                partyScores.remove(soloParty);
+                OfflinePlayer soloPartyMember = soloParty.getPlayerMembers().get(0);
+                Party squadParty = squadParties.get(0);
+                squadParty.addMember(soloPartyMember);
+                if (squadParty.getSize() == maxPartySize) {
+                    // Party already has maximum size, delete from squad parties list
+                    squadParties.remove(0);
+                }
+            }
+        }
+        if (soloParties.size() &gt;= maxPartySize) {
+            // Create parties with the remaining solo parties
+            Map&lt;UUID, Party&gt; partyMembers = new HashMap&lt;&gt;();
+            List&lt;Party&gt; mergedSoloParties = new ArrayList&lt;&gt;();
+            for (Party soloParty : soloParties) {
+                partyScores.remove(soloParty);
+                partyMembers.put(soloParty.getPlayerMembers().get(0).getUniqueId(), soloParty);
+                if (partyMembers.size() &lt; maxPartySize) continue;
+
+                partyScores.put(new Party(new ArrayList&lt;&gt;(partyMembers.keySet())), 0);
+                mergedSoloParties.addAll(partyMembers.values());
+                partyMembers.clear();
+            }
+            soloParties.removeAll(mergedSoloParties);
+        }
+        // If the amount of parties is odd, remove the last party that joined
+        // Remove parties that were unable to be filled
+        for (Party squadParty : squadParties) {
+            squadParty.broadcastMessage(ConfigManager.getMessage("impossible-party-fill"));
+            squadParty.unregister();
+        }
+        for (Party soloParty : soloParties) {
+            soloParty.broadcastMessage(ConfigManager.getMessage("impossible-party-fill"));
+            soloParty.unregister();
+        }
+    }
+
+    /**
+     * Saves and clears the inventories of all participants.
+     */
+    private void clearInventories() {
+        for (Party party : partyScores.keySet()) {
+            for (TournamentPlayer tournamentPlayerMember : party.getTournamentPlayerMembers()) {
+                tournamentPlayerMember.clearInventory();
+            }
+        }
+    }
+
+    /**
+     * Computes the PvP matches between parties with the same score. If there is an odd amount of parties, the last
+     * party gets a buy to the next round.
+     */
+    private void computeInitialMatches() {
+        pendingMatches.clear();
+
+        List&lt;Party&gt; parties = new ArrayList&lt;&gt;(partyScores.keySet());
+        for (int index = 0; index &lt; partyScores.size(); index += 2) {
+            Party partyA = parties.get(index);
+            Party partyB = parties.get(index + 1);
+            TournamentMatch match = new TournamentMatch(partyA, partyB, tournamentType, kitName, false);
+            match.announceMatch();
+            pendingMatches.add(match);
+        }
+        this.currentRound += 1;
+    }
+
+    /**
+     * Computes the PvP matches using the already existent matches.
+     */
+    private void computeBracketMatches() {
+        if (finishedMatches.size() == 2) {
+            startThirdPlaceMatch();
+            return;
+        }
+        if (finishedMatches.size() == 1 && !finishedMatches.get(0).isThirdPlaceMatch()) {
+            // There's only one party left, declare it the winner
+            endTournament(finishedMatches.get(0).getWinner());
+            return;
+        }
+        // If the last match was the third place match, remove it
+        if (finishedMatches.get(finishedMatches.size() - 1).isThirdPlaceMatch()) {
+            finishedMatches.remove(finishedMatches.size() - 1);
+        }
+        List&lt;TournamentMatch&gt; newMatches = new ArrayList&lt;&gt;();
+        for (int index = 0; index &lt; finishedMatches.size(); index += 2) {
+            TournamentMatch matchA = finishedMatches.get(index);
+            TournamentMatch matchB = finishedMatches.get(index + 1);
+            Party winnerA = matchA.getWinner();
+            Party winnerB = matchB.getWinner();
+            if (winnerA == null && winnerB == null) continue;
+            if (winnerA == null) {
+                winnerB.giveBuyAndAdvance();
+                continue;
+            }
+            if (winnerB == null) {
+                winnerA.giveBuyAndAdvance();
+                continue;
+            }
+            TournamentMatch newMatch = new TournamentMatch(winnerA, winnerB, tournamentType, kitName, false);
+            newMatch.announceMatch();
+            newMatches.add(newMatch);
+        }
+        finishedMatches.clear();
+        pendingMatches.addAll(newMatches);
+        this.currentRound += 1;
+    }
+
+    /**
+     * Starts the match that will decide the third place of the tournament.
+     */
+    private void startThirdPlaceMatch() {
+        // Remove both losers from the leaderboard list
+        Party loserA = tournamentLeaderboard.remove(tournamentLeaderboard.size() - 1);
+        Party loserB = tournamentLeaderboard.remove(tournamentLeaderboard.size() - 1);
+        if (!loserA.isOnline() && !loserB.isOnline()) {
+            // Select third place by coin toss
+            Party thirdPlace = ThreadLocalRandom.current().nextBoolean() ? loserA : loserB;
+            // Select fourth place as the opposite of third place
+            Party fourthPlace = thirdPlace.equals(loserA) ? loserB : loserA;
+            addLoser(fourthPlace);
+            addLoser(thirdPlace);
+            return;
+        }
+//        if (!loserA.isOnline()) {
+//            // Loser B is third, Loser A is fourth
+//            addLoser(loserA);
+//            addLoser(loserB);
+//        }
+//        if (!loserB.isOnline()) {
+//            // Loser A is third, Loser B is fourth
+//            addLoser(loserB);
+//            addLoser(loserA);
+//        }
+        TournamentMatch newMatch = new TournamentMatch(loserA, loserB, tournamentType, kitName, true);
+        newMatch.announceMatch();
+        pendingMatches.add(newMatch);
+    }
+
+    /**
+     * Attempts to pre start the current match queue.
+     */
+    private void preStartMatches() {
+        if (pendingMatches.isEmpty()) return;
+        List&lt;Arena&gt; availableArenas = getAvailableArenas();
+        Random random = ThreadLocalRandom.current();
+        while (!pendingMatches.isEmpty() && !availableArenas.isEmpty()) {
+            Arena arena = availableArenas.remove(random.nextInt(availableArenas.size()));
+            TournamentMatch match = pendingMatches.remove(0);
+            match.register(arena);
+            preStartMatch(match);
+        }
+        updateLobbyScoreboards();
+    }
+
+    /**
+     * Goes through all the tournament participants and updates their lobby scoreboards.
+     */
+    private void updateLobbyScoreboards() {
+        for (Party party : partyScores.keySet()) {
+            if (party.isInMatch()) continue;
+
+            updateLobbyScoreboard(party);
+        }
+    }
+
+    /**
+     * Updates the lobby scoreboard of the passed party.
+     *
+     * @param party Party whose lobby scoreboard will be updated.
+     */
+    private void updateLobbyScoreboard(Party party) {
+        // Create and name scoreboard
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective sidebarObjective = scoreboard.registerNewObjective("lobbyScoreboard", "dummy", "");
+        sidebarObjective.setDisplayName(ConfigManager.getMessage("lobby-scoreboard-title"));
+        sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        // Set scoreboard data
+        List&lt;String&gt; scoreboardContent = formatPartyLines(party,
+                ConfigManager.getScoreboardContent("lobby-scoreboard-content"));
+        ScoreboardUtil.setScoreboardLines(sidebarObjective, scoreboardContent);
+        for (Player player : party.getPlayerMembers()) {
+            player.setScoreboard(scoreboard);
+        }
+    }
+
+    /**
+     * Formats the passed line using the passed party's data.
+     *
+     * @param party Party whose data will be used to format the passed lines.
+     * @param lines Lines that will be formatted.
+     * @return Formatted lines.
+     */
+    private List&lt;String&gt; formatPartyLines(Party party, List&lt;String&gt; lines) {
+        formatLines(lines);
+        formatPartyMembersPlaceholder(party, lines);
+        String opponentName = getPartyOpponentName(party);
+        // Replace lines
+        ListIterator&lt;String&gt; listIterator = lines.listIterator();
+        while (listIterator.hasNext()) {
+            listIterator.set(listIterator.next().replace("%opponent%", opponentName));
+        }
+        return lines;
+    }
+
+    /**
+     * Formats the %party% placeholder from the passed list of lines using the passed party.
+     *
+     * @param party Party whose members will be formatted into the placeholder.
+     * @param lines Lines that will be formatted.
+     */
+    private void formatPartyMembersPlaceholder(Party party, List&lt;String&gt; lines) {
+        if (party.getSize() == 1) {
+            // The party has no members, don't display party lines
+            StringUtil.formatListPlaceholder("%party%", lines, new ArrayList&lt;&gt;());
+            return;
+        }
+        // Format party lines
+        List&lt;String&gt; memberNames = createMemberNameLines(party);
+        List&lt;String&gt; partyLines = ConfigManager.getScoreboardContent("party-lines");
+        StringUtil.formatListPlaceholder("%members%", partyLines, memberNames);
+        StringUtil.formatListPlaceholder("%party%", lines, partyLines);
+        formatLines(lines);
+    }
+
+    /**
+     * Gets the name of the passed party's opponent.
+     *
+     * @param party Party whose opponent's name will be fetched.
+     * @return Name of the passed party's opponent.
+     */
+    private String getPartyOpponentName(Party party) {
+        Party opponent = party.findOponent();
+        if (opponent == null || opponent.getSize() == 0) {
+            return "";
+        }
+        String opponentName = Bukkit.getOfflinePlayer(opponent.getCreatorUuid()).getName();
+        if (opponent.getSize() == 1) return opponentName;
+
+        return opponentName + "'s Party";
+    }
+
+    /**
+     * Creates a list with the names of all the members of the passed party.
+     *
+     * @param party Party whose member names will be added to the list.
+     * @return List with the names of all the members of the passed party.
+     */
+    private List&lt;String&gt; createMemberNameLines(Party party) {
+        List&lt;String&gt; memberNames = new ArrayList&lt;&gt;();
+        for (UUID memberUuid : party.getMembers()) {
+            memberNames.add(Bukkit.getOfflinePlayer(memberUuid).getName());
+        }
+        return memberNames;
+    }
+
+    /**
+     * Pre starts the passed match with the passed arena.
+     *
+     * @param match Math that will be pre started.
+     */
+    private void preStartMatch(TournamentMatch match) {
+        BukkitTask preStartMatchTask = new BukkitRunnable() {
+            private int timer = ConfigManager.getPreMatchCountdown();
+
+            @Override
+            public void run() {
+                if (timer == 0) {
+                    cancel();
+                    match.start();
+                    return;
+                }
+                match.broadcastMessage(ConfigManager.getMessage("pre-match-text").replace("%time%", timer + ""));
+                match.broadcastSound(Sound.BLOCK_NOTE_BLOCK_BELL, 0.6F, 1.0F + (float) timer / 10);
+                timer--;
+            }
+        }.runTaskTimer(xTournament.getInstance(), 0L, 20L);
+        preStartMatchTasks.add(preStartMatchTask);
+    }
+
+    /**
+     * Attempts to finish the current bracket and start the new one if all matches already ended.
+     */
+    public void attemptBracketEnd() {
+        // Check if all matches have ended
+        updateLobbyScoreboards();
+        if (!pendingMatches.isEmpty()) {
+            preStartMatches();
+            return;
+        }
+        for (TournamentMatch match : currentMatches) {
+            if (match.isStarting()) return;
+            if (match.isRunning()) return;
+        }
+        computeBracketMatches();
+        preStartMatches();
+    }
+
+    /**
+     * Ends the tournament with the passed winner.
+     *
+     * @param winner Winner of the tournament.
+     */
+    private void endTournament(Party winner) {
+        if (winner == null) {
+            Messager.sendGlobalMessage(ConfigManager.getMessage("no-winner-announcement"));
+            return;
+        }
+        tournamentLeaderboard.add(winner);
+        tournamentLog.logWinners(winner);
+        String winBroadcast = winner.getSize() == 1 ?
+                ConfigManager.getMessage("winner-text") : ConfigManager.getMessage("party-winner-text");
+        winBroadcast = winBroadcast.replace("%player%", winner.getPlayerMembers().get(0).getName());
+        clearTournamentData();
+        runTournamentEndActionsCommands();
+        tournamentLeaderboard.clear();
+        BungeeUtil.sendTournamentStatus(TournamentStatus.NO_TOURNAMENT);
+        Messager.sendGlobalMessage(new ComponentBuilder(winBroadcast).create()[0], true);
+        SFXManager.playGlobalSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.3F, 1.2F);
+    }
+
+    /**
+     * Runs all the commands for each party on the leaderboard and runs the end tournament announcements.
+     */
+    private void runTournamentEndActionsCommands() {
+        int position = 1;
+        for (int index = tournamentLeaderboard.size() - 1; index &gt;= 0; index--) {
+            Party party = tournamentLeaderboard.get(index);
+            TournamentEndAnnouncement tournamentEndAnnouncement = ConfigManager.fetchTournamentEndAnnouncement(tournamentType, position);
+            if (tournamentEndAnnouncement != null) {
+                sendTournamentEndAnnouncement(party, tournamentEndAnnouncement);
+            }
+            runTournamentEndActionsCommands(party, ConfigManager.getTournamentEndCommands(position));
+            position += 1;
+        }
+    }
+
+    /**
+     * Sends the passed tournament end announcement.
+     *
+     * @param party               Party the announcement will be formatted with.
+     * @param tournamentEndAnnouncement TournamentEndAnnouncement that will be sent.
+     */
+    private void sendTournamentEndAnnouncement(Party party, TournamentEndAnnouncement tournamentEndAnnouncement) {
+        if (tournamentEndAnnouncement == null) return;
+
+        String message = tournamentEndAnnouncement.getMessage();
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            message = PlaceholderAPI.setPlaceholders(party.getCreator(), message);
+        }
+        List&lt;UUID&gt; partyMembers = party.getMembers();
+        for (int index = 0; index &lt; partyMembers.size(); index++) {
+            int memberNumber = index + 1;
+            message = message.replace("%member" + memberNumber + "%", Bukkit.getOfflinePlayer(partyMembers.get(index)).getName());
+        }
+        String finalMessage = message;
+        Bukkit.getScheduler().runTaskLater(xTournament.getInstance(),
+                () -&gt; Messager.sendGlobalMessage(new ComponentBuilder(finalMessage).create()[0], true),
+                tournamentEndAnnouncement.getDelayTicks());
+    }
+
+    /**
+     * Runs the passed list of commands for each member of the party from the console.
+     *
+     * @param party Party the commands will be ran for.
+     * @param commands Commands that will be ran.
+     */
+    private void runTournamentEndActionsCommands(Party party, List&lt;String&gt; commands) {
+        ConsoleCommandSender console = Bukkit.getConsoleSender();
+        boolean isPlaceholderApiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        for (String command : commands) {
+            for (Player playerMember : party.getPlayerMembers()) {
+                if (isPlaceholderApiEnabled) {
+                    command = PlaceholderAPI.setPlaceholders(playerMember, command);
+                }
+                Bukkit.dispatchCommand(console, command);
+            }
+        }
+    }
+
+    /**
+     * Cancels the tournament, leaving no winner.
+     *
+     * @param reason Reason the tournament was cancelled.
+     */
+    public void cancelTournament(String reason) {
+        clearTournamentData();
+        Messager.sendGlobalMessage(new ComponentBuilder(ConfigManager.getMessage("cancel-broadcast")
+                .replace("%reason%", reason)).create()[0], true);
+        SFXManager.playGlobalSound(Sound.ENTITY_VILLAGER_NO, 0.6F, 1.2F);
+    }
+
+    /**
+     * Clears all the tournament data.
+     */
+    private void clearTournamentData() {
+        pendingMatches.clear();
+        // Set the available status of reserved arenas
+        Iterator&lt;TournamentMatch&gt; matchIterator = currentMatches.iterator();
+        while (matchIterator.hasNext()) {
+            TournamentMatch match = matchIterator.next();
+            matchIterator.remove();
+            match.unregister();
+        }
+        finishedMatches.clear();
+        cancelTasks();
+        teleportParticipantsToLobby();
+        unregisterParties();
+
+        xTournament plugin = xTournament.getInstance();
+        plugin.getDataManager().clearPlayerItemData();
+        plugin.setCurrentTournament(null);
+    }
+
+    /**
+     * Unregisters all the parties that joined the tournament
+     */
+    private void unregisterParties() {
+        Iterator&lt;Party&gt; partyIterator = partyScores.keySet().iterator();
+        while (partyIterator.hasNext()) {
+            Party party = partyIterator.next();
+            partyIterator.remove();
+            party.unregister();
+        }
+    }
+
+    /**
+     * Cancels all potentially active tasks.
+     */
+    private void cancelTasks() {
+        if (preStartTask != null) {
+            preStartTask.cancel();
+        }
+        for (BukkitTask preStartMatchTask : preStartMatchTasks) {
+            preStartMatchTask.cancel();
+        }
+    }
+
+    /**
+     * Teleports all the participants to the lobby.
+     */
+    private void teleportParticipantsToLobby() {
+        Location lobbyLocation = xTournament.getInstance().getDataManager().getLobbyLocation(tournamentType);
+        for (Party party : partyScores.keySet()) {
+            party.teleport(lobbyLocation);
+        }
+    }
+
+    /**
+     * Gets the score of the passed party.
+     *
+     * @param party Party whose score will be returned.
+     * @return Score of the passed party.
+     */
+    public int getPartyScore(Party party) {
+        return partyScores.getOrDefault(party, 0);
+    }
+
+    /**
+     * Increases the passed party score by 1.
+     *
+     * @param party Party whose score will be increased.
+     */
+    public void increasePartyScore(Party party) {
+        partyScores.put(party, getPartyScore(party) + 1);
+    }
+
+    public List&lt;Party&gt; getParticipants() {
+        return new ArrayList&lt;&gt;(partyScores.keySet());
+    }
+
+    public boolean isParticipant(Party party) {
+        return partyScores.containsKey(party);
+    }
+
+    public void addParticipant(Party party) {
+        for (Player playerMember : party.getPlayerMembers()) {
+            playerMember.setScoreboard(startingScoreboard);
+        }
+        partyScores.put(party, 0);
+        party.teleport(xTournament.getInstance().getDataManager().getLobbyLocation(tournamentType));
+    }
+
+    public void removeParticipant(Party party) {
+        partyScores.remove(party);
+    }
+
+    public void addLoser(Party party) {
+        tournamentLeaderboard.add(party);
+    }
+
+    /**
+     * Checks if the tournament already met the maximum participant pool.
+     *
+     * @return True if the tournament already met the maximum participant pool.
+     */
+    public boolean isFull() {
+        return countParticipants() &gt;= maximumParticipants;
+    }
+
+    /**
+     * Counts and returns the number of participants between all parties.
+     *
+     * @return Number of participants between all parties.
+     */
+    public int countParticipants() {
+        int participants = 0;
+        for (Party party : partyScores.keySet()) {
+            participants += party.getSize();
+        }
+        return participants;
+    }
+
+    public TournamentType getTournamentType() {
+        return tournamentType;
+    }
+
+    public boolean isRunning() {
+        return getCurrentRound() &gt; 0;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    /**
+     * Returns the total amount of rounds the tournament will have.
+     *
+     * @return Total amount of rounds the tournament will have.
+     */
+    public int getTotalRounds() {
+        int totalRounds = 1;
+        int matchSize = tournamentType.getPartySize() * 2;
+
+        for (int tournamentPool = matchSize; tournamentPool &lt; this.tournamentPool; tournamentPool *= 2) {
+            totalRounds += 1;
+        }
+        return totalRounds;
+    }
+
+    public int getCurrentRoundFinishedMatchCount() {
+        return finishedMatches.size();
+    }
+
+    public int getCurrentRoundTotalMatchCount() {
+        return finishedMatches.size() + pendingMatches.size() + currentMatches.size();
+    }
+
+    /**
+     * Calculates the total match count for the passed round.
+     *
+     * @param round Round whose total matches will be calculated.
+     * @return Total match count for the passed round.
+     */
+    public int calculateTotalRoundMatchCount(int round) {
+        int roundDifference = Math.abs(round - currentRound);
+        int currentTotalMatches = getCurrentRoundTotalMatchCount();
+        if (round &gt; currentRound) {
+            // Iterate through round difference and reduce current total matches
+            for (int i = 0; i &lt; roundDifference; i++) {
+                currentTotalMatches /= 2;
+            }
+        } else {
+            // Iterate through round difference and increase current total matches
+            for (int i = 0; i &lt; roundDifference; i++) {
+                currentTotalMatches *= 2;
+            }
+        }
+        return currentTotalMatches;
+    }
+
+    /**
+     * Returns all the arenas that aren't being used for matches.
+     *
+     * @return Arenas that aren't being used for matches.
+     */
+    private List&lt;Arena&gt; getAvailableArenas() {
+        return arenas.stream().filter(arena -&gt; !arena.isBeingUsed()).collect(Collectors.toList());
+    }
+
+    public List&lt;TournamentMatch&gt; getPendingMatches() {
+        return pendingMatches;
+    }
+
+    public List&lt;TournamentMatch&gt; getCurrentMatches() {
+        return currentMatches;
+    }
+
+    public List&lt;TournamentMatch&gt; getFinishedMatches() {
+        return finishedMatches;
+    }
+
+    public List&lt;TournamentMatch&gt; getAllMatches() {
+        return Stream.concat(pendingMatches.stream(), Stream.concat(currentMatches.stream(), finishedMatches.stream())).toList();
+    }
+
+    public TournamentLog getTournamentLog() {
+        return tournamentLog;
+    }
+}
+
+                  </code></pre>
                 </div>
+              </div>
             </div>
-        </div>
+            <div class="tournament-chart">
+                <img src="/assets/atomix-assets/brackets.png">
+            </div>
     </div>
 </body>
 </html>

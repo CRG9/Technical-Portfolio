@@ -74,7 +74,7 @@ header {
     padding-bottom: 1rem;
 }
 
-.config-and-image-container {
+.config-and-code-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     border: red 1px solid;
@@ -96,7 +96,7 @@ header {
 }
 
 .tournament-config-embed, .tournament-chart {
-    font-size: 0.75rem;
+    font-size: 0.5rem;
     height: 30rem; /* Set a fixed height for the container */
     overflow: auto; /* Enable scrollbars when content overflows */
     border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
