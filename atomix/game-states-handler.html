@@ -1,1558 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheets/player-ranking-frameworks.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header>
-      <nav class="nav-bar">
-        <ul>
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="/projects.html">Projects</a></li>
-          <li><a href="/resume.html">Resume</a></li>
-        </ul>
-      </nav>
-    </header>
-    <div class="project-page-link">
-      <h3><a href="/atomix/atomix-project.html">Back to Atomix...</a></h3>
-    </div>
-    <div class="page-header">
-      <h1>Player Ranking Frameworks</h1>
-    </div>
-    <div class="main-content">
-      <div class="ranking-frameworks-container">
-        <div class="levels-wrapper">
-          <div class="levels-header">
-            <h1>Levels Framework</h1>
-            <p>One opportunity players on Atomix had was the ability to acquire resources, upgrade their mining gear, and gain access to new mines on the server.</p>
-            <p>Levels were climbed by mining blocks and earning progress until reaching ever increasing progress requirements.</p>
-            <p>In doing so, players gained access to new powerups and upgrades that helped them climb levels faster and become a true competitor on the server.</p>
-            <div class="levels-header-image-container">
-            <img src="/assets/atomix-assets/level-up-message.png">
-            </div>
-          </p>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Calculations</h3>
-            <p>Due to the importance of maintaining a smooth feel for progression through the game,<br> our level up curve was comprised of different slopes that made up the greater curve.</p>
-            <p>Creating this curve-comprised-of-curves turned out to be effective at accomplishing our desired end result!</p>
-
-          </div>
-          <div class="levels-curve-visuals">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTiDUZfR66mSbzb11j_-ej6Ub9PR5tXoqHJ2FlZRv1TtWCF27eAEpdOpDbo-tA84XQ36vZuEBkx2EY9/pubhtml?widget=true&amp;headers=false" class="levels-sheets-embed"></iframe>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Curves Configuration</h3>
-            <p>Seen below are the final calculations that made up our level progresion curve.</p>
-            <p>You'll notice that the first few levels are not dictated by a calculation, where as the latter are<br> defined explicitly by a formula.</p>
-            <p>This is by design! The early levels are meant to hook the player, where as the latter levels are meant to provide the challenge.</p>
-          </div>
-          <div class="levels-cost-curves">
-            <pre><code>
-# Levels Cost Config
-# xPrison version 1.2.3
-# Create your level up cost formulas in this file for specific level ranges.
-#
-# The formulas are being translated by a javascript engine.
-# See https://www.w3schools.com/js/js_math.asp for more information about special javascript objects.
-# (x will be replaced by the level in the equation)
-#
-# Placeholders which can be used in the lore of the items:
-#
-# %last_level_cost% - the cost of the previous level
-#
-#Use https://mycurvefit.com/ to plot custom difficulty curves
-
-level-ranges-costs:
-  1-2:
-    from: 1
-    formula: 1500
-  2-3:
-    from: 2
-    formula: 3000
-  3-4:
-    from: 3
-    formula: 7500
-  4-5:
-    from: 4
-    formula: 17500
-  5-6:
-    from: 5
-    formula: 37500
-  6-199:
-    from: 6
-    formula: (((1225666000 + (34.97327-1225666000)/(1 + Math.pow((x/20462.89),2.948708)))*3500)*0.75)*0.6
-  200-399:
-    from: 200
-    formula: '%last_level_cost% + (((-11096.69 - 4115.563)/(1 + Math.pow((x/133.1878),3.866502)))*-4.5)*0.6'
-  400-599:
-    from: 400
-    formula: '%last_level_cost% + (((413.5864 - 4116.439)/(1 + Math.pow((x/419.8147),16.01538)))*-50)*0.6'
-  600-799:
-    from: 600
-    formula: '%last_level_cost% + (((6290.996 - 16069.12)/(1 + Math.pow((x/827.1988),6.873771)))*-15)*0.6'
-  800-999:
-    from: 800
-    formula: '%last_level_cost% + (((6645.626 - 20335.05)/(1 + Math.pow((x/954.6314),16.92976)))*-40)*0.6'
-  1000-1499:
-    from: 1000
-    formula: '%last_level_cost% + 100000'
-  1500-*:
-    from: 1500
-    formula: '%last_level_cost% + 250000'
-
-            </code></pre>
-          </div>
-            <div class="levels-embed-header">
-              <h3>Level Up Actions Configuration</h3>
-              <p>After a player gained enough progress, a level up action automatically occured.</p>
-              <p>Each level gave access to currencies, unlocks, and new abilities that propelled the player forward in the game.</p>
-            </div>
-            <div class="levels-actions">
-              <pre><code>
-  # Levels Config
-  # xPrison version 1.2.3
-  # Create your levels in this file together with other level settings.
-  #
-  # levelup-check-interval is in ticks (1sec = 20 ticks)
-  #
-  # The max-level setting will only work if infinite levels are set to false.
-  #
-  # (max-level should still be filled in even when infinite levels are enabled
-  # as the plugin pre-calculates all levelup cost until the max level)
-  # levelup_actions are a list of 
-  # actions which will be executed
-  # when a player successfully levels up.
-  # The default-levelup-actions will be executed on every level up
-  #
-  # permissions are a list of 
-  # permissions which will be given
-  # when a player successfully levels up.
-  # Possible levelup_actions list:
-  #
-  # [consolecommand] command - perform a console command
-  # [playercommand] command - make the player perform a command
-  # [message] message - send the player a message
-  # [broadcast] message - send the server a message
-  # [jsonmessage] json- send the player a json message
-  # [jsonbroadcast] json - send the server a json message
-  # [title] title && subtitle  - send the player an actionbar message
-  # [actionbarmessage] message - send the player an actionbar message
-  # [actionbarbroadcast] message - send the server an actionbar message
-  # [addgroup] group - add the player to a permissions group
-  # [removegroup] group - remove the player from a permissions group
-  # [addpermission] permission - add a permission node to the player
-  # [removepermission] permission - remove a permission node from a player
-  # [effect] effect - play an effect at the players location
-  # [sound] sound volume pitch - play a sound at the players location
-  # [atoms] amount - Gives or removes a specified amount of atoms from the player
-  # [cratekey] key_name amount - Gives the player the specified amount of the selected crate key
-  # [tokens] amount - Gives or removes a specified amuont of tokens from the player
-  #
-  # For a list of sounds: https://helpch.at/docs/1.8.8/index.html?org/bukkit/Sound.html
-  #
-  # Placeholders which can be used in your level up actions and messages:
-  #
-  # %player% - players name
-  # %level% - players current level before level up
-  # %from% - players current level before level up
-  # %to% - players next level after level up
-  #
-  # + all other placeholderAPI placeholders
-  
-  teleport-best-mine:
-    enabled: true
-    delay: 5
-  levelup-check-interval: 100
-  infinite: true
-  max-level: 50000
-  default-mine-warp: lvl1
-  default-levelup-actions:
-  - '[title]       ⋭'
-  - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-  level-ranges:
-    '0':
-      from: 0
-      prefix: '&a&l'
-      permissions:
-      - essentials.warps.lvl1
-      - jetsprisonmines.blockbreak.lvl.1
-    '1':
-      from: 1
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    2-4:
-      from: 2
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '5':
-      from: 5
-      prefix: '&a&l'
-      mine-warp: lvl5
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[title]        ᚠ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 5 Mine Unlocked'
-      - '[message] &7'
-      - '[message] &5+ THE VOID Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 5 Mine'
-      - '&7+ &aLevel Up &eKey'
-      - '&7Access to &5&lTHE VOID'
-      permissions:
-      - essentials.warps.lvl5
-      - jetsprisonmines.blockbreak.lvl.5
-      - essentials.warps.thevoid
-    6-9:
-      from: 6
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '10':
-      from: 10
-      prefix: '&a&l'
-      mine-warp: lvl10
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚡ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 10 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 10 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl10
-      - jetsprisonmines.blockbreak.lvl.10
-    11-14:
-      from: 11
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '15':
-      from: 15
-      prefix: '&a&l'
-      mine-warp: lvl15
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚣ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 15 Mine Unlocked'
-      - '[message] &9+ Tile Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 15 Mine'
-      - '&7+ &9Tile Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl15
-      - jetsprisonmines.blockbreak.lvl.15
-      - tokenenchant.tile
-    16-19:
-      from: 16
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '20':
-      from: 20
-      prefix: '&a&l'
-      mine-warp: lvl20
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚤ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 20 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 20 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl20
-      - jetsprisonmines.blockbreak.lvl.20
-    21-24:
-      from: 21
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '25':
-      from: 25
-      prefix: '&a&l'
-      mine-warp: lvl25
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚥ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 25 Mine Unlocked'
-      - '[message] &7'
-      - '[message] &2+ TEMPLE WORLD Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 25 Mine'
-      - '&7+ &aLevel Up &eKey'
-      - '&7Access to &2&lTHE TEMPLE WORLD'
-      permissions:
-      - essentials.warps.lvl25
-      - jetsprisonmines.blockbreak.lvl.25
-      - essentials.warps.templeworld
-    26-34:
-      from: 26
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '35':
-      from: 35
-      prefix: '&a&l'
-      mine-warp: lvl35
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚦ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 35 Mine Unlocked'
-      - '[message] &9+ Explosive Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 35 Mine'
-      - '&7+ &9Explosive Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl35
-      - jetsprisonmines.blockbreak.lvl.35
-      - tokenenchant.explosive
-    36-44:
-      from: 36
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '45':
-      from: 45
-      prefix: '&a&l'
-      mine-warp: lvl45
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚧ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 45 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 45 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl45
-      - jetsprisonmines.blockbreak.lvl.45
-    46-54:
-      from: 46
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '55':
-      from: 55
-      prefix: '&a&l'
-      mine-warp: lvl55
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚨ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 55 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 55 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl55
-      - jetsprisonmines.blockbreak.lvl.55
-    56-64:
-      from: 56
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '65':
-      from: 65
-      prefix: '&a&l'
-      mine-warp: lvl65
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚩ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 65 Mine Unlocked'
-      - '[message] &9+ Disk Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 65 Mine'
-      - '&7+ &9Disk Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl65
-      - jetsprisonmines.blockbreak.lvl.65
-      - tokenenchant.disk
-    66-74:
-      from: 66
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '75':
-      from: 75
-      prefix: '&a&l'
-      mine-warp: lvl75
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚪ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 75 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 75 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl75
-      - jetsprisonmines.blockbreak.lvl.75
-    76-99:
-      from: 76
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '100':
-      from: 100
-      prefix: '&a&l'
-      mine-warp: lvl100
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]     ᚫ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 100 Mine Unlocked'
-      - '[message] &9+ Cross Explosion Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 100 Mine'
-      - '&7+ &9Cross Explosion Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl100
-      - jetsprisonmines.blockbreak.lvl.100
-      - tokenenchant.crossexplosion
-    101-124:
-      from: 101
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '125':
-      from: 125
-      prefix: '&a&l'
-      mine-warp: lvl125
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚬ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 125 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 125 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl125
-      - jetsprisonmines.blockbreak.lvl.125
-    126-149:
-      from: 126
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '150':
-      from: 150
-      prefix: '&a&l'
-      mine-warp: lvl150
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚭ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 150 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 150 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl150
-      - jetsprisonmines.blockbreak.lvl.150
-    151-174:
-      from: 151
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '175':
-      from: 175
-      prefix: '&a&l'
-      mine-warp: lvl175
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚮ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 175 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 175 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl175
-      - jetsprisonmines.blockbreak.lvl.175
-    176-199:
-      from: 176
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 75000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+75,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '200':
-      from: 200
-      prefix: '&a&l'
-      mine-warp: lvl200
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚯ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 200 Mine Unlocked'
-      - '[message] &9+ Sphered Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b75,000 Atoms'
-      - '&7+ &aLevel 200 Mine'
-      - '&7+ &9Sphered Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl200
-      - jetsprisonmines.blockbreak.lvl.200
-      - tokenenchant.sphered
-    201-249:
-      from: 201
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '250':
-      from: 250
-      prefix: '&a&l'
-      mine-warp: lvl250
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[title]      ᚰ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 250 Mine Unlocked'
-      - '[message] &9+ Drill Enchant Unlocked'
-      - '[message] &3+ Crater Creator Powerup Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel 250 Mine'
-      - '&7+ &9Drill Enchant'
-      - '&7+ &3Crater Creator Powerup'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl250
-      - jetsprisonmines.blockbreak.lvl.250
-      - tokenenchant.drill
-      - xprison.cratercreator
-    251-299:
-      from: 251
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '300':
-      from: 300
-      prefix: '&a&l'
-      mine-warp: lvl300
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[title]      ᚱ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 300 Mine Unlocked'
-      - '[message] &9+ Excavation Enchant Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel 300 Mine'
-      - '&7+ &9Excavation Enchant'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl300
-      - jetsprisonmines.blockbreak.lvl.300
-      - tokenenchant.excavation
-    301-349:
-      from: 301
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '350':
-      from: 350
-      prefix: '&a&l'
-      mine-warp: lvl350
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[title]      ᚹ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 350 Mine Unlocked'
-      - '[message] &9+ Leveler Enchant Unlocked'
-      - '[message] &3+ Mine Beam Powerup Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel 350 Mine'
-      - '&7+ &9Leveler Enchant'
-      - '&7+ &3Mine Beam Powerup'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl350
-      - jetsprisonmines.blockbreak.lvl.350
-      - tokenenchant.leveler
-      - xprison.minebeam
-    351-399:
-      from: 351
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 82500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+82,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b82,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '400':
-      from: 400
-      prefix: '&a&l'
-      mine-warp: lvl400
-      levelup-actions:
-      - '[atoms] 92500'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚳ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+92,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 400 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b92,500 Atoms'
-      - '&7+ &aLevel 400 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl400
-      - jetsprisonmines.blockbreak.lvl.400
-    401-499:
-      from: 401
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 92500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+92,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b92,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '500':
-      from: 500
-      prefix: '&a&l'
-      mine-warp: lvl500
-      levelup-actions:
-      - '[atoms] 92500'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚴ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+92,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 500 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b92,500 Atoms'
-      - '&7+ &aLevel 500 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl500
-      - jetsprisonmines.blockbreak.lvl.500
-    501-599:
-      from: 501
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 92500'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+92,500 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b92,500 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '600':
-      from: 600
-      prefix: '&a&l'
-      mine-warp: lvl600
-      levelup-actions:
-      - '[atoms] 115000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚵ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+115,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 600 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b115,000 Atoms'
-      - '&7+ &aLevel 600 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl600
-      - jetsprisonmines.blockbreak.lvl.600
-    601-699:
-      from: 601
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 115000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+115,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b115,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '700':
-      from: 700
-      prefix: '&a&l'
-      mine-warp: lvl700
-      levelup-actions:
-      - '[atoms] 115000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚶ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+115,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 700 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b115,000 Atoms'
-      - '&7+ &aLevel 700 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl700
-      - jetsprisonmines.blockbreak.lvl.700
-    701-799:
-      from: 701
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 115000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+115,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b115,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '800':
-      from: 800
-      prefix: '&a&l'
-      mine-warp: lvl800
-      levelup-actions:
-      - '[atoms] 135000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚻ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+135,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 800 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b135,000 Atoms'
-      - '&7+ &aLevel 800 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl800
-      - jetsprisonmines.blockbreak.lvl.800
-    801-899:
-      from: 801
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 135000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+135,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b135,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '900':
-      from: 900
-      prefix: '&a&l'
-      mine-warp: lvl900
-      levelup-actions:
-      - '[atoms] 135000'
-      - '[cratekey] levelup 1'
-      - '[title]        ᚸ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+135,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 900 Mine Unlocked'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b135,000 Atoms'
-      - '&7+ &aLevel 900 Mine'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl900
-      - jetsprisonmines.blockbreak.lvl.900
-    901-999:
-      from: 901
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 135000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+135,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b135,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    '1000':
-      from: 1000
-      prefix: '&a&l'
-      mine-warp: lvl1000
-      levelup-actions:
-      - '[atoms] 150000'
-      - '[cratekey] levelup 1'
-      - '[title]    ᚢ'
-      - '[sound] ENTITY_PLAYER_LEVELUP 1 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+150,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &a+ Level 1,000 Mine Unlocked'
-      - '[jsonmessage] {"text":"&7&oAccess to &5&oMastery Mine&7&o unlocks.","clickEvent":{"action":"run_command","value":"/tokenshop"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&e/tokenshop"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b150,000 Atoms'
-      - '&7+ &aLevel 1,000 Mine'
-      - '&7+ &5Access to Purchase Mastery Mines'
-      - '&7+ &aLevel Up &eKey'
-      permissions:
-      - essentials.warps.lvl1000
-      - jetsprisonmines.blockbreak.lvl.1000
-      - tokenmanager.use.shop.tsum
-      - tokenmanager.use.shop.tsum-0
-    1001-1499:
-      from: 1001
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 150000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+150,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b150,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-    1500-*:
-      from: 1500
-      prefix: '&a&l'
-      levelup-actions:
-      - '[atoms] 175000'
-      - '[cratekey] levelup 1'
-      - '[message] &7'
-      - '[message] &a&lLevel Up!'
-      - '[message] &7'
-      - '[message] &e&lRewards:'
-      - '[jsonmessage] {"text":"&b+175,000 Atoms","clickEvent":{"action":"run_command","value":"/upgrade"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&b/upgrade"}]}}}'
-      - '[jsonmessage] {"text":"&a+1 Level Up &eKey","clickEvent":{"action":"run_command","value":"/warp
-        crates"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/warp
-        crates"}]}}}'
-      - '[message] &7'
-      - '[jsonmessage] {"text":"&e&lClick Me &7to view Mine Unlock Information","clickEvent":{"action":"run_command","value":"/mineunlocks"},"hoverEvent":{"action":"show_text","value":{"text":"","extra":[{"text":"&a/mineunlocks"}]}}}'
-      - '[message] &7'
-      lore:
-      - '&e&lRewards:'
-      - '&7+ &b175,000 Atoms'
-      - '&7+ &aLevel Up &eKey'
-              </code></pre>
-            </div>
-        </div>
-        <!--<div class="tiers-wrapper">
-          <div class="tiers-header">
-            <h3>Tiers Framework</h3>
-            <p>Another opportunity players on Atomix had was the ability to progress through was the Tiers Ranking Framework.</p>
-            <p>With Tiers, players were tasked with collecting items, completing challenges, and acquiring resources to put towards<br> increasing their tier within their group.</p>
-            <p>In doing so, they were rewarded with new abilities, gear, and other rewards to help them in their combat endeavors.</p>
-          </div>
-          <div class="tiers-framework">
-            <pre><code>
-    
-            </code></pre>
-          </div>
-        </div>-->
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <link rel="stylesheet" href="/stylesheets/game-states-handler.css" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+         href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
+         rel="stylesheet"
+         />
+   </head>
+   <body>
+      <header>
+         <nav class="nav-bar">
+            <ul>
+               <li><a href="/index.html">Home</a></li>
+               <li><a href="/projects.html">Projects</a></li>
+               <li><a href="/resume.html">Resume</a></li>
+            </ul>
+         </nav>
+      </header>
+      <div class="project-page-link">
+         <h3><a href="/atomix/atomix-project.html">Back to Atomix...</a></h3>
       </div>
-    </div>
-  </body>
+      <div class="page-header">
+         <h1>Player Ranking Frameworks</h1>
+      </div>
+      <div class="main-content">
+      <div class="gamestates-container">
+         <div class="gamestates-wrapper">
+            <div class="temple-gamestate-header">
+               <h1>Game States Handler</h1>
+               <h2>Temples and Tiers</h2>
+               <p>
+                  Atomix offered the opportunity for interplay between the levels
+                  framework and the tiers framework.
+               </p>
+               <p>
+                  Through Temples, players were given the ability to capture temple
+                  territories to then be granted access to their valuable mines.
+               </p>
+               <p>
+                  Better mines = more progress = higher leveling ability, but only if
+                  they have the PvP accumen to stay in the fight!
+               </p>
+            </div>
+
+            <div class="temple-gamestate-header-image-container">
+               <img src="/assets/atomix-assets/temple.png" />
+            </div>
+
+            
+            <div class="temple-gamestate-embed-header">
+              <h2>Temple Gamestates Code</h2>
+              <p>Working through the logic and accounting for all of the possible scenarios that would play out took several dozen hours and touched the hands of multiple developers.</p>
+              <p>This project in particular taught me the importance of having developers write clean, readable, and well documented code so that future teammates can work on it effectively (and with less pain...)</p>
+              <p>When it was all said and done, not only did we have a working state machine, but we also had the ability to trigger certain states with administrative commands without breaking the game.</p>
+            </div>
+            
+            <div class="temple-gamestate-embed">
+              <pre><code>
+                import com.sk89q.worldguard.protection.regions.ProtectedRegion
+                import com.sxtanna.atomix.events.atomix.AtomixEventListener
+                import com.sxtanna.atomix.events.bukkit.BukkitEventListener
+                import com.sxtanna.atomix.exte.TEMPLE_META
+                import com.sxtanna.atomix.group.event.GroupJoinEvent
+                import com.sxtanna.atomix.group.event.GroupQuitEvent
+                import com.sxtanna.atomix.group.xAtomixGroup
+                import com.sxtanna.atomix.lang.xAtomixLang
+                import com.sxtanna.atomix.libs.mine.MineHook.SxMine
+                import com.sxtanna.atomix.module.xAtomixModule
+                import com.sxtanna.atomix.player.event.PlayerMoveBlockEvent
+                import com.sxtanna.atomix.store.yaml.TempleYamlPull
+                import com.sxtanna.atomix.temple.event.*
+                import com.sxtanna.atomix.temple.event.base.TempleEvent
+                import com.sxtanna.atomix.xAtomix
+                import de.myzelyam.api.vanish.PlayerShowEvent
+                import io.lumine.mythic.bukkit.MythicBukkit
+                import org.bukkit.Location
+                import org.bukkit.World
+                import org.bukkit.block.Block
+                import org.bukkit.configuration.file.YamlConfiguration
+                import org.bukkit.entity.ArmorStand
+                import org.bukkit.entity.Entity
+                import org.bukkit.entity.LivingEntity
+                import org.bukkit.entity.Player
+                import org.bukkit.event.EventPriority.MONITOR
+                import org.bukkit.event.EventPriority.NORMAL
+                import org.bukkit.event.block.BlockBreakEvent
+                import org.bukkit.event.block.BlockPlaceEvent
+                import org.bukkit.event.player.PlayerJoinEvent
+                import org.bukkit.event.player.PlayerTeleportEvent
+                import org.bukkit.event.world.ChunkUnloadEvent
+                import org.bukkit.util.Vector
+                import java.io.File
+                import java.util.concurrent.ConcurrentHashMap
+                
+                class xAtomixTempleModule internal constructor(override val plugin: xAtomix) : xAtomixModule("Temples")
+                {
+                  
+                  private val loadedTemples = mutableMapOf<String, xAtomixTemple>()
+                    private val templeDecoder = TempleYamlPull(plugin)
+                    
+                    
+                    private var overClaimListener: AtomixEventListener<TempleClaimedEvent>? = null
+                      private var whenMovedListener: AtomixEventListener<PlayerMoveBlockEvent>? = null
+                        
+                        private var tempEnterListener: AtomixEventListener<PlayerEnterTempleEvent>? = null
+                          private var tempLeaveListener: AtomixEventListener<PlayerLeaveTempleEvent>? = null
+                            private var mineEnterListener: AtomixEventListener<PlayerEnterTempleMineEvent>? = null
+                              private var mineLeaveListener: AtomixEventListener<PlayerLeaveTempleMineEvent>? = null
+                                
+	private var groupQuitListener: AtomixEventListener<GroupQuitEvent>? = null
+	private var groupJoinListener: AtomixEventListener<GroupJoinEvent>? = null
+
+    private var playerJoinListener: BukkitEventListener<PlayerJoinEvent>? = null
+      private var unvanishListener: BukkitEventListener<PlayerShowEvent>? = null
+	private var templeMineBreakListener: BukkitEventListener<BlockBreakEvent>? = null
+    private var templeMinePlaceListener: BukkitEventListener<BlockPlaceEvent>? = null
+	private var templeTeleportsListener: BukkitEventListener<PlayerTeleportEvent>? = null
+    private var templeChunkKillListener: BukkitEventListener<ChunkUnloadEvent>? = null
+
+      
+      private val playersInTheirTemple = ConcurrentHashMap<Player, Long>()
+
+
+        override fun load()
+	{
+		super.load()
+
+		pluginFolder.resolve("temples").mkdirs()
+
+
+		loadTemples()
+		loadedTemples.values.forEach(xAtomixTemple::load)
+    
+		fun TempleEvent.updateLastEntry(playerGroup: () -> xAtomixGroup?)
+		{
+			val tGroup = templeGroup()
+			val pGroup = playerGroup()
+      
+			if (tGroup != null && tGroup == pGroup)
+			{
+				temple.gameData.lastGroupEntry = System.currentTimeMillis()
+				temple.conf.set("GameData.Cache.LastGroupEntry", temple.gameData.lastGroupEntry)
+				temple.save()
+			} else
+			{
+        temple.gameData.lastEnemyEntry = System.currentTimeMillis()
+				temple.conf.set("GameData.Cache.LastEnemyEntry", temple.gameData.lastEnemyEntry)
+				temple.save()
+			}
+		}
+
+
+		tempEnterListener = plugin.atomixEvents.listen {
+			updateLastEntry(::playerGroup)
+      
+			val tGroup = templeGroup()
+			val pGroup = playerGroup()
+
+			if (tGroup == null)
+			{
+				return@listen plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_NOT_CLAIMED, player, mapOf("temple_name" to temple.name))
+			}
+
+			val value = mapOf(
+					"temple_name" to temple.name,
+					"your_group" to (pGroup?.named?.external ?: "unknown"),
+					"enemy_group" to tGroup.named.external
+          )
+          
+			if (tGroup == pGroup)
+			{
+				plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_GROUP, player, value)
+        
+				// log when they enter
+				playersInTheirTemple[player] = System.currentTimeMillis()
+			} else
+			{
+				plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_ENEMY, player, value)
+			}
+		}
+
+		tempLeaveListener = plugin.atomixEvents.listen {
+      updateLastEntry(::playerGroup)
+
+			// remove when they leave
+			playersInTheirTemple -= player
+			debug("Removed ${player.name} from players in temple")
+		}
+
+		templeMineBreakListener = plugin.bukkitEvents.listen(priority = NORMAL) {
+			if (isAllowedToInteractHere(player, block)) {
+				return@listen
+			}
+
+			isCancelled = true
+		}
+    
+		templeMinePlaceListener = plugin.bukkitEvents.listen(priority = NORMAL) {
+			if (isAllowedToInteractHere(player, block))
+			{
+        return@listen
+			}
+
+			isCancelled = true
+		}
+
+		templeTeleportsListener = plugin.bukkitEvents.listen(MONITOR, ignoreCancelled = true) {
+      calcFromTo(player, from.block, to.block)
+		}
+
+		whenMovedListener = plugin.atomixEvents.listen {
+			calcFromTo(player, fromBlock, intoBlock)
+		}
+    
+		templeChunkKillListener = plugin.bukkitEvents.listen {
+      if (!isATempleWorld(world))
+			{
+				return@listen
+			}
+      
+			val temples = plugin.worldG.getCurrentRegions(chunk).mapNotNull(::tempByRegion)
+			if (temples.isEmpty())
+			{
+				return@listen
+			}
+		}
+    
+		groupQuitListener = plugin.atomixEvents.listen {
+			playersInTheirTemple.remove(player)
+			debug("Removed ${player.name} from players in temple as they left their group")
+			MythicBukkit.inst().mobManager.mobsInCombat.forEach()
+			{ mob ->
+				if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
+				{
+					mob.threatTable.clearTarget()
+				}
+			}
+		}
+
+		groupJoinListener = plugin.atomixEvents.listen {
+			MythicBukkit.inst().mobManager.mobsInCombat.forEach()
+			{ mob ->
+				if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
+				{
+					if (mob.faction.equals(player.group()?.name, ignoreCase = true))
+					{
+            mob.threatTable.clearTarget()
+					}
+				}
+			}
+		}
+
+		/*
+		repeat(20)
+		{
+			playersInTheirTemple.forEach()
+			{ (player, entered) ->
+				val temple = player.currentTemple() ?: return@forEach
+				if (temple.atomGain.not())
+				{
+					return@forEach
+				}
+
+				val (_, gain) = temple.gameData.atomGainTimeValues.floorEntry((System.currentTimeMillis() - entered) / 1000L)
+						?: return@forEach
+
+				plugin.tokenE.addAtomsFor(player, gain.toDouble())
+			}
+		}
+		*/
+
+		// TODO: Try to do async
+		repeat(20)
+		{
+      temples()
+					.asSequence()
+					// get all entities inside of the temple region
+					.flatMap()
+					{ temple ->
+						temple.world.entities.asSequence().filter { plugin.worldG.isWithin(it, temple.mainRegion) }
+					}
+					// ignore players, armor stands, and non living entities
+					.filterNot()
+					{ entity ->
+						entity is Player || entity is ArmorStand || entity !is LivingEntity
+					}
+					// ignore entities that are mythic mobs
+					.filterNot()
+					{ entity ->
+						plugin.mythMb.isMythicMob(entity)
+					}
+					// ignore entities that have the temple tag (or are children of mobs who do)
+					.filterNot()
+					{ entity ->
+						entity.persistentDataContainer.has(TEMPLE_META)
+								|| (plugin.mythMb.getParentOfMobSpigot(entity))?.persistentDataContainer?.has(
+                  TEMPLE_META
+                  ) ?: false
+					}
+					// remove excess entity
+					.forEach(Entity::remove)
+		}
+	}
+
+	override fun kill()
+	{
+		super.kill()
+    
+		loadedTemples.values.forEach(xAtomixTemple::kill)
+		loadedTemples.clear()
+
+		templeMineBreakListener.detach()
+		templeMinePlaceListener.detach()
+		overClaimListener.detach()
+		templeTeleportsListener.detach()
+		whenMovedListener.detach()
+
+		tempEnterListener.detach()
+		tempLeaveListener.detach()
+		mineEnterListener.detach()
+		mineLeaveListener.detach()
+    
+
+	}
+
+
+	override fun onPlayerJoin(player: Player)
+	{
+    handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent)
+	}
+
+	override fun onPlayerQuit(player: Player)
+	{
+		handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent)
+	}
+
+
+	fun temples(): List<xAtomixTemple>
+	{
+		return loadedTemples.values.toList()
+	}
+
+	fun templeByName(name: String): xAtomixTemple?
+	{
+    return loadedTemples[name]
+	}
+  
+  
+	fun mineByRegion(region: ProtectedRegion): SxMine?
+	{
+		val minVec = region.minimumPoint
+		val maxVec = region.maximumPoint
+
+		return plugin.prMine.findMine(Vector(minVec.x, minVec.y, minVec.z), Vector(maxVec.x, maxVec.y, maxVec.z))?.apply { this.region = region }
+	}
+
+  
+	fun tempByVector(location: Location): xAtomixTemple?
+	{
+		return temples().find { it.world == location.world && it.mainRegion.contains(location.blockX, location.blockY, location.blockZ) }
+	}
+
+	fun tempByRegion(region: ProtectedRegion): xAtomixTemple?
+	{
+    return temples().find { it.mainRegion == region || it.mineRegion == region }
+	}
+  
+	fun tempByMine(mine: SxMine): xAtomixTemple?
+	{
+    return temples().find { it.mineRegion == mine.region }
+	}
+
+
+	fun isATempleWorld(world: World): Boolean
+	{
+    return loadedTemples.values.any { it.world.uid == world.uid }
+	}
+
+	fun setTempleClaimedBy(temple: xAtomixTemple, groupName: String)
+	{
+		if (plugin.spigot.lock) return
+
+		/*
+		Dirty, but hey, it works
+		If the temple is being unclaimed, null group will match it.group() != null
+		Otherwise, make sure the group exists and get it
+		*/
+		val group = if (groupName == "") null else run {
+			val group = plugin.groupsModule.groupByName(groupName)
+			if (group == null)
+			{
+				logger.warning("Will not set ${temple.name} to non-existent group $groupName")
+				return
+			}
+			group
+		}
+
+		onlinePlayers
+    .filter { it.group() != group }
+				.forEach {
+					playersInTheirTemple.remove(it)
+					debug("Removed ${it.name} from players in temple, as the temple was over-claimed")
+				}
+
+		temple.gameData.claimedBy = groupName
+    
+		temple.conf.set("GameData.Group", groupName)
+		temple.save()
+	}
+
+	fun setTempleGameState(temple: xAtomixTemple, stateName: String)
+	{
+		if (plugin.spigot.lock) return
+
+		temple.conf.set("GameData.State", stateName)
+		temple.save()
+	}
+
+
+	private fun isAllowedToInteractHere(player: Player, block: Block): Boolean
+	{
+    val mine = plugin.prMine.findMine(block) ?: return true
+		val temp = temples().find { it.gameData.mineNamed == mine.name } ?: return true
+
+		val pGroup = player.group()
+
+		if (pGroup == null)
+		{
+      plugin.langModule.send(xAtomixLang.MINE_NOT_IN_GROUP, player, timeout = 10)
+			return false
+		}
+    
+		val tGroup = temp.group()
+		if (pGroup != tGroup)
+		{
+      plugin.langModule.send(xAtomixLang.MINE_DOES_NOT_CONTROL, player, timeout = 10)
+			return false
+		}
+    
+		val curTier = player.groupTier() ?: return true
+		val reqTier = tGroup.perms.getRequiredTier(temp) ?: return true
+
+		if (curTier < reqTier)
+		{
+			plugin.langModule.send(xAtomixLang.MINE_TIER_TOO_LOW, player, timeout = 10)
+			return false
+		}
+
+		return true
+	}
+
+	private fun calcFromTo(player: Player, fromBlock: Block, intoBlock: Block)
+	{
+		val fromRegions = plugin.worldG.getCurrentRegions(fromBlock.location)
+		val intoRegions = plugin.worldG.getCurrentRegions(intoBlock.location)
+
+		handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent, fromRegions, intoRegions)
+		handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent, intoRegions, fromRegions)
+	}
+
+
+	private fun handleMoveBetween(
+			player: Player,
+			tempEvent: (xAtomixTemple, Player) -> TempleEvent,
+			mineEvent: (SxMine, xAtomixTemple, Player) -> TempleEvent,
+			regions: Iterable<ProtectedRegion> = plugin.worldG.getCurrentRegions(player.location),
+			filterNotIn: Iterable<ProtectedRegion> = emptySet()
+	)
+	{
+		regions.forEach()
+		{
+      if (it in filterNotIn)
+			{
+				return@forEach
+			}
+			val mine = mineByRegion(it)
+			val temp = tempByRegion(it)
+      
+			if (mine != null && temp != null && temp.mineRegion in regions)
+			{
+        plugin.atomixEvents.push(mineEvent.invoke(mine, temp, player))
+				return
+			}
+
+			if (temp != null && temp.mineRegion != it)
+			{
+        plugin.atomixEvents.push(tempEvent.invoke(temp, player))
+			}
+		}
+	}
+
+
+	private fun loadTemples()
+	{
+		// load temples from folder
+		File(pluginFolder, "temples").listFiles { file -> file.extension.equals("yml", true) }?.forEach {
+			logger.info("[Temples] attempting to load temple from file: ${it.name}")
+			try
+			{
+        val temple = templeDecoder.pull(YamlConfiguration.loadConfiguration(it)) ?: return@forEach
+				temple.file = it
+        
+				loadedTemples[temple.name] = temple
+        
+				mineByRegion(temple.mineRegion)?.let { mine ->
+					temple.gameData.mineNamed = mine.name
+				}
+        
+				logger.info("[Temples] ${temple.name}'s state is ${temple.templeState.name}")
+			} catch (ex: Exception)
+			{
+        logger.severe("[Temples] failed to load temple from file: ${it.name}")
+				ex.printStackTrace()
+			}
+		}
+	}
+
+  
+}
+
+               </code></pre>
+            </div>
+            
+            <div class="temple-gamestate-embed-header">
+               <h2>A List of What We Accounted For:</h2>
+               <ul>
+                <li>The designated area of a Temple</li>
+                <li>An "ungrouped" player entering the Temple Area</li>
+                <li>A "grouped" player entering the Temple Area</li>
+                <li>A count of "Attackers" and "Defenders in the Temple Area depending on the claimed status</li>
+                <li>Threat tables of the Temple Guardians guarding the temple</li>
+                <li>A player's eligibility to attack a Temple Guardian depending on their group status</li>
+                <li>A player's Tier level when determining access to the claimed Temple's mine portal"</li>
+                <li>and a few other nuanced scenarios to ensure smooth gameplay...</li>
+            </div>
+            
+         </div>
+      </div>
+   </body>
 </html>
