@@ -120,7 +120,7 @@ header {
     height: 100%;
 }
 
-.levels-actions, .levels-cost-curves, .levels-curve-visuals, .tiers-framework {
+.levels-actions, .levels-cost-curves, .levels-curve-visuals, .levels-code {
     font-size: 0.75rem;
     height: 30rem; /* Set a fixed height for the container */
     overflow: auto; /* Enable scrollbars when content overflows */

@@ -1538,20 +1538,263 @@ level-ranges-costs:
       - '&7+ &aLevel Up &eKey'
               </code></pre>
             </div>
+            <div class="levels-embed-header">
+              <h3>Levels Code</h3>
+              <p>Refactored several times, seen below is the magic that put all of these components into play!</p>
+            </div>
+            <div class="levels-code">
+              <pre><code>
+import net.atomixnetwork.prisoncore.PrisonCore;
+import net.atomixnetwork.prisoncore.actions.Action;
+import net.atomixnetwork.prisoncore.actions.ActionType;
+import net.atomixnetwork.prisoncore.config.Lang;
+import net.atomixnetwork.prisoncore.config.levels.LevelsConfig;
+import net.atomixnetwork.prisoncore.data.PlayerData;
+import net.atomixnetwork.prisoncore.util.MessageUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class LevelManager {
+    private final PrisonCore plugin;
+
+    public LevelManager(PrisonCore plugin) {
+        this.plugin = plugin;
+    }
+
+    public LevelRange getLevelRange(int level) {
+        LevelsConfig levelsConfig = plugin.getLevelsModule().getLevelsConfig();
+        for (LevelRange levelRange : levelsConfig.getLevelRanges()) {
+            if (level >= levelRange.getFrom() && level <= levelRange.getUntil()) {
+                return levelRange;
+            }
+        }
+        if (level != levelsConfig.getStartLevel() && levelsConfig.getMaxLevel() > level) {
+            MessageUtil.errorMessage("Level " + level + " is not configured in the level ranges config!");
+        }
+        return null;
+    }
+
+    public boolean canLevelup(Player player) {
+        PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
+        LevelRange level = getLevelRange(playerData.getLevel() + 1);
+        if (level == null) {
+            return false;
+        }
+        if (plugin.getLevelsModule().getLevelsConfig().getMaxLevel() < playerData.getLevel() + 1) {
+            return false;
+        }
+        long cost = plugin.getLevelsModule().getLevelCostManager().getLevelupCost(playerData.getLevel() + 1);
+        if (cost < 0) {
+            return false;
+        }
+        return playerData.getLevelProgress() >= cost;
+    }
+
+    public void levelup(Player player, boolean giveRewards, boolean withdrawMoney) {
+        PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
+        double excessProgress = playerData.getLevelProgress() - plugin.getLevelsModule().getLevelCostManager().getLevelupCost(playerData.getLevel() + 1);
+        playerData.setLevelProgress(excessProgress);
+        setLevel(player, playerData.getLevel() + 1, giveRewards, withdrawMoney);
+    }
+
+    public void setLevel(Player player, int newLevel, boolean giveRewards, boolean withdrawMoney) {
+        LevelsConfig levelsConfig = plugin.getLevelsModule().getLevelsConfig();
+        if (newLevel < levelsConfig.getStartLevel()) {
+            newLevel = levelsConfig.getStartLevel();
+        }
+        if (newLevel > levelsConfig.getMaxLevel()) {
+            newLevel = levelsConfig.getMaxLevel();
+        }
+        PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
+        LevelRange levelRange = getLevelRange(newLevel);
+        MessageUtil.debugMessage("Leveling up " + player.getName() + " to level " + newLevel + ".");
+
+        withdrawLevelupBalance(player, newLevel, withdrawMoney);
+        playerData.setLevel(newLevel - 1); // Set a level below new level so the %to% placeholder is displayed correctly
+        // Run levelup actions
+        if (giveRewards && levelRange != null) {
+            MessageUtil.debugMessage("Running default and level specific levelup actions for level " + newLevel + "...");
+            List<Action> actions = Stream.concat(levelsConfig.getDefaultLevelupActions().stream(), levelRange.getLevelupActions().stream()).collect(Collectors.toList());
+            executeLevelupActions(player, actions);
+
+            if (levelsConfig.isTeleportToBestMineEnabled() && playerData.getPreferences().isAutoMineEnabled()) {
+                this.teleportToBestMine(player, newLevel);
+            }
+        }
+        playerData.setLevel(newLevel);
+        checkLevelPermissions(player);
+        playerData.saveAsync();
+    }
+
+    public void levelupUntil(Player player, int newLevel, boolean giveRewards, boolean withdrawMoney) {
+        LevelsConfig levelsConfig = plugin.getLevelsModule().getLevelsConfig();
+        PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
+        int level = playerData.getLevel();
+        if (level == newLevel) {
+            return;
+        }
+        if (newLevel < level) {
+            setLevel(player, newLevel, false, false);
+            return;
+        }
+        List<Action> levelupActions = new ArrayList<>();
+        for (int i = level + 1; i <= newLevel; i++) {
+            levelupActions.addAll(Stream.concat(levelsConfig.getDefaultLevelupActions()
+                    .stream(), getLevelRange(i).getLevelupActions().stream()).collect(Collectors.toList()));
+            int finalI = i;
+            levelupActions.removeIf(action -> action.getType().isEffectAction() && finalI != newLevel);
+            withdrawLevelupBalance(player, i, withdrawMoney);
+            playerData.setLevel(i - 1); // Set level below so the %to% placeholder is displayed correctly
+        }
+        if (giveRewards) {
+            executeLevelupActions(player, levelupActions);
+
+            if (levelsConfig.isTeleportToBestMineEnabled() && playerData.getPreferences().isAutoMineEnabled()) {
+                this.teleportToBestMine(player, newLevel);
+            }
+        }
+        playerData.setLevel(newLevel);
+        checkLevelPermissions(player);
+    }
+
+    /**
+     * Checks the player has the permissions corresponding to their current level.
+     *
+     * @param player Player to check.
+     */
+    public void checkLevelPermissions(Player player) {
+        PlayerData playerData = PlayerData.fromPlayer(player);
+        int currentLevel = playerData.getLevel();
+        for (LevelRange levelRange : plugin.getLevelsModule().getLevelsConfig().getLevelRanges()) {
+            if (currentLevel >= levelRange.getFrom()) {
+                addPermissions(player, levelRange.getPermissions());
+            } else {
+                removePermissions(player, levelRange.getPermissions());
+            }
+        }
+        player.recalculatePermissions();
+    }
+
+    /**
+     * Adds the passed permissions to the passed player's PermissionAttachment.
+     *
+     * @param player      Player the permissions will be added to.
+     * @param permissions Permissions to add.
+     */
+    private void addPermissions(Player player, List<String> permissions) {
+        for (String permission : permissions) {
+            addPermission(player, permission);
+        }
+    }
+
+    /**
+     * Adds the passed permission to the passed player's PermissionAttachment.
+     *
+     * @param player     Player to add the permission to.
+     * @param permission Permission to add.
+     */
+    private void addPermission(Player player, String permission) {
+        PlayerData.fromPlayer(player).getPermissionAttachment().setPermission(permission, true);
+    }
+
+    /**
+     * Removes the passed permissions from the passed player's PermissionsAttachment.
+     *
+     * @param player      Player the permissions will be removed from.
+     * @param permissions Permissions to remove.
+     */
+    private void removePermissions(Player player, List<String> permissions) {
+        for (String permission : permissions) {
+            removePermission(player, permission);
+        }
+    }
+
+    /**
+     * Removes the passed permissions from the passed player's PermissionAttachment.
+     *
+     * @param player     Player to remove the permission from.
+     * @param permission Permission to remove.
+     */
+    private void removePermission(Player player, String permission) {
+        PlayerData.fromPlayer(player).getPermissionAttachment().unsetPermission(permission);
+    }
+
+    /**
+     * Withdraws the corresponding levelup balance from the passed player.
+     *
+     * @param player        Player that will be withdrawn.
+     * @param newLevel      Level the player is leveling up to.
+     * @param withdrawMoney Whether money should be withdrawn or not.
+     */
+    private void withdrawLevelupBalance(Player player, int newLevel, boolean withdrawMoney) {
+        long cost = plugin.getLevelsModule().getLevelCostManager().getLevelupCost(newLevel);
+        if (!withdrawMoney || getLevelRange(newLevel) == null) return;
+
+        plugin.getEconomyManager().removeMoney(player, cost);
+        MessageUtil.debugMessage("Leveled up " + player.getName() + " for $" + cost);
+    }
+
+    /**
+     * Executes all the passed levelup actions. If the action is a message action and the player doesn't have
+     * messages enabled, skip them.
+     *
+     * @param player  Player the actions will be executed to.
+     * @param actions Actions that will be executed.
+     */
+    private void executeLevelupActions(Player player, List<Action> actions) {
+        PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
+        if (!playerData.getPreferences().isLevelupMessagesEnabled()) {
+            actions.removeIf(action -> action.getType() == ActionType.MESSAGE || action.getType() == ActionType.JSON_MESSAGE);
+        }
+        plugin.getActionManager().executeActions(player, actions);
+    }
+
+    /**
+     * Teleports the passed player to the best mine for the passed level if that level range has a mine assigned.
+     * and if the new level is the first level of a level range.
+     *
+     * @param player  Player the actions will be executed to.
+     * @param newLevel The new level of the player.
+     */
+    private void teleportToBestMine(Player player, int newLevel) {
+        LevelRange levelRange = getLevelRange(newLevel);
+        if (levelRange != null && levelRange.getFrom() == newLevel && levelRange.getMine() != null) {
+            int delay = plugin.getLevelsModule().getLevelsConfig().getTeleportToBestMineDelay();
+            if (delay > 0) {
+                MessageUtil.sendMessage(player, Lang.BEST_MINE_TELEPORT_DELAY.getConfigValue(new String[]{String.valueOf(delay)}));
+                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PrisonCore.getInstance(), () -> {
+                    plugin.getMineModule().getMineManager().teleportToBestMine(player);
+                    MessageUtil.sendMessage(player, Lang.BEST_MINE_TELEPORT.getDefault());
+                }, 20L * delay);
+            } else {
+                plugin.getMineModule().getMineManager().teleportToBestMine(player);
+                MessageUtil.sendMessage(player, Lang.BEST_MINE_TELEPORT.getDefault());
+            }
+        }
+    }
+
+    public String getFormattedLevel(Player player) {
+        return getFormattedLevel(plugin.getPlayerDataManager().getPlayer(player.getUniqueId()).getLevel());
+    }
+
+    public String getFormattedLevel(int level) {
+        LevelRange levelRange = getLevelRange(level);
+        if (levelRange == null) {
+            return String.valueOf(level);
+        }
+        return levelRange.getPrefix() + level;
+    }
+}
+
+              </code></pre>
+            </div>
         </div>
-        <!--<div class="tiers-wrapper">
-          <div class="tiers-header">
-            <h3>Tiers Framework</h3>
-            <p>Another opportunity players on Atomix had was the ability to progress through was the Tiers Ranking Framework.</p>
-            <p>With Tiers, players were tasked with collecting items, completing challenges, and acquiring resources to put towards<br> increasing their tier within their group.</p>
-            <p>In doing so, they were rewarded with new abilities, gear, and other rewards to help them in their combat endeavors.</p>
-          </div>
-          <div class="tiers-framework">
-            <pre><code>
-    
-            </code></pre>
-          </div>
-        </div>-->
+
       </div>
     </div>
   </body>
