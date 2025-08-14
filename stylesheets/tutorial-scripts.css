@@ -86,11 +86,43 @@ header {
 }
 
 .intro-to-the-void-header, .intro-to-prison-header {
-    grid-column: 1 / -1;
-    border: blue 3px solid;
-    text-align: center;
-    padding: 1rem;
-    min-height: 8rem;
+  grid-column: 1 / -1;
+  border: blue 3px solid;
+  text-align: center;
+  padding: 1rem;
+  min-height: 8rem; /* You can keep this for a minimum size, but the iframe will dictate the height */
+  /* Remove any conflicting height properties */
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-to-the-void-header h5, .intro-to-prison-header h5 {
+    padding: 0.5rem;
+}
+
+.intro-to-the-void-header a, .intro-to-prison-header a {
+    color: rgb(18, 21, 117);
+    text-decoration: none;
+}
+
+/* Remove the specific iframe width and height from HTML and use CSS to control it */
+.intro-to-the-void-header iframe, .intro-to-prison-header iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute; /* Position the iframe inside the wrapper */
+    top: 0;
+    left: 0;
+}
+
+.iframe-wrapper {
+    box-sizing: border-box;
+  display: flex;
+  position: relative; /* This is the key. It sets the positioning context for the iframe. */
+  padding-bottom: 56.25%; /* This is the magic number for a 16:9 aspect ratio (9/16 = 0.5625) */
+  margin: 0 auto;
+  width: 100%;
+  border: black solid 3px;
 }
 
 .intro-to-the-void, .intro-to-prison {
@@ -107,5 +139,6 @@ header {
     justify-content: center;
     padding-top: 2rem;
 }
+
 
 
