@@ -29,6 +29,10 @@ header {
     border-bottom: silver 5px solid;
 }
 
+a {
+    text-decoration: none;
+}
+
 .nav-bar {
     height: 3rem;
     justify-content: center;
@@ -111,6 +115,24 @@ header {
 
 .projects-item h1 {
     font-size: 1.2rem;
+}
+
+.projects-item h2 {
+    font-size: 0.8rem;
+    padding-bottom: 0.5rem;
+}
+
+.projects-item ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.projects-item li {
+    font-size: 0.75rem;
+    text-align: left;
+    margin: 0.5rem;
+    list-style-type: none;
 }
 
 .footer {
