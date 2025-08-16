@@ -1,112 +1,116 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-h1, h2, h3 {
-  font-family: 'Poppins', sans-serif;
+h1,
+h2,
+h3 {
+  font-family: "Poppins", sans-serif;
 }
 
-body, p, li {
-  font-family: 'Lato', sans-serif;
+body,
+p,
+li {
+  font-family: "Lato", sans-serif;
 }
 
-code, pre {
-  font-family: 'Fira Code', monospace;
+code,
+pre {
+  font-family: "Fira Code", monospace;
 }
 
 html {
-    box-sizing: border-box;
-    font-size: 16px;
-    
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 header {
-    top: 20px;
-    background-color: #15256d;
-    display: flex;
-    justify-content: center;
-    border-bottom: silver 5px solid;
+  top: 20px;
+  background-color: #15256d;
+  display: flex;
+  justify-content: center;
+  border-bottom: silver 5px solid;
 }
 
 .nav-bar {
-    height: 3rem;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    padding: 1rem;
-    border: red solid 1px;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 1rem;
+  border: red solid 1px;
 }
 
 .nav-bar ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
 }
 
 .nav-bar li {
-    display: inline-flex;
-    flex-direction: column;
-    padding: 0rem 1rem;
-    color: white;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0rem 1rem;
+  color: white;
 }
 
 .nav-bar a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  margin-bottom: 1rem;
 }
 
-.resume-container {
-    border: red 3px solid;
-    width: 60%;
-    display: flex;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 2rem;
+.pdf-container {
+  border: red 3px solid;
+  width: 60%;
+  display: flex;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  overflow: auto;
 }
 
 .resume-embed {
-    width: 100%;
-    height: 75rem;
+  width: 100%;
+  height: 75rem;
 }
 
 .footer {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    height: 4em;
-    background-color: #15256d;
-    position: relative;
-    bottom: -4.33rem; /*Puts footer at bottom of page*/
-    border-top: silver 5px solid;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 4em;
+  background-color: #15256d;
+  position: relative;
+  bottom: -4.33rem; /*Puts footer at bottom of page*/
+  border-top: silver 5px solid;
 }
 
 .copyright {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 .copyright p {
-    color: silver;
-    font-size: 1.25rem;
+  color: silver;
+  font-size: 1.25rem;
 }
-
