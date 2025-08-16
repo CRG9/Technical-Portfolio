@@ -18,6 +18,8 @@ code, pre {
 html {
     box-sizing: border-box;
     font-size: 16px;
+    background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
+    background-size: 400% 400%;
 }
 
 header {

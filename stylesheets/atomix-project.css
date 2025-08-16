@@ -18,6 +18,8 @@ code, pre {
 html {
     box-sizing: border-box;
     font-size: 16px;
+    background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
+    background-size: 400% 400%;
 }
 
 header {
@@ -92,12 +94,13 @@ header {
 .section-item {
     width: 100%;
     text-align: center;
-    border: slateblue 3px solid;
+    border: slateblue 5px solid;
     padding: 3rem;
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: white;
 }
 
 .footer {

@@ -18,6 +18,8 @@ code, pre {
 html {
     box-sizing: border-box;
     font-size: 16px;
+    background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
+    background-size: 400% 400%;
 }
 
 header {
@@ -106,6 +108,7 @@ header {
     height: auto;
     margin: 0 auto;
     border-radius: 25px;
+    border:#001c9b 5px solid;
 }
 
 .levels-embed-header {
