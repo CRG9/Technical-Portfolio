@@ -1,12 +1,12 @@
 My Technical Portfolio
 ======================
 
-Welcome to the repository for my personal technical portfolio. This project is a curated collection of my work, designed to showcase my skills and passion for web development.
+Welcome to the repository for my personal technical portfolio. This project is a curated collection of my work, designed to showcase my skills and passion for full stack development and product engineering.
 
 About This Project
 ------------------
 
-This portfolio is a living document, representing my journey as a developer. It features a variety of projects, from simple web pages to more complex interactive applications. The primary goal is to demonstrate my proficiency in front-end development and my ability to create clean, responsive, and user-friendly web experiences.
+This portfolio is a living document, representing my journey as a developer. It features a variety of projects, from simple web pages to more complex interactive applications. The primary goal is to demonstrate my proficiency in full stack development and my ability to create clean, responsive, and user-friendly experiences.
 
 Technologies Used
 -----------------
@@ -22,7 +22,7 @@ This portfolio is built from the ground up using core web technologies. My goal 
 
 ### AI-Assisted Development
 
-For some of the more complex JavaScript operations, algorithmic challenges, or to explore alternative solutions, I occasionally utilized **Google's Gemini**. This allowed me to learn more efficiently and implement sophisticated features while still being the primary author and architect of the project.
+For some of the more complex JavaScript operations, extensive framework like Three.js, algorithmic challenges, or to explore alternative solutions, I occasionally utilized **Google's Gemini**. This allowed me to learn more efficiently and implement sophisticated features while still being the primary author and architect of the project.
 
 How to View
 -----------
@@ -46,3 +46,4 @@ I'm always open to connecting and discussing new opportunities. Feel free to rea
 *   **LinkedIn:** https://www.linkedin.com/in/chrisgaletta/
     
 *   **Email:** chris.galetta@gmail.com
+
