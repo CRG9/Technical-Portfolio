@@ -29,525 +29,518 @@
          <h1>Player Ranking Frameworks</h1>
       </div>
       <div class="main-content">
-      <div class="gamestates-container">
-         <div class="gamestates-wrapper">
-            <div class="temple-gamestate-header">
-               <h1>Game States Handler</h1>
-               <h2>Temples and Tiers</h2>
-               <p>
-                  Atomix offered the opportunity for interplay between the levels
-                  framework and the tiers framework.
-               </p>
-               <p>
-                  Through Temples, players were given the ability to capture temple
-                  territories to then be granted access to their valuable mines.
-               </p>
-               <p>
-                  Better mines = more progress = higher leveling ability, but only if
-                  they have the PvP accumen to stay in the fight!
-               </p>
-            </div>
+         <div class="gamestates-container">
+            <div class="gamestates-wrapper">
+               <div class="temple-gamestate-header">
+                  <h1>Game States Handler</h1>
+                  <h2>Temples and Tiers</h2>
+                  <p>
+                     Atomix offered the opportunity for interplay between the levels
+                     framework and the tiers framework.
+                  </p>
+                  <p>
+                     Through Temples, players were given the ability to capture temple
+                     territories to then be granted access to their valuable mines.
+                  </p>
+                  <p>
+                     Better mines = more progress = higher leveling ability, but only if
+                     they have the PvP accumen to stay in the fight!
+                  </p>
+               </div>
+               <div class="temple-gamestate-header-image-container">
+                  <img src="/assets/atomix-assets/temple.png" />
+               </div>
+               <div class="temple-gamestate-embed-header">
+                  <h2>Temple Gamestates Code</h2>
+                  <p>Working through the logic and accounting for all of the possible scenarios that would play out took several dozen hours and touched the hands of multiple developers.</p>
+                  <p>This project in particular taught me the importance of having developers write clean, readable, and well documented code so that future teammates can work on it effectively (and with less pain...)</p>
+                  <p>When it was all said and done, not only did we have a working state machine, but we also had the ability to trigger certain states with administrative commands without breaking the game.</p>
+               </div>
+               <div class="temple-gamestate-embed">
+                  <pre><code>
+import com.sk89q.worldguard.protection.regions.ProtectedRegion
+import com.sxtanna.atomix.events.atomix.AtomixEventListener
+import com.sxtanna.atomix.events.bukkit.BukkitEventListener
+import com.sxtanna.atomix.exte.TEMPLE_META
+import com.sxtanna.atomix.group.event.GroupJoinEvent
+import com.sxtanna.atomix.group.event.GroupQuitEvent
+import com.sxtanna.atomix.group.xAtomixGroup
+import com.sxtanna.atomix.lang.xAtomixLang
+import com.sxtanna.atomix.libs.mine.MineHook.SxMine
+import com.sxtanna.atomix.module.xAtomixModule
+import com.sxtanna.atomix.player.event.PlayerMoveBlockEvent
+import com.sxtanna.atomix.store.yaml.TempleYamlPull
+import com.sxtanna.atomix.temple.event.*
+import com.sxtanna.atomix.temple.event.base.TempleEvent
+import com.sxtanna.atomix.xAtomix
+import de.myzelyam.api.vanish.PlayerShowEvent
+import io.lumine.mythic.bukkit.MythicBukkit
+import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.block.Block
+import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
+import org.bukkit.event.EventPriority.MONITOR
+import org.bukkit.event.EventPriority.NORMAL
+import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerTeleportEvent
+import org.bukkit.event.world.ChunkUnloadEvent
+import org.bukkit.util.Vector
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
-            <div class="temple-gamestate-header-image-container">
-               <img src="/assets/atomix-assets/temple.png" />
-            </div>
+class xAtomixTempleModule internal constructor(override val plugin: xAtomix) : xAtomixModule("Temples")
+{
 
-            
-            <div class="temple-gamestate-embed-header">
-              <h2>Temple Gamestates Code</h2>
-              <p>Working through the logic and accounting for all of the possible scenarios that would play out took several dozen hours and touched the hands of multiple developers.</p>
-              <p>This project in particular taught me the importance of having developers write clean, readable, and well documented code so that future teammates can work on it effectively (and with less pain...)</p>
-              <p>When it was all said and done, not only did we have a working state machine, but we also had the ability to trigger certain states with administrative commands without breaking the game.</p>
-            </div>
-            
-            <div class="temple-gamestate-embed">
-              <pre><code>
-                import com.sk89q.worldguard.protection.regions.ProtectedRegion
-                import com.sxtanna.atomix.events.atomix.AtomixEventListener
-                import com.sxtanna.atomix.events.bukkit.BukkitEventListener
-                import com.sxtanna.atomix.exte.TEMPLE_META
-                import com.sxtanna.atomix.group.event.GroupJoinEvent
-                import com.sxtanna.atomix.group.event.GroupQuitEvent
-                import com.sxtanna.atomix.group.xAtomixGroup
-                import com.sxtanna.atomix.lang.xAtomixLang
-                import com.sxtanna.atomix.libs.mine.MineHook.SxMine
-                import com.sxtanna.atomix.module.xAtomixModule
-                import com.sxtanna.atomix.player.event.PlayerMoveBlockEvent
-                import com.sxtanna.atomix.store.yaml.TempleYamlPull
-                import com.sxtanna.atomix.temple.event.*
-                import com.sxtanna.atomix.temple.event.base.TempleEvent
-                import com.sxtanna.atomix.xAtomix
-                import de.myzelyam.api.vanish.PlayerShowEvent
-                import io.lumine.mythic.bukkit.MythicBukkit
-                import org.bukkit.Location
-                import org.bukkit.World
-                import org.bukkit.block.Block
-                import org.bukkit.configuration.file.YamlConfiguration
-                import org.bukkit.entity.ArmorStand
-                import org.bukkit.entity.Entity
-                import org.bukkit.entity.LivingEntity
-                import org.bukkit.entity.Player
-                import org.bukkit.event.EventPriority.MONITOR
-                import org.bukkit.event.EventPriority.NORMAL
-                import org.bukkit.event.block.BlockBreakEvent
-                import org.bukkit.event.block.BlockPlaceEvent
-                import org.bukkit.event.player.PlayerJoinEvent
-                import org.bukkit.event.player.PlayerTeleportEvent
-                import org.bukkit.event.world.ChunkUnloadEvent
-                import org.bukkit.util.Vector
-                import java.io.File
-                import java.util.concurrent.ConcurrentHashMap
-                
-                class xAtomixTempleModule internal constructor(override val plugin: xAtomix) : xAtomixModule("Temples")
-                {
-                  
-                  private val loadedTemples = mutableMapOf<String, xAtomixTemple>()
-                    private val templeDecoder = TempleYamlPull(plugin)
-                    
-                    
-                    private var overClaimListener: AtomixEventListener<TempleClaimedEvent>? = null
-                      private var whenMovedListener: AtomixEventListener<PlayerMoveBlockEvent>? = null
-                        
-                        private var tempEnterListener: AtomixEventListener<PlayerEnterTempleEvent>? = null
-                          private var tempLeaveListener: AtomixEventListener<PlayerLeaveTempleEvent>? = null
-                            private var mineEnterListener: AtomixEventListener<PlayerEnterTempleMineEvent>? = null
-                              private var mineLeaveListener: AtomixEventListener<PlayerLeaveTempleMineEvent>? = null
-                                
-	private var groupQuitListener: AtomixEventListener<GroupQuitEvent>? = null
-	private var groupJoinListener: AtomixEventListener<GroupJoinEvent>? = null
+    private val loadedTemples = mutableMapOf<String, xAtomixTemple>()
+    private val templeDecoder = TempleYamlPull(plugin)
+
+
+    private var overClaimListener: AtomixEventListener<TempleClaimedEvent>? = null
+    private var whenMovedListener: AtomixEventListener<PlayerMoveBlockEvent>? = null
+
+    private var tempEnterListener: AtomixEventListener<PlayerEnterTempleEvent>? = null
+    private var tempLeaveListener: AtomixEventListener<PlayerLeaveTempleEvent>? = null
+    private var mineEnterListener: AtomixEventListener<PlayerEnterTempleMineEvent>? = null
+    private var mineLeaveListener: AtomixEventListener<PlayerLeaveTempleMineEvent>? = null
+
+    private var groupQuitListener: AtomixEventListener<GroupQuitEvent>? = null
+    private var groupJoinListener: AtomixEventListener<GroupJoinEvent>? = null
 
     private var playerJoinListener: BukkitEventListener<PlayerJoinEvent>? = null
-      private var unvanishListener: BukkitEventListener<PlayerShowEvent>? = null
-	private var templeMineBreakListener: BukkitEventListener<BlockBreakEvent>? = null
+    private var unvanishListener: BukkitEventListener<PlayerShowEvent>? = null
+    private var templeMineBreakListener: BukkitEventListener<BlockBreakEvent>? = null
     private var templeMinePlaceListener: BukkitEventListener<BlockPlaceEvent>? = null
-	private var templeTeleportsListener: BukkitEventListener<PlayerTeleportEvent>? = null
+    private var templeTeleportsListener: BukkitEventListener<PlayerTeleportEvent>? = null
     private var templeChunkKillListener: BukkitEventListener<ChunkUnloadEvent>? = null
 
-      
-      private val playersInTheirTemple = ConcurrentHashMap<Player, Long>()
+
+    private val playersInTheirTemple = ConcurrentHashMap<Player, Long>()
 
 
-        override fun load()
-	{
-		super.load()
+    override fun load()
+    {
+        super.load()
 
-		pluginFolder.resolve("temples").mkdirs()
-
-
-		loadTemples()
-		loadedTemples.values.forEach(xAtomixTemple::load)
-    
-		fun TempleEvent.updateLastEntry(playerGroup: () -> xAtomixGroup?)
-		{
-			val tGroup = templeGroup()
-			val pGroup = playerGroup()
-      
-			if (tGroup != null && tGroup == pGroup)
-			{
-				temple.gameData.lastGroupEntry = System.currentTimeMillis()
-				temple.conf.set("GameData.Cache.LastGroupEntry", temple.gameData.lastGroupEntry)
-				temple.save()
-			} else
-			{
-        temple.gameData.lastEnemyEntry = System.currentTimeMillis()
-				temple.conf.set("GameData.Cache.LastEnemyEntry", temple.gameData.lastEnemyEntry)
-				temple.save()
-			}
-		}
+        pluginFolder.resolve("temples").mkdirs()
 
 
-		tempEnterListener = plugin.atomixEvents.listen {
-			updateLastEntry(::playerGroup)
-      
-			val tGroup = templeGroup()
-			val pGroup = playerGroup()
+        loadTemples()
+        loadedTemples.values.forEach(xAtomixTemple::load)
 
-			if (tGroup == null)
-			{
-				return@listen plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_NOT_CLAIMED, player, mapOf("temple_name" to temple.name))
-			}
+        fun TempleEvent.updateLastEntry(playerGroup: () -> xAtomixGroup?)
+        {
+            val tGroup = templeGroup()
+            val pGroup = playerGroup()
 
-			val value = mapOf(
-					"temple_name" to temple.name,
-					"your_group" to (pGroup?.named?.external ?: "unknown"),
-					"enemy_group" to tGroup.named.external
-          )
-          
-			if (tGroup == pGroup)
-			{
-				plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_GROUP, player, value)
-        
-				// log when they enter
-				playersInTheirTemple[player] = System.currentTimeMillis()
-			} else
-			{
-				plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_ENEMY, player, value)
-			}
-		}
-
-		tempLeaveListener = plugin.atomixEvents.listen {
-      updateLastEntry(::playerGroup)
-
-			// remove when they leave
-			playersInTheirTemple -= player
-			debug("Removed ${player.name} from players in temple")
-		}
-
-		templeMineBreakListener = plugin.bukkitEvents.listen(priority = NORMAL) {
-			if (isAllowedToInteractHere(player, block)) {
-				return@listen
-			}
-
-			isCancelled = true
-		}
-    
-		templeMinePlaceListener = plugin.bukkitEvents.listen(priority = NORMAL) {
-			if (isAllowedToInteractHere(player, block))
-			{
-        return@listen
-			}
-
-			isCancelled = true
-		}
-
-		templeTeleportsListener = plugin.bukkitEvents.listen(MONITOR, ignoreCancelled = true) {
-      calcFromTo(player, from.block, to.block)
-		}
-
-		whenMovedListener = plugin.atomixEvents.listen {
-			calcFromTo(player, fromBlock, intoBlock)
-		}
-    
-		templeChunkKillListener = plugin.bukkitEvents.listen {
-      if (!isATempleWorld(world))
-			{
-				return@listen
-			}
-      
-			val temples = plugin.worldG.getCurrentRegions(chunk).mapNotNull(::tempByRegion)
-			if (temples.isEmpty())
-			{
-				return@listen
-			}
-		}
-    
-		groupQuitListener = plugin.atomixEvents.listen {
-			playersInTheirTemple.remove(player)
-			debug("Removed ${player.name} from players in temple as they left their group")
-			MythicBukkit.inst().mobManager.mobsInCombat.forEach()
-			{ mob ->
-				if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
-				{
-					mob.threatTable.clearTarget()
-				}
-			}
-		}
-
-		groupJoinListener = plugin.atomixEvents.listen {
-			MythicBukkit.inst().mobManager.mobsInCombat.forEach()
-			{ mob ->
-				if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
-				{
-					if (mob.faction.equals(player.group()?.name, ignoreCase = true))
-					{
-            mob.threatTable.clearTarget()
-					}
-				}
-			}
-		}
-
-		/*
-		repeat(20)
-		{
-			playersInTheirTemple.forEach()
-			{ (player, entered) ->
-				val temple = player.currentTemple() ?: return@forEach
-				if (temple.atomGain.not())
-				{
-					return@forEach
-				}
-
-				val (_, gain) = temple.gameData.atomGainTimeValues.floorEntry((System.currentTimeMillis() - entered) / 1000L)
-						?: return@forEach
-
-				plugin.tokenE.addAtomsFor(player, gain.toDouble())
-			}
-		}
-		*/
-
-		// TODO: Try to do async
-		repeat(20)
-		{
-      temples()
-					.asSequence()
-					// get all entities inside of the temple region
-					.flatMap()
-					{ temple ->
-						temple.world.entities.asSequence().filter { plugin.worldG.isWithin(it, temple.mainRegion) }
-					}
-					// ignore players, armor stands, and non living entities
-					.filterNot()
-					{ entity ->
-						entity is Player || entity is ArmorStand || entity !is LivingEntity
-					}
-					// ignore entities that are mythic mobs
-					.filterNot()
-					{ entity ->
-						plugin.mythMb.isMythicMob(entity)
-					}
-					// ignore entities that have the temple tag (or are children of mobs who do)
-					.filterNot()
-					{ entity ->
-						entity.persistentDataContainer.has(TEMPLE_META)
-								|| (plugin.mythMb.getParentOfMobSpigot(entity))?.persistentDataContainer?.has(
-                  TEMPLE_META
-                  ) ?: false
-					}
-					// remove excess entity
-					.forEach(Entity::remove)
-		}
-	}
-
-	override fun kill()
-	{
-		super.kill()
-    
-		loadedTemples.values.forEach(xAtomixTemple::kill)
-		loadedTemples.clear()
-
-		templeMineBreakListener.detach()
-		templeMinePlaceListener.detach()
-		overClaimListener.detach()
-		templeTeleportsListener.detach()
-		whenMovedListener.detach()
-
-		tempEnterListener.detach()
-		tempLeaveListener.detach()
-		mineEnterListener.detach()
-		mineLeaveListener.detach()
-    
-
-	}
+            if (tGroup != null && tGroup == pGroup)
+            {
+                temple.gameData.lastGroupEntry = System.currentTimeMillis()
+                temple.conf.set("GameData.Cache.LastGroupEntry", temple.gameData.lastGroupEntry)
+                temple.save()
+            } else
+            {
+                temple.gameData.lastEnemyEntry = System.currentTimeMillis()
+                temple.conf.set("GameData.Cache.LastEnemyEntry", temple.gameData.lastEnemyEntry)
+                temple.save()
+            }
+        }
 
 
-	override fun onPlayerJoin(player: Player)
-	{
-    handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent)
-	}
+        tempEnterListener = plugin.atomixEvents.listen {
+            updateLastEntry(::playerGroup)
 
-	override fun onPlayerQuit(player: Player)
-	{
-		handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent)
-	}
+            val tGroup = templeGroup()
+            val pGroup = playerGroup()
+
+            if (tGroup == null)
+            {
+                return@listen plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_NOT_CLAIMED, player, mapOf("temple_name" to temple.name))
+            }
+
+            val value = mapOf(
+                    "temple_name" to temple.name,
+                    "your_group" to (pGroup?.named?.external ?: "unknown"),
+                    "enemy_group" to tGroup.named.external
+            )
+
+            if (tGroup == pGroup)
+            {
+                plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_GROUP, player, value)
+
+                // log when they enter
+                playersInTheirTemple[player] = System.currentTimeMillis()
+            } else
+            {
+                plugin.langModule.send(xAtomixLang.TEMPLE_ENTER_WAS_CLAIMED_BY_ENEMY, player, value)
+            }
+        }
+
+        tempLeaveListener = plugin.atomixEvents.listen {
+            updateLastEntry(::playerGroup)
+
+            // remove when they leave
+            playersInTheirTemple -= player
+            debug("Removed ${player.name} from players in temple")
+        }
+
+        templeMineBreakListener = plugin.bukkitEvents.listen(priority = NORMAL) {
+            if (isAllowedToInteractHere(player, block)) {
+                return@listen
+            }
+
+            isCancelled = true
+        }
+
+        templeMinePlaceListener = plugin.bukkitEvents.listen(priority = NORMAL) {
+            if (isAllowedToInteractHere(player, block))
+            {
+                return@listen
+            }
+
+            isCancelled = true
+        }
+
+        templeTeleportsListener = plugin.bukkitEvents.listen(MONITOR, ignoreCancelled = true) {
+            calcFromTo(player, from.block, to.block)
+        }
+
+        whenMovedListener = plugin.atomixEvents.listen {
+            calcFromTo(player, fromBlock, intoBlock)
+        }
+
+        templeChunkKillListener = plugin.bukkitEvents.listen {
+            if (!isATempleWorld(world))
+            {
+                return@listen
+            }
+
+            val temples = plugin.worldG.getCurrentRegions(chunk).mapNotNull(::tempByRegion)
+            if (temples.isEmpty())
+            {
+                return@listen
+            }
+        }
+
+        groupQuitListener = plugin.atomixEvents.listen {
+            playersInTheirTemple.remove(player)
+            debug("Removed ${player.name} from players in temple as they left their group")
+            MythicBukkit.inst().mobManager.mobsInCombat.forEach()
+            { mob ->
+                if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
+                {
+                    mob.threatTable.clearTarget()
+                }
+            }
+        }
+
+        groupJoinListener = plugin.atomixEvents.listen {
+            MythicBukkit.inst().mobManager.mobsInCombat.forEach()
+            { mob ->
+                if ((mob.hasThreatTable() && mob.threatTable.topThreatHolder.uniqueId === player.uniqueId))
+                {
+                    if (mob.faction.equals(player.group()?.name, ignoreCase = true))
+                    {
+                        mob.threatTable.clearTarget()
+                    }
+                }
+            }
+        }
+
+        /*
+        repeat(20)
+        {
+            playersInTheirTemple.forEach()
+            { (player, entered) ->
+                val temple = player.currentTemple() ?: return@forEach
+                if (temple.atomGain.not())
+                {
+                    return@forEach
+                }
+
+                val (_, gain) = temple.gameData.atomGainTimeValues.floorEntry((System.currentTimeMillis() - entered) / 1000L)
+                        ?: return@forEach
+
+                plugin.tokenE.addAtomsFor(player, gain.toDouble())
+            }
+        }
+        */
+
+        // TODO: Try to do async
+        repeat(20)
+        {
+            temples()
+                    .asSequence()
+                    // get all entities inside of the temple region
+                    .flatMap()
+                    { temple ->
+                        temple.world.entities.asSequence().filter { plugin.worldG.isWithin(it, temple.mainRegion) }
+                    }
+                    // ignore players, armor stands, and non living entities
+                    .filterNot()
+                    { entity ->
+                        entity is Player || entity is ArmorStand || entity !is LivingEntity
+                    }
+                    // ignore entities that are mythic mobs
+                    .filterNot()
+                    { entity ->
+                        plugin.mythMb.isMythicMob(entity)
+                    }
+                    // ignore entities that have the temple tag (or are children of mobs who do)
+                    .filterNot()
+                    { entity ->
+                        entity.persistentDataContainer.has(TEMPLE_META)
+                                || (plugin.mythMb.getParentOfMobSpigot(entity))?.persistentDataContainer?.has(
+                            TEMPLE_META
+                        ) ?: false
+                    }
+                    // remove excess entity
+                    .forEach(Entity::remove)
+        }
+    }
+
+    override fun kill()
+    {
+        super.kill()
+
+        loadedTemples.values.forEach(xAtomixTemple::kill)
+        loadedTemples.clear()
+
+        templeMineBreakListener.detach()
+        templeMinePlaceListener.detach()
+        overClaimListener.detach()
+        templeTeleportsListener.detach()
+        whenMovedListener.detach()
+
+        tempEnterListener.detach()
+        tempLeaveListener.detach()
+        mineEnterListener.detach()
+        mineLeaveListener.detach()
 
 
-	fun temples(): List<xAtomixTemple>
-	{
-		return loadedTemples.values.toList()
-	}
-
-	fun templeByName(name: String): xAtomixTemple?
-	{
-    return loadedTemples[name]
-	}
-  
-  
-	fun mineByRegion(region: ProtectedRegion): SxMine?
-	{
-		val minVec = region.minimumPoint
-		val maxVec = region.maximumPoint
-
-		return plugin.prMine.findMine(Vector(minVec.x, minVec.y, minVec.z), Vector(maxVec.x, maxVec.y, maxVec.z))?.apply { this.region = region }
-	}
-
-  
-	fun tempByVector(location: Location): xAtomixTemple?
-	{
-		return temples().find { it.world == location.world && it.mainRegion.contains(location.blockX, location.blockY, location.blockZ) }
-	}
-
-	fun tempByRegion(region: ProtectedRegion): xAtomixTemple?
-	{
-    return temples().find { it.mainRegion == region || it.mineRegion == region }
-	}
-  
-	fun tempByMine(mine: SxMine): xAtomixTemple?
-	{
-    return temples().find { it.mineRegion == mine.region }
-	}
+    }
 
 
-	fun isATempleWorld(world: World): Boolean
-	{
-    return loadedTemples.values.any { it.world.uid == world.uid }
-	}
+    override fun onPlayerJoin(player: Player)
+    {
+        handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent)
+    }
 
-	fun setTempleClaimedBy(temple: xAtomixTemple, groupName: String)
-	{
-		if (plugin.spigot.lock) return
-
-		/*
-		Dirty, but hey, it works
-		If the temple is being unclaimed, null group will match it.group() != null
-		Otherwise, make sure the group exists and get it
-		*/
-		val group = if (groupName == "") null else run {
-			val group = plugin.groupsModule.groupByName(groupName)
-			if (group == null)
-			{
-				logger.warning("Will not set ${temple.name} to non-existent group $groupName")
-				return
-			}
-			group
-		}
-
-		onlinePlayers
-    .filter { it.group() != group }
-				.forEach {
-					playersInTheirTemple.remove(it)
-					debug("Removed ${it.name} from players in temple, as the temple was over-claimed")
-				}
-
-		temple.gameData.claimedBy = groupName
-    
-		temple.conf.set("GameData.Group", groupName)
-		temple.save()
-	}
-
-	fun setTempleGameState(temple: xAtomixTemple, stateName: String)
-	{
-		if (plugin.spigot.lock) return
-
-		temple.conf.set("GameData.State", stateName)
-		temple.save()
-	}
+    override fun onPlayerQuit(player: Player)
+    {
+        handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent)
+    }
 
 
-	private fun isAllowedToInteractHere(player: Player, block: Block): Boolean
-	{
-    val mine = plugin.prMine.findMine(block) ?: return true
-		val temp = temples().find { it.gameData.mineNamed == mine.name } ?: return true
+    fun temples(): List<xAtomixTemple>
+    {
+        return loadedTemples.values.toList()
+    }
 
-		val pGroup = player.group()
-
-		if (pGroup == null)
-		{
-      plugin.langModule.send(xAtomixLang.MINE_NOT_IN_GROUP, player, timeout = 10)
-			return false
-		}
-    
-		val tGroup = temp.group()
-		if (pGroup != tGroup)
-		{
-      plugin.langModule.send(xAtomixLang.MINE_DOES_NOT_CONTROL, player, timeout = 10)
-			return false
-		}
-    
-		val curTier = player.groupTier() ?: return true
-		val reqTier = tGroup.perms.getRequiredTier(temp) ?: return true
-
-		if (curTier < reqTier)
-		{
-			plugin.langModule.send(xAtomixLang.MINE_TIER_TOO_LOW, player, timeout = 10)
-			return false
-		}
-
-		return true
-	}
-
-	private fun calcFromTo(player: Player, fromBlock: Block, intoBlock: Block)
-	{
-		val fromRegions = plugin.worldG.getCurrentRegions(fromBlock.location)
-		val intoRegions = plugin.worldG.getCurrentRegions(intoBlock.location)
-
-		handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent, fromRegions, intoRegions)
-		handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent, intoRegions, fromRegions)
-	}
+    fun templeByName(name: String): xAtomixTemple?
+    {
+        return loadedTemples[name]
+    }
 
 
-	private fun handleMoveBetween(
-			player: Player,
-			tempEvent: (xAtomixTemple, Player) -> TempleEvent,
-			mineEvent: (SxMine, xAtomixTemple, Player) -> TempleEvent,
-			regions: Iterable<ProtectedRegion> = plugin.worldG.getCurrentRegions(player.location),
-			filterNotIn: Iterable<ProtectedRegion> = emptySet()
-	)
-	{
-		regions.forEach()
-		{
-      if (it in filterNotIn)
-			{
-				return@forEach
-			}
-			val mine = mineByRegion(it)
-			val temp = tempByRegion(it)
-      
-			if (mine != null && temp != null && temp.mineRegion in regions)
-			{
-        plugin.atomixEvents.push(mineEvent.invoke(mine, temp, player))
-				return
-			}
+    fun mineByRegion(region: ProtectedRegion): SxMine?
+    {
+        val minVec = region.minimumPoint
+        val maxVec = region.maximumPoint
 
-			if (temp != null && temp.mineRegion != it)
-			{
-        plugin.atomixEvents.push(tempEvent.invoke(temp, player))
-			}
-		}
-	}
+        return plugin.prMine.findMine(Vector(minVec.x, minVec.y, minVec.z), Vector(maxVec.x, maxVec.y, maxVec.z))?.apply { this.region = region }
+    }
 
 
-	private fun loadTemples()
-	{
-		// load temples from folder
-		File(pluginFolder, "temples").listFiles { file -> file.extension.equals("yml", true) }?.forEach {
-			logger.info("[Temples] attempting to load temple from file: ${it.name}")
-			try
-			{
-        val temple = templeDecoder.pull(YamlConfiguration.loadConfiguration(it)) ?: return@forEach
-				temple.file = it
-        
-				loadedTemples[temple.name] = temple
-        
-				mineByRegion(temple.mineRegion)?.let { mine ->
-					temple.gameData.mineNamed = mine.name
-				}
-        
-				logger.info("[Temples] ${temple.name}'s state is ${temple.templeState.name}")
-			} catch (ex: Exception)
-			{
-        logger.severe("[Temples] failed to load temple from file: ${it.name}")
-				ex.printStackTrace()
-			}
-		}
-	}
+    fun tempByVector(location: Location): xAtomixTemple?
+    {
+        return temples().find { it.world == location.world && it.mainRegion.contains(location.blockX, location.blockY, location.blockZ) }
+    }
 
-  
+    fun tempByRegion(region: ProtectedRegion): xAtomixTemple?
+    {
+        return temples().find { it.mainRegion == region || it.mineRegion == region }
+    }
+
+    fun tempByMine(mine: SxMine): xAtomixTemple?
+    {
+        return temples().find { it.mineRegion == mine.region }
+    }
+
+
+    fun isATempleWorld(world: World): Boolean
+    {
+        return loadedTemples.values.any { it.world.uid == world.uid }
+    }
+
+    fun setTempleClaimedBy(temple: xAtomixTemple, groupName: String)
+    {
+        if (plugin.spigot.lock) return
+
+        /*
+        Dirty, but hey, it works
+        If the temple is being unclaimed, null group will match it.group() != null
+        Otherwise, make sure the group exists and get it
+        */
+        val group = if (groupName == "") null else run {
+            val group = plugin.groupsModule.groupByName(groupName)
+            if (group == null)
+            {
+                logger.warning("Will not set ${temple.name} to non-existent group $groupName")
+                return
+            }
+            group
+        }
+
+        onlinePlayers
+            .filter { it.group() != group }
+            .forEach {
+                playersInTheirTemple.remove(it)
+                debug("Removed ${it.name} from players in temple, as the temple was over-claimed")
+            }
+
+        temple.gameData.claimedBy = groupName
+
+        temple.conf.set("GameData.Group", groupName)
+        temple.save()
+    }
+
+    fun setTempleGameState(temple: xAtomixTemple, stateName: String)
+    {
+        if (plugin.spigot.lock) return
+
+        temple.conf.set("GameData.State", stateName)
+        temple.save()
+    }
+
+
+    private fun isAllowedToInteractHere(player: Player, block: Block): Boolean
+    {
+        val mine = plugin.prMine.findMine(block) ?: return true
+        val temp = temples().find { it.gameData.mineNamed == mine.name } ?: return true
+
+        val pGroup = player.group()
+
+        if (pGroup == null)
+        {
+            plugin.langModule.send(xAtomixLang.MINE_NOT_IN_GROUP, player, timeout = 10)
+            return false
+        }
+
+        val tGroup = temp.group()
+        if (pGroup != tGroup)
+        {
+            plugin.langModule.send(xAtomixLang.MINE_DOES_NOT_CONTROL, player, timeout = 10)
+            return false
+        }
+
+        val curTier = player.groupTier() ?: return true
+        val reqTier = tGroup.perms.getRequiredTier(temp) ?: return true
+
+        if (curTier < reqTier)
+        {
+            plugin.langModule.send(xAtomixLang.MINE_TIER_TOO_LOW, player, timeout = 10)
+            return false
+        }
+
+        return true
+    }
+
+    private fun calcFromTo(player: Player, fromBlock: Block, intoBlock: Block)
+    {
+        val fromRegions = plugin.worldG.getCurrentRegions(fromBlock.location)
+        val intoRegions = plugin.worldG.getCurrentRegions(intoBlock.location)
+
+        handleMoveBetween(player, ::PlayerLeaveTempleEvent, ::PlayerLeaveTempleMineEvent, fromRegions, intoRegions)
+        handleMoveBetween(player, ::PlayerEnterTempleEvent, ::PlayerEnterTempleMineEvent, intoRegions, fromRegions)
+    }
+
+
+    private fun handleMoveBetween(
+            player: Player,
+            tempEvent: (xAtomixTemple, Player) -> TempleEvent,
+            mineEvent: (SxMine, xAtomixTemple, Player) -> TempleEvent,
+            regions: Iterable<ProtectedRegion> = plugin.worldG.getCurrentRegions(player.location),
+            filterNotIn: Iterable<ProtectedRegion> = emptySet()
+    )
+    {
+        regions.forEach()
+        {
+            if (it in filterNotIn)
+            {
+                return@forEach
+            }
+            val mine = mineByRegion(it)
+            val temp = tempByRegion(it)
+
+            if (mine != null && temp != null && temp.mineRegion in regions)
+            {
+                plugin.atomixEvents.push(mineEvent.invoke(mine, temp, player))
+                return
+            }
+
+            if (temp != null && temp.mineRegion != it)
+            {
+                plugin.atomixEvents.push(tempEvent.invoke(temp, player))
+            }
+        }
+    }
+
+
+    private fun loadTemples()
+    {
+        // load temples from folder
+        File(pluginFolder, "temples").listFiles { file -> file.extension.equals("yml", true) }?.forEach {
+            logger.info("[Temples] attempting to load temple from file: ${it.name}")
+            try
+            {
+                val temple = templeDecoder.pull(YamlConfiguration.loadConfiguration(it)) ?: return@forEach
+                temple.file = it
+
+                loadedTemples[temple.name] = temple
+
+                mineByRegion(temple.mineRegion)?.let { mine ->
+                    temple.gameData.mineNamed = mine.name
+                }
+
+                logger.info("[Temples] ${temple.name}'s state is ${temple.templeState.name}")
+            } catch (ex: Exception)
+            {
+                logger.severe("[Temples] failed to load temple from file: ${it.name}")
+                ex.printStackTrace()
+            }
+        }
+    }
 }
 
                </code></pre>
-            </div>
-            
-            <div class="temple-gamestate-embed-header">
-               <h2>A List of What We Accounted For:</h2>
-               <ul>
-                <li>The designated area of a Temple</li>
-                <li>An "ungrouped" player entering the Temple Area</li>
-                <li>A "grouped" player entering the Temple Area</li>
-                <li>A count of "Attackers" and "Defenders" in the Temple Area depending on the claimed status</li>
-                <li>Threat tables of the Temple Guardians guarding the temple</li>
-                <li>A player's eligibility to attack a Temple Guardian depending on their group status</li>
-                <li>A player's Tier level when determining access to the claimed Temple's mine portal"</li>
-                <li>and a few other nuanced scenarios to ensure smooth gameplay...</li>
-            </div>
+               </div>
+               <div class="temple-gamestate-embed-header">
+                  <h2>A List of What We Accounted For:</h2>
+                  <ul>
+                  <li>The designated area of a Temple</li>
+                  <li>An "ungrouped" player entering the Temple Area</li>
+                  <li>A "grouped" player entering the Temple Area</li>
+                  <li>A count of "Attackers" and "Defenders" in the Temple Area depending on the claimed status</li>
+                  <li>Threat tables of the Temple Guardians guarding the temple</li>
+                  <li>A player's eligibility to attack a Temple Guardian depending on their group status</li>
+                  <li>A player's Tier level when determining access to the claimed Temple's mine portal"</li>
+                  <li>and a few other nuanced scenarios to ensure smooth gameplay...</li>
+               </div>
             </div>
          </div>
       </div>
-	<footer>
-      <div class="footer">
-        <div class="copyright">
-          <p>© 2025 Christopher Galetta</p>
-        </div>
-      </div>
-    </footer>
+      <footer>
+         <div class="footer">
+            <div class="copyright">
+               <p>© 2025 Christopher Galetta</p>
+            </div>
+         </div>
+      </footer>
    </body>
 </html>
