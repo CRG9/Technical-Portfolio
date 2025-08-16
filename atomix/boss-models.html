@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/boss-models.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="/atomix-boss-renderer.js" defer></script>
+    <script src="/scroller.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="nav-bar">
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/projects.html">Projects</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="project-page-link">
+      <h3><a href="/atomix/atomix-project.html">Back to Atomix...</a></h3>
+    </div>
+    <div class="page-header">
+      <h1>Boss Models</h1>
+    </div>
+    <div class="main-content">
+      <div class="boss-selection-and-viewer-container">
+        <div class="boss-selection-bar-container">
+          <div class="boss-selection-bar">
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+            <div class="boss-selection-item"></div>
+          </div>
+        </div>
+
+        <div class="selected-boss-viewer-section">
+          <div class="selected-boss-viewer-wrapper">
+            <div id="three-container"></div>
+
+            <div class="animation-item-bar">
+              <div class="animation-item-wrapper">
+                <div id="frame-1" class="animation-item"></div>
+                <h4>ANIMATION NAME</h4>
+              </div>
+
+              <div class="animation-item-wrapper">
+                <div id="frame-2" class="animation-item"></div>
+                <h4>ANIMATION NAME</h4>
+              </div>
+
+              <div class="animation-item-wrapper">
+                <div id="frame-3" class="animation-item"></div>
+                <h4>ANIMATION NAME</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="selected-boss-code-embed-wrapper">
+            <div class="selected-boss-code-header">
+              <h3>NAME OF BOSS</h3>
+              <h4>YAML Script Configurations</h4>
+            </div>
+
+            <div class="boss-card-code-embed">
+              <pre><code>
+
+            </code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
