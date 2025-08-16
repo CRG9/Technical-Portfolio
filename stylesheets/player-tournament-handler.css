@@ -98,7 +98,7 @@ header {
 }
 
 .tournament-config-embed, .tournament-chart {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
     height: 30rem; /* Set a fixed height for the container */
     overflow: auto; /* Enable scrollbars when content overflows */
     border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
