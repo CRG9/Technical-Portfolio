@@ -116,6 +116,7 @@ header {
     height: auto;
     margin: 0 auto;
     border-radius: 25px;
+    border:#15256d solid 5px;
 }
 
 .temple-gamestate-embed-header {
@@ -147,4 +148,27 @@ header {
     border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
     padding: 1rem; /* Optional: Add padding inside the container */
     background-color: #f8f8f8; /* Optional: Light background for readability */
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 4em;
+    background-color: #15256d;
+    position: relative;
+    bottom: -4.33rem; /*Puts footer at bottom of page*/
+    border-top: silver 5px solid;
+}
+
+.copyright {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.copyright p {
+    color: silver;
+    font-size: 1.25rem;
 }

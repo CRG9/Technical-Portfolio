@@ -112,3 +112,26 @@ header {
 .leaderboards-blurb p {
     padding: 0.25rem;
 }
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 4em;
+    background-color: #15256d;
+    position: relative;
+    bottom: -4.33rem; /*Puts footer at bottom of page*/
+    border-top: silver 5px solid;
+}
+
+.copyright {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.copyright p {
+    color: silver;
+    font-size: 1.25rem;
+}

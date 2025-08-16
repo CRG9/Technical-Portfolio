@@ -116,7 +116,7 @@ header {
 }
 
 .iframe-wrapper {
-    box-sizing: border-box;
+  box-sizing: border-box;
   display: flex;
   position: relative; /* This is the key. It sets the positioning context for the iframe. */
   padding-bottom: 56.25%; /* This is the magic number for a 16:9 aspect ratio (9/16 = 0.5625) */
@@ -138,6 +138,29 @@ header {
     display: flex;
     justify-content: center;
     padding-top: 2rem;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 4em;
+    background-color: #15256d;
+    position: relative;
+    bottom: -4.33rem; /*Puts footer at bottom of page*/
+    border-top: silver 5px solid;
+}
+
+.copyright {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.copyright p {
+    color: silver;
+    font-size: 1.25rem;
 }
 
 
