@@ -109,27 +109,32 @@ header {
 
 .boss-selection-bar {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   border-radius: 25px;
   flex-grow: 1;
   border: 10px solid #325291;
   background-color: rgb(8, 3, 94);
   overflow-x: auto;
-  position: relative; /* Needed for the scroll indicator */
+  padding: 0 1rem;
+  scrollbar-width: auto;
+  scrollbar-color: #888 rgb(8, 3, 94);
 }
 
-/* --- ADJUSTMENT: Scroll Indicator for Mobile --- */
-.boss-selection-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 40px;
-  background: linear-gradient(to right, transparent, rgb(8, 3, 94));
-  pointer-events: none; /* Allows clicking/scrolling through the gradient */
+/* --- WebKit scrollbar styles for permanent visibility on compatible browsers --- */
+.boss-selection-bar::-webkit-scrollbar {
+  height: 12px;
 }
+.boss-selection-bar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.boss-selection-bar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  border: 3px solid rgb(8, 3, 94);
+}
+
 
 .boss-selection-item {
   display: flex;
@@ -203,19 +208,22 @@ header {
   padding: 0.5rem;
   border: 10px solid #325291;
   border-radius: 0 0 25px 25px;
-  position: relative; /* Needed for the scroll indicator */
+  scrollbar-width: auto;
+  scrollbar-color: #888 rgb(23, 23, 109);
 }
 
-/* --- ADJUSTMENT: Scroll Indicator for Mobile --- */
-.animation-item-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 40px;
-  background: linear-gradient(to right, transparent, rgb(23, 23, 109));
-  pointer-events: none;
+/* --- WebKit scrollbar styles for permanent visibility on compatible browsers --- */
+.animation-item-bar::-webkit-scrollbar {
+  height: 12px;
+}
+.animation-item-bar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.animation-item-bar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  border: 3px solid rgb(23, 23, 109);
 }
 
 .animation-item-wrapper {
