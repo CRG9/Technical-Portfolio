@@ -6,6 +6,8 @@ let activeModelData = null; // Will hold the data of the currently visible model
 
 //This bossArray is used to load in the models and their animations
 // ADJUSTMENT: Added a new file path for the code snippet at the end of each entry
+//
+//Boss Name | Path | Animation Index (0 is idle, 1 is walk, last is death) | Starting Camera Position | Boss Code YML File Path
 let bossImportArray = [
   ["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 5, z: -90 }, "/atomix/code/Area0Boss.yml"],
   ["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 5, z: -90 }, "/atomix/code/Area2Boss.yml"],
