@@ -94,7 +94,6 @@ header {
   justify-items: center;
   align-items: center;
   width: 100%;
-  /* --- ADJUSTMENT: Added padding here to control alignment of all children --- */
   padding: 0 2rem;
 }
 
@@ -103,7 +102,6 @@ header {
   grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   align-content: center;
   height: 15rem;
-  /* --- ADJUSTMENT: Removed horizontal margin --- */
   margin: 0 0 2rem 0;
   width: 100%;
   box-sizing: border-box;
@@ -118,6 +116,19 @@ header {
   border: 10px solid #325291;
   background-color: rgb(8, 3, 94);
   overflow-x: auto;
+  position: relative; /* Needed for the scroll indicator */
+}
+
+/* --- ADJUSTMENT: Scroll Indicator for Mobile --- */
+.boss-selection-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, rgb(8, 3, 94));
+  pointer-events: none; /* Allows clicking/scrolling through the gradient */
 }
 
 .boss-selection-item {
@@ -153,7 +164,6 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 2rem;
-  /* --- ADJUSTMENT: Removed horizontal padding --- */
   padding: 0 0 2rem 0;
   margin-bottom: 2rem;
   width: 100%;
@@ -186,7 +196,6 @@ header {
 
 .animation-item-bar {
   display: flex;
-  /* --- ADJUSTMENT: Changed to create a horizontal scrollbar --- */
   flex-wrap: nowrap;
   justify-content: flex-start;
   overflow-x: auto;
@@ -194,6 +203,19 @@ header {
   padding: 0.5rem;
   border: 10px solid #325291;
   border-radius: 0 0 25px 25px;
+  position: relative; /* Needed for the scroll indicator */
+}
+
+/* --- ADJUSTMENT: Scroll Indicator for Mobile --- */
+.animation-item-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, rgb(23, 23, 109));
+  pointer-events: none;
 }
 
 .animation-item-wrapper {
@@ -202,7 +224,6 @@ header {
   align-items: center;
   justify-content: top;
   width: 10rem;
-  /* --- ADJUSTMENT: Prevent items from shrinking --- */
   flex-shrink: 0;
 }
 
