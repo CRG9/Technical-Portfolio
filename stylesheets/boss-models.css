@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 h1,
@@ -40,14 +41,12 @@ header {
   align-items: center;
   display: flex;
   padding: 1rem;
-  border: red solid 1px;
 }
 
 .nav-bar ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid green;
 }
 
 .nav-bar li {
@@ -89,12 +88,11 @@ header {
   margin: 0 2rem 2rem 2rem;
 }
 
-.boss-selection-and-viewer-container {
+.boss-selection-and-viewer-wrapper {
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  border: red solid 1px;
   width: 100%;
 }
 
@@ -102,7 +100,7 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   align-content: center;
-  height: 10rem;
+  height: 15rem;
   margin: 0 2rem 2rem;
   width: 100%;
   box-sizing: border-box;
@@ -116,7 +114,7 @@ header {
   flex-grow: 1;
   border: 10px solid #325291;
   background-color: rgb(8, 3, 94);
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 .boss-selection-item {
@@ -129,6 +127,25 @@ header {
   margin: 0.5rem;
   border-radius: 25px;
   flex-shrink: 0;
+}
+
+/* This is the new container for each boss thumbnail and its name */
+.boss-selection-item-wrapper {
+  display: flex;
+  height: 10rem;
+  width: 10rem;
+  justify-content: flex-start;
+  flex-direction: column; /* Stacks the thumbnail on top of the name */
+  align-items: center;    /* Centers them horizontally */
+  margin: 1rem;         /* Adds some space between each boss */
+}
+
+/* This styles the new h4 element holding the boss's name */
+.boss-selection-item-name {
+  color: white;
+  font-size: 0.9rem;
+  margin: 0.5rem;
+  text-align: center;
 }
 
 .selected-boss-viewer-section {
@@ -146,7 +163,6 @@ header {
   border-radius: 25px;
 }
 
-/*This was created using Google Gemini*/
 #three-container {
   overflow: hidden;
   width: 100%;
@@ -160,7 +176,6 @@ header {
   cursor: pointer;
 }
 
-/*This was created using Google Gemini*/
 #three-container canvas {
   width: 100%;
   height: 100%;
@@ -255,5 +270,3 @@ header {
     color: silver;
     font-size: 1.25rem;
 }
-
-

@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
+    <!-- Ensure your main script is loaded as a module and deferred -->
     <script type="module" src="/atomix-boss-renderer.js" defer></script>
-    <script src="/scroller.js" defer></script>
   </head>
   <body>
     <header>
@@ -31,39 +31,17 @@
       <h1>Boss Models</h1>
     </div>
     <div class="main-content">
-      <div class="boss-selection-and-viewer-container">
+      <div class="boss-selection-and-viewer-wrapper">
         <div class="boss-selection-bar-container">
-          <div class="boss-selection-bar">
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-            <div class="boss-selection-item"></div>
-          </div>
+          <!-- This div is now empty. The JS will create the items inside it. -->
+          <div class="boss-selection-bar"></div>
         </div>
 
         <div class="selected-boss-viewer-section">
           <div class="selected-boss-viewer-wrapper">
             <div id="three-container"></div>
-
             <div class="animation-item-bar">
-              <div class="animation-item-wrapper">
-                <div id="frame-1" class="animation-item"></div>
-                <h4>ANIMATION NAME</h4>
-              </div>
-
-              <div class="animation-item-wrapper">
-                <div id="frame-2" class="animation-item"></div>
-                <h4>ANIMATION NAME</h4>
-              </div>
-
-              <div class="animation-item-wrapper">
-                <div id="frame-3" class="animation-item"></div>
-                <h4>ANIMATION NAME</h4>
-              </div>
+              <!-- Animation items will be created here by JavaScript -->
             </div>
           </div>
 
@@ -72,11 +50,8 @@
               <h3>NAME OF BOSS</h3>
               <h4>YAML Script Configurations</h4>
             </div>
-
             <div class="boss-card-code-embed">
-              <pre><code>
-
-            </code></pre>
+              <pre><code></code></pre>
             </div>
           </div>
         </div>
