@@ -13,7 +13,7 @@ let bossImportArray = [
 ["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area4Boss.yml"],
 ["Void Queen", "/atomix/models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area9Boss.yml"],
 ["Boulder Giant", "/atomix/models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: -40, z: 0 }, { x: 0, y: 60, z: 0 }, "/atomix/code/BoulderGiant.yml"],
-["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/PrismarineMinion.yml"],
+["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 40 }, "/atomix/code/PrismarineMinion.yml"],
 ["Rock Elemental", "/atomix/models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/RockElemental.yml"],
 ["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/TempleGuardian.yml"],
 ];
