@@ -6,6 +6,7 @@ let activeModelData = null; // Will hold the data of the currently visible model
 
 // scenePos: Centers the model's pivot (e.g., move torso to origin).
 // containerOffset: Pans the entire view without changing the camera angle.
+//Name | Model Path | Camera Position | Scene Position | Container Position | Code Path
 let bossImportArray = [
 ["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area0Boss.yml"],
 ["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -30 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area2Boss.yml"],
