@@ -1,0 +1,45 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+Area9Boss:
+  Type: Zombie
+  Display: '&b&lArea 9 Boss'
+  Health: 2500
+  Modules:
+    ThreatTable: true
+  DamageModifiers:
+  - FIRE_TICK 0
+  - WITHER 0
+  - POISON 0
+  Damage: 0
+  Faction: Void
+  BossBar:
+    Enabled: true
+    Title: 'Area 9 Boss <caster.hp>/<caster.mhp>HP'
+    Range: 25
+    Color: PURPLE
+    Style: SOLID
+  Options:
+    #NoDamageTicks: 0
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.27
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: true
+    Despawn: false
+    KnockbackResistance: 1
+  Skills:
+  - model{mid=Area9Boss;n=mainSkull;d=false} @self ~onSpawn
+  - enchant{m=Area9Boss;pid=staff;en=true;em=false} @self ~onSpawn
+  - sound{s=entity.witch.hurt;v=0.2} @self ~onDamaged 0.3
+  - sound{s=entity.witch.death;v=0.5} @self ~onDeath
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - skill{s=A9scytheQuickSwing;sync=true} @target ~onAttack 0.5 
+  - effect:particles{p=reddust;color=#7900cc;a=25;hs=1.5;vs=2;y=2;forwardOffset=0} @self ~onDamaged
+  - randomskill{skills=A9scythePowerSwing,A9scytheSpear,A9scytheOverheadSlam,A9scytheHiltSlam,A9scytheSpin,A9scytheCrystalBarrage;sync=true} @target ~onAttack 0.5
+  - skill{s=A9scytheCrystalCast;sync=true} @target ~onTimer:140 
+  - skill{s=A9scytheSummon;sync=true} @target ~onTimer:250 
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged

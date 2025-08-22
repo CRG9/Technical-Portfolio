@@ -4,240 +4,231 @@ I used Gemini to cut down the learning curve for Three.js and related libraries*
 let activeAction;
 let activeModelData = null; // Will hold the data of the currently visible model
 
-//This bossArray is used to load in the models and their animations
-// ADJUSTMENT: Added a new file path for the code snippet at the end of each entry
-//
-//Boss Name | Path | Animation Index (0 is idle, 1 is walk, last is death) | Starting Camera Position | Boss Code YML File Path
+// scenePos: Centers the model's pivot (e.g., move torso to origin).
+// containerOffset: Pans the entire view without changing the camera angle.
 let bossImportArray = [
-  ["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 5, z: -90 }, "/atomix/code/Area0Boss.yml"],
-  ["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 5, z: -90 }, "/atomix/code/Area2Boss.yml"],
-  ["Void Croc", "/atomix/models/Area3Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 5, z: -90 }, "/atomix/code/Area3Boss.yml"],
-  ["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 5, z: -90 }, "/atomix/code/Area4Boss.yml"],
-  ["Boulder Giant", "/atomix/models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 5, z: -90 }, "/atomix/code/BoulderGiant.yml"],
-  ["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 5, z: -90 }, "/atomix/code/PrismarineMinion.yml"],
-  ["Rock Elemental", "/atomix/models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 5, z: -90 }, "/atomix/code/RockElemental.yml"],
-  ["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 5, z: -90 }, "/atomix/code/TempleGuardian.yml"],
+["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: -10 }, "/atomix/code/Area0Boss.yml"],
+["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 20 }, "/atomix/code/Area2Boss.yml"],
+["Void Croc", "/atomix/models/Area3Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area3Boss.yml"],
+["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area4Boss.yml"],
+["Void Queen", "/atomix/models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area9Boss.yml"],
+["Boulder Giant", "/atomix/models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: -40, z: 0 }, { x: 0, y: 60, z: 0 }, "/atomix/code/BoulderGiant.yml"],
+["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/PrismarineMinion.yml"],
+["Rock Elemental", "/atomix/models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/RockElemental.yml"],
+["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/TempleGuardian.yml"],
 ];
-
 
 import * as THREE from "./libs/three.module.js";
 import { GLTFLoader } from "./libs/GLTFLoader.js";
 import { OrbitControls } from "./libs/OrbitControls.js";
 
-// Get the container element from the HTML
 const container = document.getElementById("three-container");
 const bossSelectionBar = document.querySelector('.boss-selection-bar');
 
-// 1. Create the Scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xcccccc);
 
-// --- ADJUSTMENT: Store the initial aspect ratio ---
+// The container is only for grouping, not for positioning. It stays at (0,0,0).
+const sceneContainer = new THREE.Object3D();
+scene.add(sceneContainer);
+
 const initialAspect = container.clientWidth / container.clientHeight;
+const camera = new THREE.PerspectiveCamera(75, initialAspect, 0.1, 1000);
 
-// 2. Create the Camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  initialAspect, // Use the stored aspect ratio
-  0.1,
-  1000
-);
-// --- ADJUSTMENT: Moved camera further back to prevent clipping ---
-const originalCameraPosition = new THREE.Vector3(0, 5, -140);
-camera.position.copy(originalCameraPosition);
-
-
-// 3. Create the Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const clock = new THREE.Clock();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
 
-// 4. Create the Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-// 5. Add Lights
-const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 2);
-scene.add(hemisphereLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
-directionalLight.position.set(1, 1, 2);
-scene.add(directionalLight);
+const ambientLight = new THREE.AmbientLight(0xffffff, 4);
+scene.add(ambientLight);
 
-// --- MODEL LOADING ---
 const loadedModels = [];
 const loader = new GLTFLoader();
 
-// --- ADJUSTMENT: Updated loop to handle the new array structure ---
-bossImportArray.forEach(([name, modelPath, animationIndexes, cameraPos, codePath]) => {
-  // Create UI elements for each boss here
-  const wrapper = document.createElement('div');
-  wrapper.className = 'boss-selection-item-wrapper';
-
-  const thumbnailDiv = document.createElement('div');
-  thumbnailDiv.className = 'boss-selection-item';
-
-  const nameH4 = document.createElement('h4');
-  // Use the new 'name' variable directly
-  nameH4.textContent = name;
-  nameH4.className = 'boss-selection-item-name';
-
-  wrapper.appendChild(thumbnailDiv);
-  wrapper.appendChild(nameH4);
-  bossSelectionBar.appendChild(wrapper);
-
-  loader.load(
-    modelPath,
-    function (gltf) {
-      const model = gltf.scene;
-      scene.add(model);
-      model.position.set(0, -15, 0);
-
-      const animationMixer = new THREE.AnimationMixer(model);
-      const animationActions = {};
-
-      if (gltf.animations && gltf.animations.length > 0 && animationIndexes.length > 0) {
-        const idleAnimIndex = animationIndexes[0];
-        const walkAnimIndex = animationIndexes[1];
-        const deathAnimIndex = animationIndexes[animationIndexes.length - 1];
-
-        animationIndexes.forEach(animIndex => {
-          const clip = gltf.animations[animIndex];
-          if (clip) {
-            const action = animationMixer.clipAction(clip);
-            if (animIndex === idleAnimIndex || animIndex === walkAnimIndex) {
-              action.setLoop(THREE.LoopRepeat);
-            } else if (animIndex === deathAnimIndex) {
-              action.setLoop(THREE.LoopOnce);
-              action.clampWhenFinished = true;
-            } else {
-              action.setLoop(THREE.LoopOnce);
+bossImportArray.forEach(([name, modelPath, animationIndexes, cameraPos, scenePos, containerOffset, codePath]) => {
+    // ... UI and model loading remains the same
+    const wrapper = document.createElement('div');
+    wrapper.className = 'boss-selection-item-wrapper';
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'boss-selection-item';
+    const nameH4 = document.createElement('h4');
+    nameH4.textContent = name;
+    nameH4.className = 'boss-selection-item-name';
+    wrapper.appendChild(thumbnailDiv);
+    wrapper.appendChild(nameH4);
+    bossSelectionBar.appendChild(wrapper);
+    loader.load( modelPath, function (gltf) {
+            const model = gltf.scene;
+            sceneContainer.add(model);
+            const animationMixer = new THREE.AnimationMixer(model);
+            const animationActions = {};
+            if (gltf.animations && gltf.animations.length > 0 && animationIndexes.length > 0) {
+                const idleAnimIndex = animationIndexes[0];
+                const walkAnimIndex = animationIndexes[1];
+                const deathAnimIndex = animationIndexes[animationIndexes.length - 1];
+                animationIndexes.forEach(animIndex => {
+                    const clip = gltf.animations[animIndex];
+                    if (clip) {
+                        const action = animationMixer.clipAction(clip);
+                        if (animIndex === idleAnimIndex || animIndex === walkAnimIndex) { action.setLoop(THREE.LoopRepeat); } 
+                        else if (animIndex === deathAnimIndex) { action.setLoop(THREE.LoopOnce); action.clampWhenFinished = true; } 
+                        else { action.setLoop(THREE.LoopOnce); }
+                        animationActions[clip.name] = action;
+                    }
+                });
             }
-            animationActions[clip.name] = action;
-          }
-        });
-      }
-
-      const modelData = {
-        name: name, // Store the name
-        model: model,
-        mixer: animationMixer,
-        actions: animationActions,
-        animations: gltf.animations,
-        animationIndexes: animationIndexes,
-        cameraPos: cameraPos,
-        codePath: codePath // Store the code path
-      };
-      loadedModels.push(modelData);
-      
-      model.visible = false;
-
-      model.visible = true;
-      const poseClip = modelData.animations.length > 0 ? modelData.animations[0] : null;
-      captureAnimationFrame(modelData, poseClip, 0, thumbnailDiv, cameraPos);
-      model.visible = false;
-
-      wrapper.addEventListener('click', () => {
-          setActiveModel(modelData);
-      });
-      
-      if (loadedModels.length === bossImportArray.length) {
-        if(loadedModels.length > 0) {
-            setActiveModel(loadedModels[0]);
-        }
-      }
-    },
-    undefined,
-    function (error) {
-      console.error(`An error happened while loading ${modelPath}`, error);
-    }
-  );
+            const modelData = {
+                name, model, mixer: animationMixer, actions: animationActions, animations: gltf.animations,
+                animationIndexes, cameraPos, scenePos, containerOffset, codePath
+            };
+            loadedModels.push(modelData);
+            model.visible = false;
+            model.visible = true;
+            const poseClip = modelData.animations.length > 0 ? modelData.animations[0] : null;
+            captureAnimationFrame(modelData, poseClip, 0, thumbnailDiv, cameraPos);
+            model.visible = false;
+            wrapper.addEventListener('click', () => { setActiveModel(modelData); });
+            if (loadedModels.length === bossImportArray.length && loadedModels.length > 0) {
+                setActiveModel(loadedModels[0]);
+            }
+        },
+        undefined, (error) => { console.error(`An error happened while loading ${modelPath}`, error); }
+    );
 });
 
-/**
- * A helper function to format animation names for display.
- * @param {string} name The raw animation name.
- * @returns {string} The formatted name.
- */
-function formatAnimationName(name) {
-  let formattedName = name.replace(/_/g, ' ');
-  formattedName = formattedName.replace(/([A-Z])/g, ' $1').trim();
-  return formattedName
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
+// ** THE FIX IS HERE **
 function setActiveModel(modelToShow) {
     if (!modelToShow) return;
     
-    if (activeModelData && activeModelData.mixer) {
+    if (activeModelData) {
         activeModelData.mixer.stopAllAction();
+        activeModelData.model.visible = false;
     }
 
-    loadedModels.forEach(data => data.model.visible = false);
-    modelToShow.model.visible = true;
     activeModelData = modelToShow;
+    
+    // 1. Position the model locally. 'scenePos' is used to center the model's torso.
+    if (activeModelData.scenePos) {
+        activeModelData.model.position.set(
+            activeModelData.scenePos.x,
+            activeModelData.scenePos.y,
+            activeModelData.scenePos.z
+        );
+    }
+    
+    // 2. Calculate the final camera and target positions by applying the offset.
+    const baseCameraPos = new THREE.Vector3().copy(activeModelData.cameraPos);
+    const targetPos = new THREE.Vector3().copy(activeModelData.scenePos);
+    const offset = new THREE.Vector3().copy(activeModelData.containerOffset);
+
+    const finalCameraPos = baseCameraPos.add(offset);
+    const finalTargetPos = targetPos.add(offset);
+    
+    // 3. Apply the final positions.
+    camera.position.copy(finalCameraPos);
+    controls.target.copy(finalTargetPos);
+
+    activeModelData.model.visible = true;
+    controls.update();
+    
     updateAnimationBar(activeModelData);
-    updateCodeEmbed(activeModelData); // Call the new function
+    updateCodeEmbed(activeModelData);
 }
 
+// ** AND THE FIX IS HERE **
+function captureAnimationFrame(modelData, clip, time, targetDiv, cameraPos) {
+    if (!modelData || !targetDiv) return;
+
+    // Save original state
+    const originalModelPos = modelData.model.position.clone();
+    const originalCameraPos = camera.position.clone();
+    const originalControlsTarget = controls.target.clone();
+
+    // Replicate the exact same logic as setActiveModel for a perfect 1:1 capture
+    if (modelData.scenePos) {
+        modelData.model.position.set(
+            modelData.scenePos.x,
+            modelData.scenePos.y,
+            modelData.scenePos.z
+        );
+    }
+
+    const baseCameraPos = new THREE.Vector3().copy(cameraPos);
+    const targetPos = new THREE.Vector3().copy(modelData.scenePos);
+    const offset = new THREE.Vector3().copy(modelData.containerOffset);
+
+    const finalCameraPos = baseCameraPos.add(offset);
+    const finalTargetPos = targetPos.add(offset);
+
+    camera.position.copy(finalCameraPos);
+    controls.target.copy(finalTargetPos);
+    controls.update();
+
+    // ... rest of the function is the same ...
+    if (clip) {
+        const { mixer, actions } = modelData;
+        const action = actions[clip.name] || mixer.clipAction(clip);
+        if (action) {
+            action.play();
+            mixer.setTime(time);
+            mixer.update(0);
+        }
+    }
+    renderer.render(scene, camera);
+    const imageURL = renderer.domElement.toDataURL("image/png");
+    targetDiv.style.backgroundImage = `url(${imageURL})`;
+    targetDiv.style.backgroundSize = "cover";
+    targetDiv.style.backgroundPosition = "center";
+    modelData.mixer.stopAllAction();
+    modelData.model.position.copy(originalModelPos);
+    camera.position.copy(originalCameraPos);
+    controls.target.copy(originalControlsTarget);
+    controls.update();
+}
+
+// ... All other functions (formatAnimationName, etc.) remain the same ...
+function formatAnimationName(name) {
+    let formattedName = name.replace(/_/g, ' ');
+    formattedName = formattedName.replace(/([A-Z])/g, ' $1').trim();
+    return formattedName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
 function updateAnimationBar(modelData) {
     const animationBar = document.querySelector('.animation-item-bar');
     animationBar.innerHTML = '';
-
     if (modelData.animations && modelData.animationIndexes.length > 0) {
         const idleClip = modelData.animations[modelData.animationIndexes[0]];
-        if (idleClip) {
-            playAnimation(modelData.actions, idleClip);
-        }
-
+        if (idleClip) { playAnimation(modelData.actions, idleClip); }
         modelData.animationIndexes.forEach(animIndex => {
             const clip = modelData.animations[animIndex];
             if (clip) {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'animation-item-wrapper';
-
                 const frameDiv = document.createElement('div');
                 frameDiv.className = 'animation-item';
-
                 const nameH4 = document.createElement('h4');
                 nameH4.textContent = formatAnimationName(clip.name);
-
                 wrapper.appendChild(frameDiv);
                 wrapper.appendChild(nameH4);
                 animationBar.appendChild(wrapper);
-
                 captureAnimationFrame(modelData, clip, clip.duration / 2, frameDiv, modelData.cameraPos);
-
-                frameDiv.addEventListener('click', () => {
-                    playAnimation(modelData.actions, clip);
-                });
+                frameDiv.addEventListener('click', () => { playAnimation(modelData.actions, clip); });
             }
         });
     }
 }
-
-/**
- * Fetches and displays the code snippet for the active model.
- * @param {object} modelData The data for the currently active model.
- */
 async function updateCodeEmbed(modelData) {
     const codeHeader = document.querySelector('.selected-boss-code-header h3');
     const codeBlock = document.querySelector('.boss-card-code-embed pre code');
-
     if (!codeHeader || !codeBlock) return;
-
-    // Update the header with the boss's name
     codeHeader.textContent = modelData.name;
-
-    // Fetch the code file
     try {
         const response = await fetch(modelData.codePath);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
         const codeText = await response.text();
         codeBlock.textContent = codeText;
     } catch (error) {
@@ -245,59 +236,19 @@ async function updateCodeEmbed(modelData) {
         codeBlock.textContent = `Error loading code for ${modelData.name}...`;
     }
 }
-
-function captureAnimationFrame(modelData, clip, time, targetDiv, cameraPos) {
-  if (!modelData || !targetDiv) return;
-
-  const originalPos = camera.position.clone();
-  camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-  controls.update();
-
-  if (clip) {
-    const { mixer, actions } = modelData;
-    const action = actions[clip.name] || mixer.clipAction(clip);
-    if (action) {
-        action.play();
-        mixer.setTime(time);
-        mixer.update(0);
-    }
-  }
-  
-  renderer.render(scene, camera);
-  const imageURL = renderer.domElement.toDataURL("image/png");
-
-  targetDiv.style.backgroundImage = `url(${imageURL})`;
-  targetDiv.style.backgroundSize = "cover";
-  targetDiv.style.backgroundPosition = "center";
-
-  modelData.mixer.stopAllAction();
-  
-  camera.position.copy(originalPos);
-  controls.update();
-}
-
 function playAnimation(actions, clip) {
-  if (!actions || !clip) return;
-
-  const newAction = actions[clip.name];
-  if (!newAction) return;
-
-  if (activeAction && activeAction !== newAction) {
-    activeAction.stop();
-  }
-  
-  activeAction = newAction;
-  activeAction.reset().play();
+    if (!actions || !clip) return;
+    const newAction = actions[clip.name];
+    if (!newAction) return;
+    if (activeAction && activeAction !== newAction) { activeAction.stop(); }
+    activeAction = newAction;
+    activeAction.reset().play();
 }
-
 function onWindowResize() {
     const width = container.clientWidth;
     const height = container.clientHeight;
-
     renderer.setSize(width, height);
-
     const newAspect = width / height;
-
     let viewportWidth, viewportHeight;
     if (newAspect > initialAspect) {
         viewportHeight = height;
@@ -306,25 +257,19 @@ function onWindowResize() {
         viewportWidth = width;
         viewportHeight = width / initialAspect;
     }
-
     const viewportX = (width - viewportWidth) / 2;
     const viewportY = (height - viewportHeight) / 2;
-
     renderer.setViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 }
 window.addEventListener('resize', onWindowResize);
 onWindowResize();
-
-
 function animate() {
-  requestAnimationFrame(animate);
-  const delta = clock.getDelta();
-
-  if (activeModelData) {
-    activeModelData.mixer.update(delta);
-  }
-
-  controls.update();
-  renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (activeModelData) {
+        activeModelData.mixer.update(delta);
+    }
+    controls.update();
+    renderer.render(scene, camera);
 }
 animate();

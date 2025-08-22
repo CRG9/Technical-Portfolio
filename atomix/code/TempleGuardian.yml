@@ -1,0 +1,44 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+TempleGuardian1:
+  Type: IRON_GOLEM
+  Display: '&a&lTemple Alpha Guardian'
+  Health: 15000
+  Faction: TempleGuardians
+  Modules:
+    ThreatTable: true
+  DamageModifiers:
+  - FIRE_TICK 0
+  - WITHER 0
+  - POISON 0
+  Damage: 0
+  BossBar:
+    Enabled: true
+    Title: 'Temple Alpha Guardian <caster.hp>/<caster.mhp>HP'
+    Range: 25
+    Color: YELLOW
+    Style: SOLID
+  Options:
+    NoDamageTicks: 0
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.3
+    PreventOtherDrops: true
+    PreventLeashing: false
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: true
+    Despawn: false
+  Skills:
+  - model{mid=TempleGuardian;n=mainSkull;d=false} @self ~onSpawn
+  #- randomskill{skills=TGClap1,TGSwords1,TGSpin1,TGSummon1;sync=true} @target ~onAttack 0.3
+  - skill{s=TGAttack1;sync=true} @target ~onAttack 0.7
+  - skill{s=TGHealing1;sync=true} @self ~onTimer:1200
+  - sound{s=entity.iron_golem.death;v=3} @self ~onDeath
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - sound{s=entity.elder_guardian.hurt;v=3} @self ~onDamaged 0.3
+  - effect:particles{p=falling_dust;a=25;hs=1.5;vs=2;y=2;forwardOffset=0} @self ~onDamaged
+  - skill{s=Regen} @self ~onDropCombat 1
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged

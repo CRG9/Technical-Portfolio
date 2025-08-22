@@ -1,0 +1,48 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+Area3Boss:
+  Type: Zombie
+  Display: '&b&lVoid Croc'
+  Health: 2500
+  Modules:
+    ThreatTable: true
+  DamageModifiers:
+  - FIRE_TICK 0
+  - WITHER 0
+  - POISON 0
+  Damage: 0
+  Faction: Void
+  BossBar:
+    Enabled: true
+    Title: 'Void Croc <caster.hp>/<caster.mhp>HP'
+    Range: 25
+    Color: PURPLE
+    Style: SOLID
+  Options:
+    #NoDamageTicks: 0
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.3
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: true
+    Despawn: false
+    KnockbackResistance: 1
+  Skills:
+  - model{mid=Area3Boss;n=mainSkull;d=false} @self ~onSpawn
+  - skill{s=A3bite;sync=true} @target ~onAttack 0.5
+  - sound{s=entity.ravager.hurt;v=0.5} @self ~onDamaged 0.3
+  - sound{s=entity.ravager.death;v=0.5} @self ~onDeath
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - effect:particles{p=reddust;color=#7900cc;a=25;hs=1.5;vs=2;y=2;forwardOffset=3} @self ~onDamaged
+  - randomskill{s=A3tailwhip,A3taillaunch,A3deathroll;sync=true} @target ~onAttack 0.5
+  - skill{s=A3summon;sync=true} @target ~onTimer:250
+  - skill{s=A3crystalcast;sync=true} @target ~onTimer:140
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged
+  #- command{cmd="lp user <target.name> permission set void.area3.boss.killed"} @ThreatTable{limit=1;sort=HIGHEST_THREAT} ~onDeath
+  Drops:
+  - exp 10 100
+  - phatloot VoidArea3Boss

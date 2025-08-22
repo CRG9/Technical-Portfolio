@@ -1,0 +1,29 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+PrismarineGolem1:
+  Type: Zombie
+  Display: '&b&lPrismarine Golem'
+  Health: 30
+  Modules:
+    ThreatTable: true
+  Damage: 0
+  Faction: TempleGuardians
+  Options:
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.25
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: false
+    Despawn: false
+    PreventJockeyMounts: true
+  Skills:
+  - model{mid=PrismarineMinion;n=mainSkull} @self ~onSpawn
+  - sound{s=entity.fox.death;v=1} @self ~onDeath
+  - randomskill{skills=PGFlipAttack1,PGTailAttack1;sync=true} @ThreatTable ~onAttack 0.5 
+  - skill{s=PGHeadbuttAttack1;sync=true} @target ~onAttack 0.5
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - skill{s=PG1SuicideTimer} @self ~onSpawn

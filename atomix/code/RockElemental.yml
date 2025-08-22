@@ -1,0 +1,41 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+RockElemental:
+  Type: BEE
+  Faction: TempleMobs
+  Display: '&2&lRock Elemental'
+  Health: 500
+  Modules:
+    ThreatTable: true
+  Damage: 0
+  BossBar:
+    Enabled: true
+    Title: '&7Rock Elemental &f<caster.hp>/<caster.mhp>HP'
+    Range: 15
+    Color: GRAY
+    Style: SOLID
+  Options:
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.25
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: false
+    Despawn: false
+    PreventJockeyMounts: true
+    KnockbackResistance: 1
+  Skills:
+  - model{mid=RockElemental;n=mainSkull;d=false} @self ~onSpawn
+  - sound{s=entity.elder_guardian.hurt;v=3} @self ~onDamaged 0.3
+  - sound{s=entity.iron_golem.death;v=1} @self ~onDeath
+  - randomskill{skills=REPushback1,REForwardRoll1,REBackwardRoll1;sync=true} @target ~onAttack 0.5 
+  - skill{s=REEyeBeam1;sync=true} @target ~onTimer:200
+  - skill{s=RESwing1;sync=true} @target ~onAttack 0.5
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged
+  Drops:
+  - exp 30 100
+  - phatloot RockElemental

@@ -1,0 +1,37 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+BoulderGiant:
+  Type: IRON_GOLEM
+  Display: '&2&lBoulder Giant'
+  Health: 500
+  Faction: TempleMobs
+  Modules:
+    ThreatTable: true
+  Damage: 0
+  BossBar:
+    Enabled: true
+    Title: '&7Boulder Giant &f<caster.hp>/<caster.mhp>HP'
+    Range: 25
+    Color: GREEN
+    Style: SOLID
+  Options:
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.25
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: false
+    Despawn: false
+    PreventJockeyMounts: true
+    KnockbackResistance: 1
+  Skills:
+  - model{mid=BoulderGiant;n=mainSkull;d=false} @self ~onSpawn
+  - sound{s=entity.elder_guardian.hurt;v=3} @self ~onDamaged 0.3
+  - sound{s=entity.iron_golem.death;v=1} @self ~onDeath
+  - randomskill{skills=BGUpperCut1,BGSwing1;sync=true} @target ~onAttack 0.5 
+  - skill{s=BGSmash1;sync=true} @target ~onAttack 0.5
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged

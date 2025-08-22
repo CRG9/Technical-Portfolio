@@ -1,0 +1,46 @@
+#Skill Scripts have been excluded due to proprietary nature.
+
+Area2Boss:
+  Type: Zombie
+  Display: '&b&lVoid Wolf'
+  Health: 2500
+  Modules:
+    ThreatTable: true
+  Damage: 0
+  Faction: Void
+  DamageModifiers:
+  - FIRE_TICK 0
+  - WITHER 0
+  - POISON 0
+  BossBar:
+    Enabled: true
+    Title: 'Void Wolf <caster.hp>/<caster.mhp>HP'
+    Range: 25
+    Color: PURPLE
+    Style: SOLID
+  Options:
+    #NoDamageTicks: 0
+    AlwaysShowName: true
+    Collidable: true
+    FollowRange: 25
+    Silent: true
+    MovementSpeed: 0.40
+    PreventOtherDrops: true
+    ApplyInvisibility: true
+    Interactable: false
+    Persistent: true
+    Despawn: false
+    KnockbackResistance: 1
+  Skills:
+  - model{mid=Area2Boss;n=mainSkull;d=false} @self ~onSpawn
+  - sound{s=entity.hoglin.hurt;v=0.5} @self ~onDamaged 0.3
+  - sound{s=entity.hoglin.death;v=0.5} @self ~onDeath
+  - effect:particles{p=cloud;a=25;hs=1.5;vs=2} @self ~onDeath
+  - effect:particles{p=reddust;color=#7900cc;a=18;hs=0.8;vs=0.8;y=2} @self ~onDamaged
+  - skill{s=A2bite;sync=true} @target ~onAttack 0.5
+  - randomskill{skills=A2clawleft,A2clawright,A2standingswing,A2thrash;sync=true} @target ~onAttack 0.5
+  - velocity{m=set;x=0;y=0;z=0;delay=1} @self ~onDamaged
+  #- command{cmd="lp user <target.name> permission set void.area2.boss.killed"} @ThreatTable{limit=1;sort=HIGHEST_THREAT} ~onDeath
+  Drops:
+  - exp 10 100
+  - phatloot VoidArea2Boss
