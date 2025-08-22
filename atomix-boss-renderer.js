@@ -7,15 +7,15 @@ let activeModelData = null; // Will hold the data of the currently visible model
 // scenePos: Centers the model's pivot (e.g., move torso to origin).
 // containerOffset: Pans the entire view without changing the camera angle.
 let bossImportArray = [
-["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: -10 }, "/atomix/code/Area0Boss.yml"],
-["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 20 }, "/atomix/code/Area2Boss.yml"],
+["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area0Boss.yml"],
+["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -30 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area2Boss.yml"],
 ["Void Croc", "/atomix/models/Area3Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area3Boss.yml"],
-["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area4Boss.yml"],
-["Void Queen", "/atomix/models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 30, z: 40 }, "/atomix/code/Area9Boss.yml"],
+["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area4Boss.yml"],
+["Void Queen", "/atomix/models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area9Boss.yml"],
 ["Boulder Giant", "/atomix/models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: -40, z: 0 }, { x: 0, y: 60, z: 0 }, "/atomix/code/BoulderGiant.yml"],
-["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 40 }, "/atomix/code/PrismarineMinion.yml"],
+["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -50 }, { x: 0, y: 20, z: 0 }, "/atomix/code/PrismarineMinion.yml"],
 ["Rock Elemental", "/atomix/models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/RockElemental.yml"],
-["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/TempleGuardian.yml"],
+["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -10 }, { x: 0, y: 40, z: 0 }, "/atomix/code/TempleGuardian.yml"],
 ];
 
 import * as THREE from "./libs/three.module.js";
@@ -104,15 +104,15 @@ bossImportArray.forEach(([name, modelPath, animationIndexes, cameraPos, scenePos
 // ** THE FIX IS HERE **
 function setActiveModel(modelToShow) {
     if (!modelToShow) return;
-    
+
     if (activeModelData) {
         activeModelData.mixer.stopAllAction();
         activeModelData.model.visible = false;
     }
 
     activeModelData = modelToShow;
-    
-    // 1. Position the model locally. 'scenePos' is used to center the model's torso.
+
+    // 1. Position the model locally. This is what centers the model on its pivot.
     if (activeModelData.scenePos) {
         activeModelData.model.position.set(
             activeModelData.scenePos.x,
@@ -121,21 +121,25 @@ function setActiveModel(modelToShow) {
         );
     }
     
-    // 2. Calculate the final camera and target positions by applying the offset.
+    // 2. The containerOffset and cameraPos are already working for your perfect positioning.
     const baseCameraPos = new THREE.Vector3().copy(activeModelData.cameraPos);
     const targetPos = new THREE.Vector3().copy(activeModelData.scenePos);
     const offset = new THREE.Vector3().copy(activeModelData.containerOffset);
-
+    
+    // These two lines are what you have that works for positioning. Keep them.
     const finalCameraPos = baseCameraPos.add(offset);
     const finalTargetPos = targetPos.add(offset);
     
     // 3. Apply the final positions.
     camera.position.copy(finalCameraPos);
+    
+    // ** THIS IS THE ONLY LINE YOU NEED TO CHANGE **
+    // The OrbitControls' target should be the same as the final calculated target position.
     controls.target.copy(finalTargetPos);
 
     activeModelData.model.visible = true;
     controls.update();
-    
+
     updateAnimationBar(activeModelData);
     updateCodeEmbed(activeModelData);
 }
