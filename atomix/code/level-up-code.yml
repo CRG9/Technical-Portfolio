@@ -1,80 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheets/player-levels-framework.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap" rel="stylesheet">
-    <script type="module" src="/yaml-loader.js" defer></script>
-  </head>
-  <body>
-    <header>
-      <nav class="nav-bar">
-        <ul>
-          <li><a href="/index.html">Home</a></li>
-          <li><a href="/projects.html">Projects</a></li>
-          <li><a href="/resume.html">Resume</a></li>
-        </ul>
-      </nav>
-    </header>
-    <div class="project-page-link">
-      <h3><a href="/atomix/atomix-project.html">Back to Atomix...</a></h3>
-    </div>
-    <div class="page-header">
-      <h1>Player Ranking Frameworks</h1>
-    </div>
-    <div class="main-content">
-      <div class="ranking-frameworks-container">
-        <div class="levels-wrapper">
-          <div class="levels-header">
-            <h1>Levels Framework</h1>
-            <p>One opportunity players on Atomix had was the ability to acquire resources, upgrade their mining gear, and gain access to new mines on the server.</p>
-            <p>Levels were climbed by mining blocks and earning progress until reaching ever increasing progress requirements.</p>
-            <p>In doing so, players gained access to new powerups and upgrades that helped them climb levels faster and become a true competitor on the server.</p>
-            <div class="levels-header-image-container">
-            <img src="/assets/atomix-assets/level-up-message.png" alt="A snapshot of a player leveling up on Atomix.">
-            </div>
-          </p>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Calculations</h3>
-            <p>Due to the importance of maintaining a smooth feel for progression through the game,<br> our level up curve was comprised of different slopes that made up the greater curve.</p>
-            <p>Creating this curve-comprised-of-curves turned out to be effective at accomplishing our desired end result!</p>
-
-          </div>
-          <div class="levels-curve-visuals">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTiDUZfR66mSbzb11j_-ej6Ub9PR5tXoqHJ2FlZRv1TtWCF27eAEpdOpDbo-tA84XQ36vZuEBkx2EY9/pubhtml?widget=true&amp;headers=false" class="levels-sheets-embed"></iframe>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Curves Configuration</h3>
-            <p>Seen below are the final calculations that made up our level progresion curve.</p>
-            <p>You'll notice that the first few levels are not dictated by a calculation, where as the latter are<br> defined explicitly by a formula.</p>
-            <p>This is by design! The early levels are meant to hook the player, where as the latter levels are meant to provide the challenge.</p>
-          </div>
-          <div class="levels-cost-curves">
-            <pre id="level-up-cost-curves-configuration"><code>
-
-
-            </code></pre>
-          </div>
-            <div class="levels-embed-header">
-              <h3>Level Up Actions Configuration</h3>
-              <p>After a player gained enough progress, a level up action automatically occured.</p>
-              <p>Each level gave access to currencies, unlocks, and new abilities that propelled the player forward in the game.</p>
-            </div>
-            <div class="levels-actions">
-              <pre id="level-up-config-display"><code>
-              </code></pre>
-            </div>
-            <div class="levels-embed-header">
-              <h3>Levels Code</h3>
-              <p>Refactored several times, seen below is the magic that put all of these components into play!</p>
-            </div>
-            <div class="levels-code">
-              <pre id="level-up-code"><code>
 import net.atomixnetwork.prisoncore.PrisonCore;
 import net.atomixnetwork.prisoncore.actions.Action;
 import net.atomixnetwork.prisoncore.actions.ActionType;
@@ -84,7 +7,6 @@ import net.atomixnetwork.prisoncore.data.PlayerData;
 import net.atomixnetwork.prisoncore.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -150,7 +72,7 @@ public class LevelManager {
         // Run levelup actions
         if (giveRewards && levelRange != null) {
             MessageUtil.debugMessage("Running default and level specific levelup actions for level " + newLevel + "...");
-            List<Action> actions = Stream.concat(levelsConfig.getDefaultLevelupActions().stream(), levelRange.getLevelupActions().stream()).collect(Collectors.toList());
+            List actions = Stream.concat(levelsConfig.getDefaultLevelupActions().stream(), levelRange.getLevelupActions().stream()).collect(Collectors.toList());
             executeLevelupActions(player, actions);
 
             if (levelsConfig.isTeleportToBestMineEnabled() && playerData.getPreferences().isAutoMineEnabled()) {
@@ -173,7 +95,7 @@ public class LevelManager {
             setLevel(player, newLevel, false, false);
             return;
         }
-        List<Action> levelupActions = new ArrayList<>();
+        List levelupActions = new ArrayList<>();
         for (int i = level + 1; i <= newLevel; i++) {
             levelupActions.addAll(Stream.concat(levelsConfig.getDefaultLevelupActions()
                     .stream(), getLevelRange(i).getLevelupActions().stream()).collect(Collectors.toList()));
@@ -217,7 +139,7 @@ public class LevelManager {
      * @param player      Player the permissions will be added to.
      * @param permissions Permissions to add.
      */
-    private void addPermissions(Player player, List<String> permissions) {
+    private void addPermissions(Player player, List permissions) {
         for (String permission : permissions) {
             addPermission(player, permission);
         }
@@ -239,7 +161,7 @@ public class LevelManager {
      * @param player      Player the permissions will be removed from.
      * @param permissions Permissions to remove.
      */
-    private void removePermissions(Player player, List<String> permissions) {
+    private void removePermissions(Player player, List permissions) {
         for (String permission : permissions) {
             removePermission(player, permission);
         }
@@ -277,7 +199,7 @@ public class LevelManager {
      * @param player  Player the actions will be executed to.
      * @param actions Actions that will be executed.
      */
-    private void executeLevelupActions(Player player, List<Action> actions) {
+    private void executeLevelupActions(Player player, List actions) {
         PlayerData playerData = plugin.getPlayerDataManager().getPlayer(player.getUniqueId());
         if (!playerData.getPreferences().isLevelupMessagesEnabled()) {
             actions.removeIf(action -> action.getType() == ActionType.MESSAGE || action.getType() == ActionType.JSON_MESSAGE);
@@ -321,19 +243,3 @@ public class LevelManager {
         return levelRange.getPrefix() + level;
     }
 }
-
-              </code></pre>
-            </div>
-        </div>
-
-      </div>
-    </div>
-        <footer>
-      <div class="footer">
-        <div class="copyright">
-          <p>© 2025 Christopher Galetta</p>
-        </div>
-      </div>
-    </footer>
-  </body>
-</html>
