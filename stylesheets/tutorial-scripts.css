@@ -67,7 +67,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-content: center;
 }
 
 .project-page-link h3 {
@@ -94,40 +94,49 @@ header {
 
 .tutorial-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  grid-template-columns: 1fr 1fr;
   border: red 1px solid;
   gap: 2rem;
   margin: 1rem;
 }
 
-.void-wrapper, .prison-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    margin: 1rem;
+.void-wrapper,
+.prison-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 1rem;
+  border: orange 1px solid;
 }
 
 .intro-to-the-void-header,
 .intro-to-prison-header {
-  border: blue 3px solid;
-  text-align: center;
-  min-height: 25%;
-  padding: 1rem;
-  justify-content: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  border: blue 3px solid;
+}
+
+.header-blurb {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  padding: 1rem;
 }
 
 .iframe-wrapper {
+  box-sizing: border-box;
+  max-width: 100%; /* Constrains the video size */
+  max-height: 22rem;
+  height: 0;
+  width: 100%;
   position: relative;
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
   overflow: hidden;
-  width: 100%;
-  max-width: 40rem; /* Constrains the video size */
-  max-height: 22rem;
-  margin: 0 auto 1rem auto; /* Center the wrapper */
+  margin: 0 auto; /* Center the wrapper */
   border: 3px solid black;
 }
 
@@ -185,16 +194,14 @@ header {
   font-size: 1.25rem;
 }
 
+@media only screen and (max-width: 769px) {
 
-@media only screen and (max-width: 1000px) {
-.intro-to-the-void-header,
-.intro-to-prison-header {
-  border: blue 3px solid;
-  text-align: center;
-  min-height: 45%;
-  padding: 1rem;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
+.tutorial-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: red 1px solid;
+  gap: 2rem;
+  margin: 1rem;
 }
+
 }
