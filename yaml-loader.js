@@ -38,4 +38,8 @@ window.addEventListener('DOMContentLoaded', () => {
   displayFileInPreTag('/atomix/code/level-up-code.yml', 'level-up-code');
 
   displayFileInPreTag('/atomix/code/level-up-cost-curves.yml', 'level-up-cost-curves-configuration');
+
+  displayFileInPreTag('/atomix/code/void-tutorial-script.yml', 'void-tutorial-script');
+
+  displayFileInPreTag('/atomix/code/prison-tutorial-script.yml', 'prison-tutorial-script');
 });

@@ -1,169 +1,200 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-h1, h2, h3 {
-  font-family: 'Poppins', sans-serif;
+h1,
+h2,
+h3 {
+  font-family: "Poppins", sans-serif;
 }
 
-body, p, li {
-  font-family: 'Lato', sans-serif;
+body,
+p,
+li {
+  font-family: "Lato", sans-serif;
 }
 
-code, pre {
-  font-family: 'Fira Code', monospace;
+code,
+pre {
+  font-family: "Fira Code", monospace;
 }
 
 html {
-    box-sizing: border-box;
-    font-size: 16px;
-    background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
-    background-size: 400% 400%;
+  box-sizing: border-box;
+  font-size: 16px;
+  background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
+  background-size: 400% 400%;
 }
 
 header {
-    top: 20px;
-    background-color: #15256d;
-    display: flex;
-    justify-content: center;
-    border-bottom: silver 5px solid;
+  top: 20px;
+  background-color: #15256d;
+  display: flex;
+  justify-content: center;
+  border-bottom: silver 5px solid;
 }
 
 .nav-bar {
-    height: 3rem;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    padding: 1rem;
-    border: red solid 1px;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 1rem;
+  border: red solid 1px;
 }
 
 .nav-bar ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
 }
 
 .nav-bar li {
-    display: inline-flex;
-    flex-direction: column;
-    padding: 0rem 1rem;
-    color: white;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0rem 1rem;
+  color: white;
 }
 
 .nav-bar a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.project-page-link h3 {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
 }
 
 .page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+.page-header h1,
+.page-header h2,
+.page-header h3 {
+  padding-bottom: 1rem;
+}
+
+/*---------*/
+
+.tutorial-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  border: red 1px solid;
+  gap: 2rem;
+  margin: 1rem;
+}
+
+.void-wrapper, .prison-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 1rem 2rem 2rem 2rem;
+    align-content: center;
+    margin: 1rem;
 }
 
-.page-header h1, .page-header h2, .page-header h3 {
-    padding-bottom: 1rem;
-}
-
-.tutorial-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    border: red 1px solid;
-    gap: 2rem;
-    height: auto;
-    width: 80%;
-    margin-bottom: 2rem;
-}
-
-.intro-to-the-void-header, .intro-to-prison-header {
-  grid-column: 1 / -1;
+.intro-to-the-void-header,
+.intro-to-prison-header {
   border: blue 3px solid;
   text-align: center;
+  min-height: 25%;
   padding: 1rem;
-  min-height: 8rem; /* You can keep this for a minimum size, but the iframe will dictate the height */
-  /* Remove any conflicting height properties */
   justify-content: center;
   display: flex;
   flex-direction: column;
 }
 
-.intro-to-the-void-header h5, .intro-to-prison-header h5 {
-    padding: 0.5rem;
-}
-
-.intro-to-the-void-header a, .intro-to-prison-header a {
-    color: rgb(18, 21, 117);
-    text-decoration: none;
-}
-
-/* Remove the specific iframe width and height from HTML and use CSS to control it */
-.intro-to-the-void-header iframe, .intro-to-prison-header iframe {
-    width: 100%;
-    height: 100%;
-    position: absolute; /* Position the iframe inside the wrapper */
-    top: 0;
-    left: 0;
-}
-
 .iframe-wrapper {
-  box-sizing: border-box;
-  display: flex;
-  position: relative; /* This is the key. It sets the positioning context for the iframe. */
-  padding-bottom: 56.25%; /* This is the magic number for a 16:9 aspect ratio (9/16 = 0.5625) */
-  margin: 0 auto;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
   width: 100%;
-  border: black solid 3px;
+  max-width: 40rem; /* Constrains the video size */
+  max-height: 22rem;
+  margin: 0 auto 1rem auto; /* Center the wrapper */
+  border: 3px solid black;
 }
 
-.intro-to-the-void, .intro-to-prison {
-    font-size: 0.75rem;
-    height: 30rem; /* Set a fixed height for the container */
-    overflow: auto; /* Enable scrollbars when content overflows */
-    border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
-    padding: 1rem; /* Optional: Add padding inside the container */
-    background-color: #f8f8f8; /* Optional: Light background for readability */
+.iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.project-page-link h3 {
-    display: flex;
-    justify-content: center;
-    padding-top: 2rem;
+.intro-to-the-void-header h5,
+.intro-to-prison-header h5 {
+  padding: 0.5rem;
 }
+
+.intro-to-the-void-header a,
+.intro-to-prison-header a {
+  color: rgb(18, 21, 117);
+  text-decoration: none;
+}
+
+.intro-to-the-void-embed,
+.intro-to-prison-embed {
+  font-size: 0.75rem;
+  height: 30rem; /* Set a fixed height for the container */
+  overflow: auto; /* Enable scrollbars when content overflows */
+  border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
+  padding: 1rem; /* Optional: Add padding inside the container */
+  background-color: #f8f8f8; /* Optional: Light background for readability */
+}
+
+/*--------------*/
 
 .footer {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    height: 4em;
-    background-color: #15256d;
-    position: relative;
-    bottom: -4.33rem; /*Puts footer at bottom of page*/
-    border-top: silver 5px solid;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 4em;
+  background-color: #15256d;
+  position: relative;
+  bottom: -4.33rem; /*Puts footer at bottom of page*/
+  border-top: silver 5px solid;
 }
 
 .copyright {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 .copyright p {
-    color: silver;
-    font-size: 1.25rem;
+  color: silver;
+  font-size: 1.25rem;
 }
 
 
-
+@media only screen and (max-width: 1000px) {
+.intro-to-the-void-header,
+.intro-to-prison-header {
+  border: blue 3px solid;
+  text-align: center;
+  min-height: 45%;
+  padding: 1rem;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+}
