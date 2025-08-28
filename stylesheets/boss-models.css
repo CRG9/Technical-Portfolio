@@ -85,7 +85,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 2rem 2rem 2rem;
+  margin: 0 1rem 1rem 1rem;
 }
 
 .boss-selection-and-viewer-wrapper {
@@ -167,7 +167,7 @@ header {
 
 .selected-boss-viewer-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   gap: 2rem;
   padding: 0 0 2rem 0;
   margin-bottom: 2rem;
