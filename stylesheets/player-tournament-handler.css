@@ -91,7 +91,7 @@ header {
 }
 
 .tournament-config-wrapper,
-.tournament-code-wrapper{
+.tournament-code-wrapper {
   display: grid;
   grid-template-columns: 1fr;
   margin: 1rem;
@@ -111,6 +111,7 @@ header {
   align-content: center;
   text-align: center;
   border: blue 3px solid;
+  padding: 1rem;
 }
 
 .tournament-config-header h3, .tournament-chart-header h3 {
