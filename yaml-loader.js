@@ -42,4 +42,8 @@ window.addEventListener('DOMContentLoaded', () => {
   displayFileInPreTag('/atomix/code/void-tutorial-script.yml', 'void-tutorial-script');
 
   displayFileInPreTag('/atomix/code/prison-tutorial-script.yml', 'prison-tutorial-script');
+  
+  displayFileInPreTag('/atomix/code/tournament-config.yml', 'tournament-config');
+  
+  displayFileInPreTag('/atomix/code/tournament-code.yml', 'tournament-code');
 });

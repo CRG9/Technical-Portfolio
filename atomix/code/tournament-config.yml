@@ -1,0 +1,408 @@
+# Duration (in seconds) of party invitations
+party-invitation-duration: 60
+# Announcements that will be made during a tournament's pre start countdown.
+# Each number represents the second of the countdown at which the announcement will be made.
+tournament-countdown-announcements:
+  60: '&bA &l%tournament_type%&b tournament will start in &l%timer% seconds&b. Type &b&n&l%clickable_join_tournament%&b to participate.'
+  30: '&bA &l%tournament_type%&b tournament will start in &l%timer% seconds&b. Type &b&n&l%clickable_join_tournament%&b to participate.'
+  10: '&bA &l%tournament_type%&b tournament will start in &l%timer% seconds&b. Type &b&n&l%clickable_join_tournament%&b to participate.'
+  5: '&eThe &l%tournament_type%&e tournament will start in &l%timer% seconds&b.'
+  4: '&eThe &l%tournament_type%&e tournament will start in &l%timer% seconds&b.'
+  3: '&eThe &l%tournament_type%&e tournament will start in &l%timer% seconds&b.'
+  2: '&eThe &l%tournament_type%&e tournament will start in &l%timer% seconds&b.'
+  1: '&eThe &l%tournament_type%&e tournament will start in &l%timer% seconds&b.'
+# Announcements that will be made during a tournament's grace period countdown.
+grace-period-countdown-announcements:
+  30: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  10: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  5: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  4: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  3: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  2: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+  1: '&eThe tournament needs &l%missing_players%&e more players to start | Run &l%clickable_join_tournament%&e to take part.'
+# Texts that will be clickable and their attributes.
+clickable-texts:
+  join-tournament:
+    text: '/xtournament join'
+    hover: '&9Click here to join the tournament'
+    command: '/xtournament join'
+  join-party:
+    text: '/xtournament part join %player%'
+    hover: '&9Click here to join %player%''s party.'
+    command: '/xtournament party join %player%'
+# Amount of time (in seconds) before tournament matches will start.
+pre-match-countdown: 5
+# Amount of time (in seconds) matches will last.
+match-timer: 300
+# Announcements that will be made during the time between brackets.
+bracket-countdown-announcements:
+  60: '&bThe next bracket matches will start in &l%timer% seconds&b.'
+  30: '&bThe next bracket matches will start in &l%timer% seconds&b.'
+  10: '&bThe next bracket matches will start in &l%timer% seconds&b.'
+  1: '&bThe next bracket matches are starting...'
+  
+# Arenas that will be used for each tournament type.
+arena-lists:
+  ONEVSONE:
+    - 1v1-1
+    - 1v1-2
+    - 1v1-3
+    - 1v1-4
+    - 1v1-5
+    - 1v1-6
+    - 1v1-7
+    - 1v1-8
+  TWOVSTWO:
+    - 2v2Test1
+    - 2v2Test2
+    - 2v2Test3
+  THREEVSTHREE:
+    - 3v3Test1
+    - 3v3Test2
+    - 3v3Test3
+  FOURVSFOUR:
+    - 4v4Test1
+    - 4v4Test2
+    - 4v4Test3
+
+# Commands that will be blocked during a tournament.
+# It doesn't need to have the '/' character.
+tournament-blocked-commands:
+  - /spawn
+  - /lobby
+  - /warp
+  - /suicide
+  - /tiers
+  - /thevoid
+  - /spartan
+  - /commander
+  - /overlord
+  - /decrypter
+  - /ranks
+  - /gigabeast
+  - /voidwalker
+  - /exoknight
+  - /atomsmasher
+  - /back
+  - /heal
+  - /mine
+  - /minewarps
+  - /tutorials
+  
+  
+# Regions where players will receive tournament messages.
+tournament-regions:
+  - '*'
+
+# Symbols assigned for each team.
+team-symbols:
+  ALLY: '&a&l[&2&l◆&a&l]'
+  OPPONENT: '&c&l[&4&l◆&c&l]'
+# Text that will display the player's health during a tournament.
+health-tag: '&c♥ &f&l%health%'
+
+
+
+# Announcements that will be made after a tournament ends.
+# The delay is specified in seconds, it accepts decimals.
+# The delay is the time from the moment the tournament ends.
+#
+# PAPI placeholders can be used in the options.
+# You can also format party members with %member{number}%. Ex: %member1% shows the leader of the party.
+tournament-end-announcements:
+  ONEVSONE:
+    1:
+      delay: 5
+      options:
+        - '&8&l(&b&l!&8&l) &bWhat a dub &a%player_name%&b! First place secured! > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bAbsolutely DOMINANT Victory for 1st place &a%player_name%&b! > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou did it &a%player_name%&b! First place in the bag! > 1v1 Tournament'
+    2:
+      delay: 10
+      options:
+        - '&8&l(&b&l!&8&l) &bGood fight &a%player_name%&b! Second place secured! > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou faught hard &a%player_name%&b! Second placed earned. > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou put up a good fight &a%player_name%&b! 2nd place achieved. > 1v1 Tournament'
+    3:
+      delay: 15
+      options:
+        - '&8&l(&b&l!&8&l) &bNice try &a%player_name%&b! Third place for you this time. > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bGet em next time &a%player_name%&b! You placed third. > 1v1 Tournament'
+        - '&8&l(&b&l!&8&l) &bTough defeat, &a%player_name%&b! 3rd place today! > 1v1 Tournament'
+  TWOVSTWO:
+    1:
+      delay: 0
+      options:
+        - '&8&l(&b&l!&8&l) &bWhat a dub &a%member1% &b and %member2%&b! First place secured! > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bAbsolutely DOMINANT Victory for 1st place &a%member1% &b and %member2%&b! > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou did it &a%member1% &b and %member2%&b! First place in the bag! > 2v2 Tournament'
+    2:
+      delay: 5
+      options:
+        - '&8&l(&b&l!&8&l) &bGood fight &a%member1% &b and %member2%&b! Second place secured! > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou faught hard &a%member1% &b and %member2%&b! Second placed earned. > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou put up a good fight &a%member1% &b and %member2%&b! 2nd place achieved. > 2v2 Tournament'
+    3:
+      delay: 10
+      options:
+        - '&8&l(&b&l!&8&l) &bNice try &a%member1% &b and %member2%&b! Third place for you this time. > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bGet em next time &a%member1% &b and %member2%&b! You placed third. > 2v2 Tournament'
+        - '&8&l(&b&l!&8&l) &bTough defeat, &a%member1% &b and %member2%&b! 3rd place today! > 2v2 Tournament'
+  THREEVSTHREE:
+    1:
+      delay: 0
+      options:
+        - '&8&l(&b&l!&8&l) &bWhat a dub &a%member1%&b, &a%member2%&b, and &a%member3%! First place secured! > 3v3 Tournament'
+        - '&8&l(&b&l!&8&l) &bAbsolutely DOMINANT Victory for 1st place &a%member1%&b, &a%member2%&b, and &a%member3%&b! > 3v3 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou did it &a%member1%&b, &a%member2%&b, and &a%member3%&b! First place in the bag! > 3v3 Tournament'
+    2:
+      delay: 5
+      options:
+        - '&8&l(&b&l!&8&l) &bGood fight &a%member1%&b, &a%member2%&b, and %member3%&b! Second place secured! > 3v3 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou faught hard &a%member1%&b, &a%member2%&b, and %member3%&b! Second placed earned. > 3v3 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou put up a good fight &a%member1%&b, &a%member2%&b, and %member3%&b! 2nd place achieved. > 3v3 Tournament'
+    3:
+      delay: 10
+      options:
+        - '&8&l(&b&l!&8&l) &bNice try &a%member1%&b, &a%member2%&b, and %member3%&b! Third place for you this time. > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bGet em next time &a%member1%&b, &a%member2%&b, and %member3%&b! You placed third. > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bTough defeat, &a%member1%&b, &a%member2%&b, and %member3%&b! 3rd place today! > 4v4 Tournament'
+  FOURVSFOUR:
+    1:
+      delay: 0
+      options:
+        - '&8&l(&b&l!&8&l) &bWhat a dub &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! First place secured! > 3v3 Tournament'
+        - '&8&l(&b&l!&8&l) &bAbsolutely DOMINANT Victory for 1st place &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou did it &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! First place in the bag! > 4v4 Tournament'
+    2:
+      delay: 5
+      options:
+        - '&8&l(&b&l!&8&l) &bGood fight &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! Second place secured! > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou faught hard &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! Second placed earned. > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bYou put up a good fight &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! 2nd place achieved. > 4v4 Tournament'
+    3:
+      delay: 10
+      options:
+        - '&8&l(&b&l!&8&l) &bNice try &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! Third place for you this time. > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bGet em next time &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! You placed third. > 4v4 Tournament'
+        - '&8&l(&b&l!&8&l) &bTough defeat, &a%member1%&b, &a%member2%&b, &a%member3%&b, and &a%member4%! 3rd place today! > 4v4 Tournament'
+
+# Commands that will be ran for each party member based on their party's score at the end of the tournament.
+# Ex.
+# 1: Commands that will be ran for the winners.
+# 2: Commands that will be ran for the party that lost the last match.
+# eliminated: Commands that will be ran for the rest of parties.
+
+# Commands that will be ran for each party member based on their party's score at the end of the tournament.
+# Ex.
+# 1: Commands that will be ran for the winners.
+# 2: Commands that will be ran for the party that lost the last match.
+# eliminated: Commands that will be ran for the rest of parties.
+tournament-end-commands:
+  1:
+    - warp xtWinner1 %player_name%
+  2:
+    - warp xtWinner2 %player_name%
+  3:
+    - warp xtWinner3 %player_name%
+  eliminated:
+    - warp xtLoser %player_name%
+
+messages:
+  unknown-command: '&cUnknown command. Type &l/xtournament help &cto see the full command list.'
+  player-command: '&cNot available for consoles.'
+  no-permission: '&cYou don''t have permission to do this.'
+  player-not-found: '&cPlayer &l%player%&c not found.'
+  invalid-numeric-input: '&cYou must enter a numeric value with no decimals.'
+  invalid-numeric-input-non-zero: '&cAmount must be higher than 0.'
+  invalid-numeric-input-less-than-zero: '&cAmount must be 0 or higher.'
+  arena-not-found: '&cArena &l%arena%&c not found.'
+  unknown-tournament-type: '&cUnknown tournament type &l%tournament_type%&c.'
+
+  arena-command-info: 'Allows you to create, modify and delete arenas.'
+  arena-command-usage: '/xtournament arena'
+  arena-help-text: |
+    &b&lArena Commands
+    &a/xtournament arena <Name> create &b- &eCreates an arena with the specified name.
+    &a/xtournament arena <Arena> viewspawnpoints &b- &eDisplays a list with all the spawnpoints of the arena.
+    &a/xtournament arena <Arena> addspawnpoint <TournamentType> <TeamNumber> &b- &eCreates a spawnpoint for the arena.
+    &a/xtournament arena <Arena> removespawnpoint <TournamentType> <Index> &b- &eRemoves the specified spawnpoint from the arena.
+    &a/xtournament arena <Arena> setspawnpoint <TournamentType> <Index> <TeamNumber> &b- &eSets the specified spawnpoint to your current location.
+    &a/xtournament arena <Arena> delete &b- &eDeletes the arena under the specified name.
+
+  arena-already-exists: '&cArena &l%arena%&c already exists.'
+  arena-create-command-success: '&aArena &l%arena%&a successfully created.'
+
+  no-arena-spawnpoints: '&c&l%arena%&c doesn''t have any spawnpoints yet.'
+  spawnpoints-format: |
+    &9%index%.
+      &eTeam Number: &3%team_number%
+      &eCoordinates: &3X: %x% &9| &3Y: %y% &9| &3Z: %z% &9| &3World: %world%
+  viewspawnpoints-text: |
+    &b&l1v1 Spawnpoints:
+    %1v1_spawnpoints%
+    &b&l2v2 Spawnpoints:
+    %2v2_spawnpoints%
+    &b&l3v3 Spawnpoints:
+    %3v3_spawnpoints%
+    &b&l4v4 Spawnpoints:
+    %4v4_spawnpoints%
+
+  arena-addspawnpoint-command-usage: '/xtournament arena <Arena> addspawnpoint <TournamentType> <TeamNumber>'
+  invalid-team-number: '&cTeam number must be &l1&c or &l2&c.'
+  arena-addspawnpoint-command-success: '&aSpawnpoint for &l%tournament_type%&a successfully added to &l%arena%&a.'
+
+  arena-removespawnpoint-command-usage: '/xtournament arena <Arena> addspawnpoint <TournamentType> <Index>'
+  invalid-index: '&c&l%arena%&c doesn''t have a spawnpoint with index &l%index%&c.'
+  arena-removespawnpoint-command-success: '&aSpawnpoint for &l%tournament_type%&a successfully deleted from &l%arena%&a.'
+
+  arena-setspawnpoint-command-usage: '/xtournament arena <Arena> setspawnpoint <TournamentType> <Index> <TeamNumber>'
+  arena-setspawnpoint-command-success: '&aSpawnpoint for &l%tournament_type%&a successfully set to index &l%index%&a and team number &l%team_number% for arena &l%arena%&a.'
+
+  arena-setbeacon-command-success: '&a&l%arena%''s &abeacon location successfully set to your location'
+
+  arena-delete-command-success: '&aArena &l%arena%&a successfully deleted.'
+
+  setlobby-command-info: 'Sets the lobby tournaments will use.'
+  setlobby-command-usage: '/xtournament setlobby <TournamentType>'
+  setlobby-command-success: '&a&l%tournament_type%&a tournament lobby successfully set to your current location.'
+
+  start-command-info: 'Starts a tournament with the specified settings.'
+  start-command-usage: '/xtournament start <TournamentType> <MaxPoolSize> <StartTimer> <Kit> [MinimumParticipants] [GracePeriod]'
+  already-started-tournament: '&cThere''s a tournament already running.'
+  no-lobby-location: '&cThere is no lobby location configured yet. Set one with &l/xtournament setlobby'
+  invalid-pool-size: '&cPool size must be at least 2.'
+  invalid-minimum-participants: '&cMinimum participants must be at least 2.'
+  invalid-minimum-participants-bracket-size: '&c&l%minimum_participants%&c participants don''t result in a perfect bracket.'
+  invalid-grace-period: '&cGrace period can''t be lower than 0.'
+  not-enough-arenas: '&cThere are not enough arenas to have all matches at the same time.'
+  not-enough-spawnpoints: '&c&l%arena%&c doesn''t have enough spawnpoints for team number &l%team_number%&c.'
+  start-command-success: '&aA new tournament has started.'
+
+  cancel-command-info: 'Cancels the current tournament for the specified reason.'
+  cancel-command-usage: '/xtournament cancel <Reason>'
+  cancel-broadcast: '&cThe current tournament has been cancelled. Reason: %reason%'
+
+  join-command-info: 'Joins the current tournament.'
+  join-command-usage: '/xtournament join'
+  no-tournament: '&cThere are no running tournaments at the moment.'
+  #  too-big-party: '&cThe size of your party doesn''t allow you to join the tournament.'
+  filled-pool: '&cThe tournament isn''t accepting any more participants.'
+  already-participant: '&cYou already joined the tournament.'
+  join-command-success: '&aYour party is now participating in the tournament.'
+
+  leave-command-info: 'Leaves the current tournament.'
+  leave-command-usage: '/xtournament leave'
+  not-in-tournament: '&cYou are not participating in any tournaments right now.'
+  leave-command-success: '&aYou successfully left the tournament.'
+
+  party-command-info: 'Handles all operations regarding parties.'
+  party-command-usage: '/xtournament party'
+  no-party-tournaments: '&cYou can only use party commands during a tournament.'
+  party-help-text: |
+    &b&lParty Commands
+    &a/xtournament party invite <Player> &b- &eInvites the specified player to your party.
+    &a/xtournament party join <Player> &b- &eJoins the party of the passed player.
+
+  not-party-owner: '&cOnly party creators can invite other members.'
+  party-limit-reached: '&cYour party can''t invite any more members.'
+  already-member: '&c&l%target%&c is already in the party.'
+  party-invite-success: '&aYou''ve successfully invited &l%targets%&a to join your party.'
+  party-invitation: '&eYou''ve been invited to join &l%creator%''s&e party. Type &l%clickable_join_party%&e to join.'
+
+  no-invitation: '&cYou don''t have any party invitations from &l%target%&c.'
+  full-party: '&c&l%player%''s&c party is already full.'
+  party-join-success: '&aYou successfully joined &l%player%''s&a party.'
+  party-join-message: '&8[&a+&8] &7&l%player%&7 joined the party.'
+
+  party-leave-message: '&8[&c-&8] &7&l%player%&7 left the party.'
+
+  progress-command-info: 'Displays the progress of the current tournament.'
+  progress-command-usage: '/xtournament progress'
+  progress-status-translations:
+    NOT_STARTED: 'Not Started'
+    IN_PROGRESS: 'In Progress'
+    FINISHED: 'Finished'
+  progress-status-colors:
+    NOT_STARTED: RED
+    IN_PROGRESS: AQUA
+    FINISHED: GREEN
+  progress-text-format: |
+    &aR%round% &b- %status%
+        &e%completed_matches%&3/&3%total_matches%
+
+  tournamentplayers-command-info: 'Displays a list of the players in the current tournament.'
+  tournamentplayers-command-usage: '/xtournament tournamentplayers'
+  tournamentplayers-list-entry: '&9- &a%player%'
+  tournamentplayers-party-divider: '&d---------------------'
+
+  help-command-info: 'Displays this list.'
+  help-command-usage: '/xtournament help'
+  help-text-header: '&d&lCommands'
+  help-text-command-format: '&e%usage% &d- &a%info%'
+
+  reload-command-info: 'Reloads the plugin''s config.'
+  reload-command-usage: '/xtournament reload'
+  reload-command-success: '&aConfig reloaded.'
+
+  impossible-party-fill: '&cYour party couldn''t be filled with more players, so it was left out of the tournament.'
+  imperfect-bracket-kick: '&cYour party would have caused an imperfect tournament bracket, so you''ve been removed from the tournament. Next time, try joining the tournament earlier.'
+  buy-and-advance: '&eYour opponent for this round couldn''t be found, so you receive a buy and advance to the next round.'
+  matchup-text: '&eYou''ve been matched with &l%player%&e.'
+  party-matchup-text: '&eYou''ve been matched with &l%player%''s&e party.'
+
+  not-enough-participants: '&cThe tournament has been cancelled due to lack of participants.'
+  not-complete-party: '&cYou can''t participate on the tournament because you weren''t able to join a complete party.'
+  pre-match-text: '&cTournament matches will start in %time%&c.'
+  round-win: '&eYou won this round!'
+  round-lose: '&cYou lost this round and were eliminated from the tournament.'
+  round-tie: '&cYou couldn''t finish the round on time and were eliminated from the tournament.'
+  no-winner-tournament: '&cThe tournament has ended with no clear winner.'
+  winner-text: '&e&l%player%&e is the winner of the tournament.'
+  party-winner-text: '&e&l%player%''s &eparty is the winner of the tournament.'
+  blocked-tournament-command: '&cYou can''t run this command during a tournament.'
+  block-tournament-jail: '&cTournament participants can''t be jailed.'
+  death-broadcast: '&c☠ %team_symbol% &e%player% &c☠'
+  match-gamemode-change: '&cYou can''t switch to spectator mode during a match.'
+
+  # Scoreboard used during the pre-tournament countdown
+  starting-lobby-scoreboard-title: '&bxTournament'
+  starting-lobby-scoreboard-content:
+    - '    &e&l%tournament_type%'
+    - '&3Required Participants: &b%required_participants%'
+    - '&3Current Participants: &b%current_participants%'
+    - '&7--------------'
+    - '&eStarting in &l%timer%&e seconds'
+
+  # Scoreboard used during the pre-match lobby.
+  lobby-scoreboard-title: '&bxTournament'
+  lobby-scoreboard-content:
+    - '&3Round: &b%round%'
+    - '&3Matches: &b%current_match%&3/&b%total_matches%'
+    - '%party%'
+    - '&7-------------------'
+    - '&3Round Opponent: &c%opponent%'
+  # These lines will only show if the party is bigger than 1 and they will replace the %party% placeholder.
+  party-lines:
+    - '&7--------------'
+    - '&3Your Party:'
+    - '%members%'
+  # Line that will show the member of a party.
+  party-member-line: '&f%player%'
+
+  # Scoreboard used during a match.
+  match-scoreboard-title: '&bxTournament Match'
+  # Timer has mm:ss format.
+  match-scoreboard-content:
+    - 'Match Timer: &e&l%timer%'
+    - '&4Opponent Party:'
+    - '%opponent_members%'
+    - '&8---------------'
+    - '&2Your Party:'
+    - '%ally_members%'
+  # Line that will show the member of the opponent party.
+  opponent-party-member: '&c%player% &c♥ &f&l%health%'
+  # Line that will show the member of ally party.
+  ally-party-member: '&a%player% &c♥ &f&l%health%'
+  # Symbol that will be displayed instead of the health when a player is dead.
+  death-symbol: '&4☠'

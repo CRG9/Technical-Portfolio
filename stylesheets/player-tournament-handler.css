@@ -58,11 +58,10 @@ header {
     text-decoration: none;
 }
 
-.main-content {
+.project-page-link h3 {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    padding-top: 2rem;
 }
 
 .page-header {
@@ -72,32 +71,53 @@ header {
     text-align: center;
 }
 
-.page-header h1, .page-header h2, .page-header h3 {
+.page-header h1 {
     padding-bottom: 1rem;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
 
 .config-and-code-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: 1fr 1fr;
     border: red 1px solid;
     gap: 2rem;
-    height: auto;
-    width: 80%;
-    margin-bottom: 2rem;
+    margin: 1rem;
 }
 
-.tournament-config-header, .tournament-chart-header {
-    grid-column: 1 / -1;
+.tournament-config-wrapper,
+.tournament-code-wrapper{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 1rem;
+}
+
+.tournament-bracket-chart-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 1rem;
     padding: 1rem;
-    min-height: 8rem;
+}
+
+.tournament-config-header, .tournament-code-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  border: blue 3px solid;
 }
 
 .tournament-config-header h3, .tournament-chart-header h3 {
-    padding-bottom: 0.5rem;
-    text-align: center;
+    padding: 0.5rem;
 }
 
-.tournament-config-embed, .tournament-chart {
+.tournament-config-and-code-embed, .tournament-chart-embed {
     font-size: 0.75rem;
     height: 30rem; /* Set a fixed height for the container */
     overflow: auto; /* Enable scrollbars when content overflows */
@@ -106,15 +126,11 @@ header {
     background-color: #f8f8f8; /* Optional: Light background for readability */
 }
 
-.tournament-chart img {
+.tournament-chart-embed img {
     width: 100%;
 }
 
-.project-page-link h3 {
-    display: flex;
-    justify-content: center;
-    padding-top: 2rem;
-}
+/*---------*/
 
 .footer {
     display: flex;
@@ -140,3 +156,14 @@ header {
 }
 
 
+@media only screen and (max-width: 769px) {
+
+.config-and-code-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: red 1px solid;
+  gap: 2rem;
+  margin: 1rem;
+}
+
+}
