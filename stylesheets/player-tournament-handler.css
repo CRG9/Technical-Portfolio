@@ -112,6 +112,7 @@ header {
   text-align: center;
   border: blue 3px solid;
   padding: 1rem;
+  min-height: 13rem;
 }
 
 .tournament-config-header h3, .tournament-chart-header h3 {

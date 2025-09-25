@@ -33,17 +33,19 @@ async function displayFileInPreTag(filePath, elementId) {
 
 // Wait for the page to load before running the function
 window.addEventListener('DOMContentLoaded', () => {
-  displayFileInPreTag('/atomix/code/level-up-configuration.yml', 'level-up-config-display');
+  displayFileInPreTag('../atomix/code/level-up-configuration.yml', 'level-up-config-display');
 
-  displayFileInPreTag('/atomix/code/level-up-code.yml', 'level-up-code');
+  displayFileInPreTag('../atomix/code/level-up-code.yml', 'level-up-code');
 
-  displayFileInPreTag('/atomix/code/level-up-cost-curves.yml', 'level-up-cost-curves-configuration');
+  displayFileInPreTag('../atomix/code/level-up-cost-curves.yml', 'level-up-cost-curves-configuration');
 
-  displayFileInPreTag('/atomix/code/void-tutorial-script.yml', 'void-tutorial-script');
+  displayFileInPreTag('../atomix/code/void-tutorial-script.yml', 'void-tutorial-script');
 
-  displayFileInPreTag('/atomix/code/prison-tutorial-script.yml', 'prison-tutorial-script');
+  displayFileInPreTag('../atomix/code/prison-tutorial-script.yml', 'prison-tutorial-script');
   
-  displayFileInPreTag('/atomix/code/tournament-config.yml', 'tournament-config');
+  displayFileInPreTag('../atomix/code/tournament-config.yml', 'tournament-config');
   
-  displayFileInPreTag('/atomix/code/tournament-code.yml', 'tournament-code');
+  displayFileInPreTag('../atomix/code/tournament-code.yml', 'tournament-code');
+
+  displayFileInPreTag('../atomix/code/temple-gamestate-code.yml', 'temple-gamestate-code');
 });
