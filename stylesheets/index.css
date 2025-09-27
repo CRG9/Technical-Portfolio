@@ -97,6 +97,7 @@ header {
 .headshot-image-container img {
     border-radius: 25px;
     width: 100%;
+    max-height: 30rem;
     height: auto;
     margin: 0 auto;
     border:#15256d solid 10px;
