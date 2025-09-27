@@ -8,20 +8,20 @@ let activeModelData = null; // Will hold the data of the currently visible model
 // containerOffset: Pans the entire view without changing the camera angle.
 //Name | Model Path | Camera Position | Scene Position | Container Position | Code Path
 let bossImportArray = [
-    ["Void Minotaur", "/atomix/models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area0Boss.yml"],
-    ["Void Wolf", "/atomix/models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -30 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area2Boss.yml"],
-    ["Void Croc", "/atomix/models/Area3Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "/atomix/code/Area3Boss.yml"],
-    ["Void Skeleton Commander", "/atomix/models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area4Boss.yml"],
-    ["Void Queen", "/atomix/models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "/atomix/code/Area9Boss.yml"],
-    ["Boulder Giant", "/atomix/models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: -40, z: 0 }, { x: 0, y: 60, z: 0 }, "/atomix/code/BoulderGiant.yml"],
-    ["Prismarine Minion", "/atomix/models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -50 }, { x: 0, y: 20, z: 0 }, "/atomix/code/PrismarineMinion.yml"],
-    ["Rock Elemental", "/atomix/models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "/atomix/code/RockElemental.yml"],
-    ["Temple Guardian", "/atomix/models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -10 }, { x: 0, y: 40, z: 0 }, "/atomix/code/TempleGuardian.yml"],
+    ["Void Minotaur", "./models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "./code/Area0Boss.yml"],
+    ["Void Wolf", "./models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -30 }, { x: 0, y: 30, z: 0 }, "./code/Area2Boss.yml"],
+    ["Void Croc", "./models/Area3Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "./code/Area3Boss.yml"],
+    ["Void Skeleton Commander", "./models/Area4Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "./code/Area4Boss.yml"],
+    ["Void Queen", "./models/Area9Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -40 }, { x: 0, y: 30, z: 0 }, "./code/Area9Boss.yml"],
+    ["Boulder Giant", "./models/BoulderGiant.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: -40, z: 0 }, { x: 0, y: 60, z: 0 }, "./code/BoulderGiant.yml"],
+    ["Prismarine Minion", "./models/PrismarineMinion.glb", [0, 1, 2, 3, 4, 5], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -50 }, { x: 0, y: 20, z: 0 }, "./code/PrismarineMinion.yml"],
+    ["Rock Elemental", "./models/RockElemental.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 40, z: 0 }, "./code/RockElemental.yml"],
+    ["Temple Guardian", "./models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -10 }, { x: 0, y: 40, z: 0 }, "./code/TempleGuardian.yml"],
 ];
 
-import * as THREE from "/libs/three.module.js";
-import { GLTFLoader } from "/libs/GLTFLoader.js";
-import { OrbitControls } from "/libs/OrbitControls.js";
+import * as THREE from "../libs/three.module.js";
+import { GLTFLoader } from "../libs/GLTFLoader.js";
+import { OrbitControls } from "../libs/OrbitControls.js";
 
 const container = document.getElementById("three-container");
 const bossSelectionBar = document.querySelector('.boss-selection-bar');
