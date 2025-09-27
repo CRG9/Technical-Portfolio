@@ -36,14 +36,12 @@ header {
     align-items: center;
     display: flex;
     padding: 1rem;
-    border: red solid 1px;
 }
 
 .nav-bar ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid green;
 }
 
 .nav-bar li {

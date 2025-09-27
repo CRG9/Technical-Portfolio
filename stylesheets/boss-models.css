@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 h1,
@@ -22,6 +21,7 @@ pre {
 }
 
 html {
+  box-sizing: border-box;
   font-size: 16px;
   background: linear-gradient(135deg, #ffffff, #c3c3f3, #0046f6);
   background-size: 400% 400%;
@@ -36,17 +36,17 @@ header {
 }
 
 .nav-bar {
-  height: 3rem;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  padding: 1rem;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 1rem;
 }
 
 .nav-bar ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .nav-bar li {

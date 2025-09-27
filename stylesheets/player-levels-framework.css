@@ -36,14 +36,12 @@ header {
     align-items: center;
     display: flex;
     padding: 1rem;
-    border: red solid 1px;
 }
 
 .nav-bar ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid green;
 }
 
 .nav-bar li {
@@ -81,21 +79,23 @@ header {
 .ranking-frameworks-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    border: red 1px solid;
     gap: 2rem;
     height: auto;
     width: 80%;
     margin-bottom: 2rem;
 }
 
-.levels-header, .tiers-header {
+.levels-header{
     grid-column: 1 / -1;
-    border: blue 3px solid;
     text-align: center;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.levels-header p {
+    padding: 0.25rem;
 }
 
 .levels-header-image-container {
@@ -113,7 +113,6 @@ header {
 
 .levels-embed-header {
     grid-column: 1 / -1;
-    border: blue 3px solid;
     text-align: center;
     padding: 1rem;
 }

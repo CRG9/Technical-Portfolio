@@ -39,14 +39,12 @@ header {
   align-items: center;
   display: flex;
   padding: 1rem;
-  border: red solid 1px;
 }
 
 .nav-bar ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid green;
 }
 
 .nav-bar li {
@@ -83,7 +81,7 @@ header {
     height: 4em;
     background-color: #15256d;
     position: relative;
-    bottom: -23.6rem; /*Puts footer at bottom of page*/
+    bottom: -30.0rem; /*Puts footer at bottom of page*/
     border-top: silver 5px solid;
 }
 

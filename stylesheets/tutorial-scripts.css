@@ -41,14 +41,12 @@ header {
   align-items: center;
   display: flex;
   padding: 1rem;
-  border: red solid 1px;
 }
 
 .nav-bar ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid green;
 }
 
 .nav-bar li {
@@ -95,7 +93,6 @@ header {
 .tutorial-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border: red 1px solid;
   gap: 2rem;
   margin: 1rem;
 }
@@ -105,7 +102,6 @@ header {
   display: grid;
   grid-template-columns: 1fr;
   margin: 1rem;
-  border: orange 1px solid;
 }
 
 .intro-to-the-void-header,
@@ -115,7 +111,6 @@ header {
   justify-content: center;
   align-content: center;
   text-align: center;
-  border: blue 3px solid;
 }
 
 .header-blurb {
@@ -136,8 +131,8 @@ header {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
   overflow: hidden;
-  margin: 0 auto; /* Center the wrapper */
-  border: 3px solid black;
+  margin: 0 auto;
+  border: solid 5px #15256d;
 }
 
 .iframe-wrapper iframe {
@@ -199,7 +194,6 @@ header {
 .tutorial-container {
   display: grid;
   grid-template-columns: 1fr;
-  border: red 1px solid;
   gap: 2rem;
   margin: 1rem;
 }

@@ -36,14 +36,12 @@ header {
     align-items: center;
     display: flex;
     padding: 1rem;
-    border: red solid 1px;
 }
 
 .nav-bar ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid green;
 }
 
 .nav-bar li {
@@ -85,7 +83,6 @@ header {
 .config-and-code-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border: red 1px solid;
     gap: 2rem;
     margin: 1rem;
 }
@@ -110,7 +107,6 @@ header {
   justify-content: center;
   align-content: center;
   text-align: center;
-  border: blue 3px solid;
   padding: 1rem;
   min-height: 13rem;
 }

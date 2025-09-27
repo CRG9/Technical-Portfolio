@@ -36,14 +36,12 @@ header {
     align-items: center;
     display: flex;
     padding: 1rem;
-    border: red solid 1px;
 }
 
 .nav-bar ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid green;
 }
 
 .nav-bar li {
@@ -80,13 +78,13 @@ header {
 
 .intro p {
     padding: 0rem 2rem;
+    margin-top: 1rem;
 }
 
 .about-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     gap: 2rem;
-    border: red solid 1px;
     margin: 0 2rem 2rem 2rem;
 }
 
@@ -94,7 +92,6 @@ header {
     display: flex;
     justify-content: center;
     padding: 1rem; 
-    border: blue solid 1px;
 }
 
 .headshot-image-container img {
@@ -112,7 +109,6 @@ header {
     align-items: center;
     text-align: center;
     padding: 1rem;
-    border: green 1px solid;
 }
 
 .about-blurb p {

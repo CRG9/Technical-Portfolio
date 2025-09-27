@@ -36,14 +36,12 @@ header {
     align-items: center;
     display: flex;
     padding: 1rem;
-    border: red solid 1px;
 }
 
 .nav-bar ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid green;
 }
 
 .nav-bar li {
@@ -83,16 +81,17 @@ header {
 }
 
 .leaderboards-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25rem, 2fr));
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
 }
 
 .leaderboards-photo-container {
     display: flex;
     justify-content: center;
     padding: 1rem;
-    border: red 1px solid;
 }
 
 .leaderboards-photo-container img {
@@ -106,12 +105,16 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: blue solid 1px;
-    text-align: center;
     margin-bottom: 1rem;
+    max-width: 80%;
 }
 
-.leaderboards-blurb p {
+.leaderboards-blurb h2 {
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.leaderboards-blurb li {
     padding: 0.25rem;
 }
 
