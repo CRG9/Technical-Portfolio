@@ -4,7 +4,7 @@ I used Gemini to cut down the learning curve for Three.js and related libraries*
 let activeAction;
 let activeModelData = null; // Will hold the data of the currently visible model
 
-
+// These paths for models/code are relative to the HTML file's location (/atomix/)
 // These paths for models/code are now correctly relative to the HTML file's location (/atomix/)
 let bossImportArray = [
     ["Void Minotaur", "./models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "./code/Area0Boss.yml"],
@@ -18,6 +18,7 @@ let bossImportArray = [
     ["Temple Guardian", "./models/TempleGuardian.glb", [0, 1, 2, 3, 4, 5, 6, 7, 8], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -10 }, { x: 0, y: 40, z: 0 }, "./code/TempleGuardian.yml"],
 ];
 
+// These import paths are relative to this JS file's location (/js/)
 import * as THREE from "../libs/three.module.js";
 import { GLTFLoader } from "../libs/GLTFLoader.js";
 import { OrbitControls } from "../libs/OrbitControls.js";
