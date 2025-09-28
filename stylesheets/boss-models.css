@@ -86,7 +86,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 1rem 1rem 1rem;
+  margin: 1rem;
 }
 
 .boss-selection-and-viewer-wrapper {
@@ -94,8 +94,8 @@ header {
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  width: 100%;
   padding: 0 2rem;
+  width: 80%;
 }
 
 .boss-selection-bar-container {
