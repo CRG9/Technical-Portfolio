@@ -4,8 +4,7 @@ I used Gemini to cut down the learning curve for Three.js and related libraries*
 let activeAction;
 let activeModelData = null; // Will hold the data of the currently visible model
 
-// These paths for models/code are relative to the HTML file's location (/atomix/)
-// These paths for models/code are now correctly relative to the HTML file's location (/atomix/)
+// These paths for models/code work both for a local environment & github pages.
 let bossImportArray = [
     ["Void Minotaur", "./models/Area0Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 20, z: 0 }, "./code/Area0Boss.yml"],
     ["Void Wolf", "./models/Area2Boss.glb", [0, 1, 2, 3, 4, 5, 6, 7], { x: 0, y: 0, z: -90 }, { x: 0, y: 0, z: -30 }, { x: 0, y: 30, z: 0 }, "./code/Area2Boss.yml"],
@@ -102,7 +101,6 @@ bossImportArray.forEach(([name, modelPath, animationIndexes, cameraPos, scenePos
     );
 });
 
-// ** THE FIX IS HERE **
 function setActiveModel(modelToShow) {
     if (!modelToShow) return;
 
@@ -134,7 +132,6 @@ function setActiveModel(modelToShow) {
     // 3. Apply the final positions.
     camera.position.copy(finalCameraPos);
     
-    // ** THIS IS THE ONLY LINE YOU NEED TO CHANGE **
     // The OrbitControls' target should be the same as the final calculated target position.
     controls.target.copy(finalTargetPos);
 
@@ -145,7 +142,6 @@ function setActiveModel(modelToShow) {
     updateCodeEmbed(activeModelData);
 }
 
-// ** AND THE FIX IS HERE **
 function captureAnimationFrame(modelData, clip, time, targetDiv, cameraPos) {
     if (!modelData || !targetDiv) return;
 
@@ -174,7 +170,6 @@ function captureAnimationFrame(modelData, clip, time, targetDiv, cameraPos) {
     controls.target.copy(finalTargetPos);
     controls.update();
 
-    // ... rest of the function is the same ...
     if (clip) {
         const { mixer, actions } = modelData;
         const action = actions[clip.name] || mixer.clipAction(clip);
@@ -196,7 +191,6 @@ function captureAnimationFrame(modelData, clip, time, targetDiv, cameraPos) {
     controls.update();
 }
 
-// ... All other functions (formatAnimationName, etc.) remain the same ...
 function formatAnimationName(name) {
     let formattedName = name.replace(/_/g, ' ');
     formattedName = formattedName.replace(/([A-Z])/g, ' $1').trim();

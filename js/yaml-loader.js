@@ -1,5 +1,6 @@
-//THIS FILE DOES NOT PERTAIN TO boss-models.html
+//THIS FILE DOES NOT PERTAIN TO boss-models.html code configuration embeds.
 //All yaml files loaded in boss-models.html are handled by atomix-boss-renderer.js
+//This file handles all code embeds on other pages.
 
 
 async function displayFileInPreTag(filePath, elementId) {
@@ -31,7 +32,7 @@ async function displayFileInPreTag(filePath, elementId) {
   }
 }
 
-// Wait for the page to load before running the function
+// Wait for the page to load before running the function, taking the corresponding code files and implanting them in the <pre> tag with appropriate ID
 window.addEventListener('DOMContentLoaded', () => {
   displayFileInPreTag('../atomix/code/level-up-configuration.yml', 'level-up-config-display');
 
