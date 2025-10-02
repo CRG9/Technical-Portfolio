@@ -1,0 +1,104 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Poppins", sans-serif;
+}
+
+body,
+p,
+li {
+  font-family: "Lato", sans-serif;
+}
+
+code,
+pre {
+  font-family: "Fira Code", monospace;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+header {
+  top: 20px;
+  background-color: #15256d;
+  display: flex;
+  justify-content: center;
+  border-bottom: silver 5px solid;
+}
+
+.project-page-link h3 {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.nav-bar {
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 1rem;
+}
+
+.nav-bar ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-bar li {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0rem 1rem;
+  color: white;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 4em;
+    background-color: #15256d;
+    position: relative;
+    bottom: -30.0rem; /*Puts footer at bottom of page*/
+    border-top: silver 5px solid;
+}
+
+.copyright {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.copyright p {
+  color: silver;
+  font-size: 1.25rem;
+}
