@@ -80,6 +80,10 @@ header {
     padding: 2rem;
 }
 
+.page-header h1 {
+  text-align: center;
+}
+
 .footer {
     display: flex;
     justify-content: center;
