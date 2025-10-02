@@ -1,0 +1,238 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: fredoka, sans-serif;
+}
+
+html {
+  background-color: white;
+  font-size: 16px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+  color: white;
+  text-align: center;
+  padding: 0.5rem;
+  height: 5rem;
+  border-bottom: 3px solid rgb(0, 255, 38);
+}
+
+header h1 {
+  font-weight: 400;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    text-align: center;
+}
+
+.page-header h1, .page-header h2, .page-header h3 {
+    padding-bottom: 1rem;
+}
+
+.project-page-link h3 {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.main-content {
+  margin: 1rem;
+  height: 100%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  justify-items: space-evenly;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 1rem;
+}
+
+.simulator-container {
+  border: rgb(93, 92, 92) 4px solid;
+  background-color: rgb(105, 221, 105);
+  border-radius: 25px;
+  height: 100%;
+  width: 100%;
+  max-width: 50rem;
+  margin: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.simulator-container h2 {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  padding-top: 1rem;
+  font-weight: 400;
+}
+
+#simulator-embed {
+  display: flex;
+  background-color: rgb(188, 186, 186);
+  border-top: rgb(93, 92, 92) solid 2px;
+  border-bottom: rgb(93, 92, 92) solid 2px;
+  width: 100%;
+  height: 100%;
+  max-height: 50rem;
+  padding: 1rem;
+  margin: 1rem 0rem 2rem 0rem;
+  overflow: scroll;
+  flex-direction: column;
+}
+
+.clickable {
+    cursor: pointer;
+    color: #4303ab; /* A light blue color to indicate it's a link */
+    text-decoration: none;
+}
+
+.clickable:hover {
+    text-decoration: underline;
+}
+
+.left-pane-wrapper {
+  border: 1px dashed rgb(0, 255, 38);
+  border-radius: 25px;
+  height: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.right-pane-wrapper {
+  border: 1px dashed rgb(0, 255, 8);
+  border-radius: 25px;
+  height: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo-container {
+  border: green 2px solid;
+  border-radius: 25px;
+  width: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo-container h2 {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+}
+
+.parameter-inputs {
+  border: 2px solid green;
+  border-radius: 25px;
+  height: 100%;
+  width: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.parameter-inputs h2 {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  font-weight: 400;
+}
+
+.parameter-inputs label {
+  align-content: center;
+  display: flex;
+  width: 100%;
+  margin: 0.25rem;
+}
+
+.parameter-inputs input {
+  width: 100%;
+}
+
+.parameter-inputs button {
+  margin: 1rem;
+  width: 80%;
+  height: 2rem;
+  background-color: rgb(105, 221, 105);
+  border-radius: 10px;
+}
+
+.parameter-inputs button:hover {
+  margin: 1rem;
+  width: 80%;
+  height: 2rem;
+  background-color: rgb(6, 239, 6);
+  border-radius: 10px;
+}
+
+.clickable.printing {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+@media only screen and (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+  }
+
+  .simulator-container {
+    max-width: 100%;
+  }
+
+  .left-pane-wrapper {
+    max-width: 100%;
+  }
+
+  .right-pane-wrapper {
+    max-width: 100%;
+  }
+
+  .logo-container {
+    max-width: 19rem;
+  }
+
+  .logo-container img {
+    padding: 1rem;
+  }
+
+  .parameter-inputs {
+    max-width: 19rem;
+  }
+
+}
