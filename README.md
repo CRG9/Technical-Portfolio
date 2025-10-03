@@ -31,7 +31,7 @@ You can view the live version of my portfolio here: \[INSERT YOUR LIVE PORTFOLIO
 
 To run this project locally:
 
-1.  Clone the repository: git clone https://github.com/crg9/technical-portfolio.git
+1.  Clone the repository: git clone https://github.com/crg9/Technical-Portfolio.git
     
 2.  Navigate to the project directory: cd your-repo
     
