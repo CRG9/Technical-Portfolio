@@ -66,12 +66,10 @@ header {
 .page-header {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 1rem;
     text-align: center;
-}
-
-.page-header h1, .page-header h2, .page-header h3 {
-    padding-bottom: 1rem;
 }
 
 .project-page-link h3 {
@@ -86,18 +84,32 @@ header {
     justify-content: center;
     align-items: center;
     width: 80%;
+    margin: 1rem;
+}
+
+.leaderboards-blurb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    max-width: 40rem;
 }
 
 .leaderboards-photo-container {
     display: flex;
     justify-content: center;
+    align-content: center;
     padding: 1rem;
+    margin: 1rem;
+    width: 80%;
 }
 
 .leaderboards-photo-container img {
     width: 100%;
     height: auto;
     margin: 0 auto;
+    border: 10px solid #15256d;
     border-radius: 25px;
 }
 
@@ -139,4 +151,12 @@ header {
 .copyright p {
     color: silver;
     font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 769px) {
+    
+    .leaderboards-blurb {
+        width: 80%;
+    }
+
 }

@@ -65,7 +65,9 @@ header {
 .page-header {
     display: flex;
     justify-content: center;
-    padding: 2rem;
+    flex-direction: column;
+    align-content: center;
+    padding: 1rem;
     text-align: center;
 }
 
@@ -77,68 +79,84 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-content: center;
-}
-
-.config-and-code-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin: 1rem;
+  align-items: center;
+  margin: 1rem;
 }
 
 .tournament-config-wrapper,
 .tournament-code-wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin: 1rem;
-}
-
-.tournament-bracket-chart-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    margin: 1rem;
-    padding: 1rem;
+  width: 80%;
 }
 
 .tournament-config-header, .tournament-code-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  text-align: center;
-  padding: 1rem;
-  min-height: 13rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width: 60%;
+    max-width: 40rem;
+    padding: 1rem;
 }
 
-.tournament-config-header h3, .tournament-chart-header h3 {
-    padding: 0.5rem;
+.tournament-config-header h3, .tournament-code-header h3 {
+    text-align: center;
+}
+
+.tournament-config-header h4, .tournament-code-header h4 {
+    text-align: center;
+    padding: 1rem;
+}
+
+.tournament-config-header ol, .tournament-code-header ol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+}
+
+.tournament-config-header li, .tournament-code-header li {
+    padding: 0.25rem;
 }
 
 .tournament-config-and-code-embed, .tournament-chart-embed {
     font-size: 0.75rem;
-    height: 30rem; /* Set a fixed height for the container */
-    overflow: auto; /* Enable scrollbars when content overflows */
-    border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
-    padding: 1rem; /* Optional: Add padding inside the container */
-    background-color: #f8f8f8; /* Optional: Light background for readability */
+    height: 30rem;
+    width: 80%;
+    overflow: auto; 
+    border: 3px solid #ccc; 
+    padding: 1rem; 
+    background-color: #f8f8f8; 
+    margin: 1rem;
+}
+
+.tournament-bracket-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  width: 80%;
 }
 
 .tournament-chart-embed img {
     width: 100%;
 }
 
-/*---------*/
-
-.footer {
+footer {
     display: flex;
     justify-content: center;
     align-content: center;
     height: 4em;
     background-color: #15256d;
     position: relative;
-    bottom: -4.33rem; /*Puts footer at bottom of page*/
+    bottom: -4.33rem; 
     border-top: silver 5px solid;
+    width: 100%;
 }
 
 .copyright {
@@ -156,12 +174,8 @@ header {
 
 @media only screen and (max-width: 769px) {
 
-.config-and-code-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  border: red 1px solid;
-  gap: 2rem;
-  margin: 1rem;
-}
+    .tournament-config-header, .tournament-code-header {
+        width: 80%;
+    }
 
 }

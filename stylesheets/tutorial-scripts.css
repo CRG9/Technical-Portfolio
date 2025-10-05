@@ -66,6 +66,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-content: center;
+  margin: 1rem;
 }
 
 .project-page-link h3 {
@@ -79,29 +80,49 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 2rem 2rem 2rem;
 }
 
 .page-header h1,
 .page-header h2,
 .page-header h3 {
-  padding-bottom: 1rem;
+  padding-top: 1rem;
+  max-width: 60%;
+  text-align: center;
+}
+
+.page-header ol {
+  max-width: 60%;
+  padding: 1rem;
+}
+
+.page-header li {
+  padding: 0.25rem;
 }
 
 /*---------*/
 
-.tutorial-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin: 1rem;
+.master-tutorial-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 1rem;
 }
 
-.void-wrapper,
-.prison-wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
+.void-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
   margin: 1rem;
+  width: 45%;
+}
+
+.prison-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin: 1rem;
+  width: 45%;
 }
 
 .intro-to-the-void-header,
@@ -111,14 +132,6 @@ header {
   justify-content: center;
   align-content: center;
   text-align: center;
-}
-
-.header-blurb {
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
   padding: 1rem;
 }
 
@@ -139,8 +152,20 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 101%;
   height: 100%;
+}
+
+.header-blurb {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  min-height: 12rem;
+}
+
+.header-blurb h4 {
+  padding-top: 1rem; 
 }
 
 .intro-to-the-void-header h5,
@@ -157,16 +182,16 @@ header {
 .intro-to-the-void-embed,
 .intro-to-prison-embed {
   font-size: 0.75rem;
-  height: 30rem; /* Set a fixed height for the container */
-  overflow: auto; /* Enable scrollbars when content overflows */
-  border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
-  padding: 1rem; /* Optional: Add padding inside the container */
-  background-color: #f8f8f8; /* Optional: Light background for readability */
+  height: 30rem;
+  overflow: auto; 
+  border: 3px solid #ccc; 
+  padding: 1rem; 
+  background-color: #f8f8f8; 
 }
 
 /*--------------*/
 
-.footer {
+footer {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -191,11 +216,42 @@ header {
 
 @media only screen and (max-width: 769px) {
 
-.tutorial-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+.master-tutorial-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   margin: 1rem;
+}
+
+.void-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 90%;
+}
+
+.prison-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 90%;
+}
+
+.page-header h1,
+.page-header h2,
+.page-header h3 {
+  padding-top: 1rem;
+  max-width: 80%;
+  text-align: center;
+}
+
+.page-header ol {
+  max-width: 80%;
+  padding: 1rem;
 }
 
 }

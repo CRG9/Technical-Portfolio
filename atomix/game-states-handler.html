@@ -1,87 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Technical Portfolio - Game States Handler</title>
-      <link rel="stylesheet" href="../stylesheets/game-states-handler.css" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-         href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
-         rel="stylesheet"
-         />
-      <script type="module" src="../js/yaml-loader.js" defer></script>
-   </head>
-   <body>
-      <header>
-         <nav class="nav-bar">
-            <ul>
-               <li><a href="../index.html">Home</a></li>
-               <li><a href="../projects.html">Projects</a></li>
-               <li><a href="../resume.html">Resume</a></li>
-            </ul>
-         </nav>
-      </header>
-      <div class="project-page-link">
-         <h3><a href="../atomix/atomix-project.html">Back to Atomix...</a></h3>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Technical Portfolio - Game States Handler</title>
+    <link rel="stylesheet" href="../stylesheets/game-states-handler.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="../js/yaml-loader.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="nav-bar">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../projects.html">Projects</a></li>
+          <li><a href="../resume.html">Resume</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="project-page-link">
+      <h3><a href="../atomix/atomix-project.html">Back to Atomix...</a></h3>
+    </div>
+    <div class="page-header">
+      <h1>Game States Handler</h1>
+    </div>
+    <div class="main-content">
+      <div class="gamestates-container">
+        <div class="temple-gamestate-blurb">
+          <ol>
+            <li>
+              Atomix offered the opportunity for interplay between the levels
+              framework and the tiers framework via Temples & Tiers.
+            </li>
+            <li>
+              Through Temples, players were given the ability to capture temple
+              territories to then be granted access to their valuable mines.
+            </li>
+            <li>
+              Through Tiers, plays gained access to better mines. Better mines = more progress = higher leveling ability, but only
+              if they have the PvP accumen to stay in the fight!
+            </li>
+          </ol>
+          <h3>Product Manager & QA: Chris Galetta</h3>
+          <h3>Development Work: Atomix Network Team</h3>
+        </div>
+
+        <div class="temple-gamestate-header-image-container">
+          <img
+            src="../assets/atomix-assets/temple.png"
+            alt="A visual of a claimable temple on Atomix."
+          />
+        </div>
+
+        <div class="temple-gamestate-embed-header">
+          <h2>Temple Gamestates Code</h2>
+          <ol>
+            <li>
+              Working through the logic and accounting for all of the possible
+              scenarios that would play out took several dozen hours and touched
+              the hands of multiple developers.
+            </li>
+            <li>
+              This project in particular taught me the importance of having
+              developers write clean, readable, and well documented code so that
+              future teammates can work on it effectively (and with less
+              pain...)
+            </li>
+            <li>
+              When it was all said and done, not only did we have a working
+              state machine, but we also had the ability to trigger certain
+              states with administrative commands without breaking the game.
+            </li>
+          </ol>
+        </div>
+
+        <div class="temple-gamestate-embed">
+          <pre id="temple-gamestate-code"><code>
+                  </code></pre>
+        </div>
+
+        <div class="temple-gamestate-list">
+          <h2>What We Accounted For:</h2>
+          <ol>
+            <li>The designated area of a Temple</li>
+            <li>An "ungrouped" player entering the Temple Area</li>
+            <li>A "grouped" player entering the Temple Area</li>
+            <li>
+              A count of "Attackers" and "Defenders" in the Temple Area
+              depending on the claimed status
+            </li>
+            <li>Threat tables of the Temple Guardians guarding the temple</li>
+            <li>
+              A player's eligibility to attack a Temple Guardian depending on
+              their group status
+            </li>
+            <li>
+              A player's Tier level when determining access to the claimed
+              Temple's mine portal"
+            </li>
+            <li>
+              and a few other nuanced scenarios to ensure smooth gameplay...
+            </li>
+          </ol>
+        </div>
       </div>
-      <div class="page-header">
-         <h1>Player Ranking Frameworks</h1>
+    </div>
+    <footer>
+      <div class="footer">
+        <div class="copyright">
+          <p>© 2025 Christopher Galetta</p>
+        </div>
       </div>
-      <div class="main-content">
-         <div class="gamestates-container">
-            <div class="gamestates-wrapper">
-               <div class="temple-gamestate-header">
-                  <h1>Game States Handler</h1>
-                  <h2>Temples and Tiers</h2>
-                  <p>
-                     Atomix offered the opportunity for interplay between the levels
-                     framework and the tiers framework.
-                  </p>
-                  <p>
-                     Through Temples, players were given the ability to capture temple
-                     territories to then be granted access to their valuable mines.
-                  </p>
-                  <p>
-                     Better mines = more progress = higher leveling ability, but only if
-                     they have the PvP accumen to stay in the fight!
-                  </p>
-               </div>
-               <div class="temple-gamestate-header-image-container">
-                  <img src="../assets/atomix-assets/temple.png" alt="A visual of a claimable temple on Atomix."/>
-               </div>
-               <div class="temple-gamestate-embed-header">
-                  <h2>Temple Gamestates Code</h2>
-                  <p>Working through the logic and accounting for all of the possible scenarios that would play out took several dozen hours and touched the hands of multiple developers.</p>
-                  <p>This project in particular taught me the importance of having developers write clean, readable, and well documented code so that future teammates can work on it effectively (and with less pain...)</p>
-                  <p>When it was all said and done, not only did we have a working state machine, but we also had the ability to trigger certain states with administrative commands without breaking the game.</p>
-               </div>
-               <div class="temple-gamestate-embed">
-                  <pre  id="temple-gamestate-code"><code>
-               </code></pre>
-               </div>
-               <div class="temple-gamestate-list">
-                  <h2>A List of What We Accounted For:</h2>
-                  <ul>
-                  <li>The designated area of a Temple</li>
-                  <li>An "ungrouped" player entering the Temple Area</li>
-                  <li>A "grouped" player entering the Temple Area</li>
-                  <li>A count of "Attackers" and "Defenders" in the Temple Area depending on the claimed status</li>
-                  <li>Threat tables of the Temple Guardians guarding the temple</li>
-                  <li>A player's eligibility to attack a Temple Guardian depending on their group status</li>
-                  <li>A player's Tier level when determining access to the claimed Temple's mine portal"</li>
-                  <li>and a few other nuanced scenarios to ensure smooth gameplay...</li>
-               </div>
-            </div>
-         </div>
-      </div>
-      <footer>
-         <div class="footer">
-            <div class="copyright">
-               <p>© 2025 Christopher Galetta</p>
-            </div>
-         </div>
-      </footer>
-   </body>
+    </footer>
+  </body>
 </html>

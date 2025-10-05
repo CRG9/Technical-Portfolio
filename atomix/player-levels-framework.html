@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Technical Portfolio - Player Levels Framework</title>
     <link rel="stylesheet" href="../stylesheets/player-levels-framework.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Lato&family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <script type="module" src="../js/yaml-loader.js" defer></script>
   </head>
   <body>
@@ -20,75 +23,129 @@
         </ul>
       </nav>
     </header>
+
     <div class="project-page-link">
       <h3><a href="../atomix/atomix-project.html">Back to Atomix...</a></h3>
     </div>
+
     <div class="page-header">
-      <h1>Player Ranking Frameworks</h1>
+      <h1>Player Leveling Framework</h1>
+      <h3>Product Manager & QA: Chris Galetta</h3>
+      <h3>Development Work: Atomix Network Team</h3>
     </div>
+
     <div class="main-content">
       <div class="ranking-frameworks-container">
-        <div class="levels-wrapper">
-          <div class="levels-header">
-            <h1>Levels Framework</h1>
-            <p>One opportunity players on Atomix had was the ability to acquire resources, upgrade their mining gear, and gain access to new mines on the server.</p>
-            <p>Levels were climbed by mining blocks and earning progress until reaching ever increasing progress requirements.</p>
-            <p>In doing so, players gained access to new powerups and upgrades that helped them climb levels faster and become a true competitor on the server.</p>
-            <div class="levels-header-image-container">
-            <img src="../assets/atomix-assets/level-up-message.png" alt="A snapshot of a player leveling up on Atomix.">
-            </div>
-          </p>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Calculations</h3>
-            <p>Due to the importance of maintaining a smooth feel for progression through the game,<br> our level up curve was comprised of different slopes that made up the greater curve.</p>
-            <p>Creating this curve-comprised-of-curves turned out to be effective at accomplishing our desired end result!</p>
-
-          </div>
-          <div class="levels-curve-visuals">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTiDUZfR66mSbzb11j_-ej6Ub9PR5tXoqHJ2FlZRv1TtWCF27eAEpdOpDbo-tA84XQ36vZuEBkx2EY9/pubhtml?widget=true&amp;headers=false" class="levels-sheets-embed"></iframe>
-          </div>
-          <div class="levels-embed-header">
-            <h3>Level Cost Curves Configuration</h3>
-            <p>Seen below are the final calculations that made up our level progresion curve.</p>
-            <p>You'll notice that the first few levels are not dictated by a calculation, where as the latter are<br> defined explicitly by a formula.</p>
-            <p>This is by design! The early levels are meant to hook the player, where as the latter levels are meant to provide the challenge.</p>
-          </div>
-          <div class="levels-cost-curves">
-            <pre id="level-up-cost-curves-configuration"><code>
-
-
-            </code></pre>
-          </div>
-            <div class="levels-embed-header">
-              <h3>Level Up Actions Configuration</h3>
-              <p>After a player gained enough progress, a level up action automatically occured.</p>
-              <p>Each level gave access to currencies, unlocks, and new abilities that propelled the player forward in the game.</p>
-            </div>
-            <div class="levels-actions">
-              <pre id="level-up-config-display"><code>
-              </code></pre>
-            </div>
-            <div class="levels-embed-header">
-              <h3>Levels Code</h3>
-              <p>Refactored several times, seen below is the magic that put all of these components into play!</p>
-            </div>
-            <div class="levels-code">
-              <pre id="level-up-code"><code>
-
-
-              </code></pre>
-            </div>
+        <div class="levels-main-header">
+          <ol>
+            <li>
+              One opportunity players on Atomix had was the ability to acquire
+              resources, upgrade their mining gear, and gain access to new mines
+              on the server.
+            </li>
+            <li>
+              Levels were climbed by mining blocks and earning progress until
+              reaching ever increasing progress requirements.
+            </li>
+            <li>
+              In doing so, players gained access to new powerups and upgrades
+              that helped them climb levels faster and become a true competitor
+              on the server.
+            </li>
+          </ol>
+        </div>
+        
+        <div class="levels-image-container">
+          <img
+            src="../assets/atomix-assets/level-up-message.png"
+            alt="A snapshot of a player leveling up on Atomix."
+          />
+        </div>
+        
+        <div class="levels-embed-header">
+          <h3>Level Up Cost Calculations</h3>
+          <ol>
+          <li>
+            Considering the MMO nature of the game, a smooth leveling curve required the accounting for numerous factors that players faced on their journies.
+          </li>
+          <li>
+            Due to the importance of maintaining a smooth feel for progression
+            through the game, we needed to create a curve comprised of curves that accurately reflected a player's power and leveling ability at different stages of the game.
+          </li>
+          <li>
+            Creating this curve-comprised-of-curves turned out to be extremely effective
+            at accomplishing our desired end result!
+          </li>
+          </ol>
         </div>
 
-      </div>
+        <div class="levels-curve-visuals">
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTiDUZfR66mSbzb11j_-ej6Ub9PR5tXoqHJ2FlZRv1TtWCF27eAEpdOpDbo-tA84XQ36vZuEBkx2EY9/pubhtml?widget=true&amp;headers=false"
+            class="levels-sheets-embed"
+          ></iframe>
+        </div>
+
+        <div class="levels-embed-header">
+          <h3>Level Cost Curves Configuration</h3>
+          <ol>
+            <li>
+              Seen below are the final calculations that made up our level
+              progresion curve.
+            </li>
+            <li>
+              You'll notice that the first few levels are not dictated by a
+              calculation, where as the latter are defined explicitly by a
+              formula.
+            </li>
+            <li>
+              This is by design! The early levels are meant to hook the player,
+              where as the latter levels are meant to provide the challenge.
+            </li>
+          </ol>
+        </div>
+
+        <div class="levels-cost-curves">
+          <pre id="level-up-cost-curves-configuration"><code>
+            </code></pre>
+        </div>
+
+        <div class="levels-embed-header">
+          <h3>Level Up Actions Configuration</h3>
+          <ol>
+            <li>
+              After a player gained enough progress, a level up action
+              automatically occured.
+            </li>
+            <li>
+              Each level gave access to currencies, unlocks, and new abilities
+              that propelled the player forward in the game.
+            </li>
+          </ol>
+        </div>
+
+        <div class="levels-actions">
+          <pre id="level-up-config-display"><code>
+              </code></pre>
+        </div>
+
+        <div class="levels-embed-header">
+          <h3>Levels Code</h3>
+          <p>
+            Refactored several times, seen below is the magic that put all of
+            these components into play!
+          </p>
+        </div>
+
+        <div class="levels-code">
+          <pre id="level-up-code"><code>
+              </code></pre>
+        </div>
     </div>
-        <footer>
-      <div class="footer">
+    <footer>
         <div class="copyright">
           <p>© 2025 Christopher Galetta</p>
         </div>
-      </div>
     </footer>
   </body>
 </html>

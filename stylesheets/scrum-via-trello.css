@@ -82,10 +82,32 @@ header {
 }
 
 .scrum-wrapper {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(20rem, 1fr));
-    gap: 1rem;
-    margin: 0 2rem 2rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+}
+
+.scrum-blurb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    max-width: 40rem;
+}
+
+.scrum-blurb h2, .scrum-blurb h3 {
+    text-align: center;
+}
+
+.scrum-blurb ol {
+    padding: 1rem;
+}
+
+.scrum-blurb li {
+    padding: 0.25rem;
 }
 
 .scrum-image-container {
@@ -98,18 +120,7 @@ header {
     width: 100%;
     height: auto;
     border-radius: 25px;
-    border: #530475 solid 10px;
-}
-
-.scrum-blurb {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.scrum-blurb p {
-    padding: 0.25rem;
+    border: #15256d solid 10px;
 }
 
 .footer {
@@ -133,4 +144,12 @@ header {
 .copyright p {
     color: silver;
     font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 769px) {
+    
+    .scrum-blurb {
+        width: 80%;
+    }
+
 }

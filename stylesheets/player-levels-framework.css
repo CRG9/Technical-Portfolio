@@ -68,67 +68,11 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem 2rem 2rem 2rem;
-    text-align: center;
-}
-
-.page-header h1, .page-header h2, .page-header h3 {
-    padding-bottom: 1rem;
-}
-
-.ranking-frameworks-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    gap: 2rem;
-    height: auto;
-    width: 80%;
-    margin-bottom: 2rem;
-}
-
-.levels-header{
-    grid-column: 1 / -1;
-    text-align: center;
     padding: 1rem;
+}
+
+.page-header h1 {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.levels-header p {
-    padding: 0.25rem;
-}
-
-.levels-header-image-container {
-    padding: 1rem;
-    display: flex;
-}
-
-.levels-header-image-container img {
-    max-width: 80%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 25px;
-    border:#001c9b 5px solid;
-}
-
-.levels-embed-header {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 1rem;
-}
-
-.levels-sheets-embed {
-    width: 100%;
-    height: 100%;
-}
-
-.levels-actions, .levels-cost-curves, .levels-curve-visuals, .levels-code {
-    font-size: 0.75rem;
-    height: 30rem; /* Set a fixed height for the container */
-    overflow: auto; /* Enable scrollbars when content overflows */
-    border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
-    padding: 1rem; /* Optional: Add padding inside the container */
-    background-color: #f8f8f8; /* Optional: Light background for readability */
 }
 
 .project-page-link h3 {
@@ -137,8 +81,67 @@ header {
     padding-top: 2rem;
 }
 
-.footer {
+.ranking-frameworks-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+}
+
+.levels-main-header, .levels-embed-header {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    max-width: 40rem;
+}
+
+.levels-main-header ol, .levels-embed-header ol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+}
+
+.levels-main-header li, .levels-embed-header li {
+    padding: 0.25rem;
+}
+
+.levels-image-container {
+    display: flex;
+    margin: 1rem;
+}
+
+.levels-image-container img {
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 25px;
+    border:#031564 10px solid;
+}
+
+.levels-actions, .levels-cost-curves, .levels-curve-visuals, .levels-code {
+    font-size: 0.75rem;
+    height: 30rem; 
+    overflow: auto; 
+    border: 3px solid #ccc; 
+    padding: 1rem; 
+    background-color: #f8f8f8; 
+    width: 80%;
+    margin: 1rem;
+}
+
+.levels-sheets-embed {
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    display: flex;
+    width: 100%;
     justify-content: center;
     align-content: center;
     height: 4em;
@@ -158,6 +161,18 @@ header {
 .copyright p {
     color: silver;
     font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 769px) {
+    
+    .levels-main-header {
+        width: 80%;
+    }
+
+    .levels-embed-header {
+        width: 80%;
+    }
+
 }
 
 

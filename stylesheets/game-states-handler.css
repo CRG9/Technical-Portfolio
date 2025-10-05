@@ -68,12 +68,8 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1rem 2rem 2rem 2rem;
+    padding-top: 1rem;
     text-align: center;
-}
-
-.page-header h1, .page-header h2, .page-header h3 {
-    padding-bottom: 1rem;
 }
 
 .project-page-link h3 {
@@ -83,24 +79,30 @@ header {
 }
 
 .gamestates-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    gap: 2rem;
-    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 80%;
-    margin-bottom: 2rem;
 }
 
-.temple-gamestate-header {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 1rem;
+.temple-gamestate-blurb {
+    width: 60%;
+    max-width: 40rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.temple-gamestate-header p {
+.temple-gamestate-blurb h1, .temple-gamestate-blurb h3 {
+    text-align: center;
+}
+
+.temple-gamestate-blurb ol {
+    padding: 1rem;
+}
+.temple-gamestate-blurb li {
     padding: 0.25rem;
 }
 
@@ -114,56 +116,57 @@ header {
     height: auto;
     margin: 0 auto;
     border-radius: 25px;
-    border:#15256d solid 5px;
+    border:#15256d solid 10px;
 }
 
 .temple-gamestate-embed-header {
-    grid-column: 1 / -1;
-    text-align: center;
+    display: flex;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 60%;
 }
 
-.temple-gamestate-embed-header p {
-    padding: 0.5rem;
+.temple-gamestate-embed-header h2 {
+    text-align: center;
 }
 
-.temple-gamestate-embed-header ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
+.temple-gamestate-embed-header ol {
+    padding: 1rem;
+}
+
+.temple-gamestate-embed-header li {
+    padding: 0.25rem;
 }
 
 .temple-gamestate-embed {
     font-size: 0.75rem;
-    height: 30rem; /* Set a fixed height for the container */
+    height: 30rem; 
     overflow: auto; /* Enable scrollbars when content overflows */
     border: 3px solid #ccc; /* Optional: Add a border for visual clarity */
     padding: 1rem; /* Optional: Add padding inside the container */
     background-color: #f8f8f8; /* Optional: Light background for readability */
+    margin: 1rem;
+    width: 80%;
 }
 
 .temple-gamestate-list {
-    grid-column: 1 / -1;
-    text-align: center;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.temple-gamestate-list p {
-    padding: 0.5rem;
+.temple-gamestate-list h2 {
+    text-align: center;
 }
 
-.temple-gamestate-list ul {
+.temple-gamestate-list ol {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: left;
+    padding: 1rem;
 }
 
 .temple-gamestate-list li {
@@ -191,4 +194,17 @@ header {
 .copyright p {
     color: silver;
     font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 769px) {
+    
+    .temple-gamestate-blurb {
+        width: 80%;
+    }
+
+    .temple-gamestate-embed-header {
+        width: 80%;
+    }
+
+
 }
