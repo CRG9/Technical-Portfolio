@@ -39,6 +39,13 @@ header {
     padding-top: 2rem;
 }
 
+
+.work-credits h2 {
+    display: flex;
+    padding: 1.5rem;
+    justify-content: center;
+}
+
 .nav-bar {
   height: 3rem;
   justify-content: center;
