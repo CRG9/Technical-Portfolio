@@ -69,10 +69,7 @@ header {
     justify-content: center;
     align-items: center;
     padding: 1rem;
-}
-
-.page-header h1 {
-    display: flex;
+    text-align: center;
 }
 
 .project-page-link h3 {
@@ -97,6 +94,10 @@ header {
     justify-content: center;
     width: 60%;
     max-width: 40rem;
+}
+
+.levels-main-header h3, .levels-embed-header h3 {
+    text-align: center;
 }
 
 .levels-main-header ol, .levels-embed-header ol {
